@@ -1,32 +1,28 @@
 [
   {
-    "ContainingType": "TestController",
-    "Method": "Get",
-    "RelativePath": "Test",
+    "ContainingType": "backendd.Controllers.HomepageController",
+    "Method": "AddActivity",
+    "RelativePath": "api/Homepage/add-activity",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newActivity",
+        "Type": "backendd.Models.Activity",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.HomepageController",
+    "Method": "GetHealthMetrics",
+    "RelativePath": "api/Homepage/health-metrics",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backendd.Models.WeatherForecast, backendd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   }
 ]
