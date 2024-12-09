@@ -1,18 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
 import { BarChart } from 'react-native-chart-kit'; // Example library for charts
+import { useHealthData } from './HealthDataContext';
 
 const Steps = () => {
+
+  const { healthData, updateHealthData } = useHealthData();
+
+  const handleSyncDevice = () => {
+    // Example function to sync device (simulate step count update)
+    updateHealthData("steps", healthData.steps + 500); // Simulates adding 500 steps
+    alert("Device synced successfully!");
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Steps Tracker</Text>
 
       {/* Summary Section */}
       <View style={[styles.card, styles.summaryCard]}>
-        <Text style={styles.title}>Today's Steps: <Text style={styles.highlight}>8,450</Text></Text>
-        <Text style={styles.text}>Status: <Text style={styles.highlight}>Almost There!</Text></Text>
+        <Text style={styles.title}>Today's Steps: <Text style={styles.highlight}>{healthData.steps}</Text></Text>
+        <Text style={styles.text}>Status: <Text style={styles.highlight}> {healthData.steps >= 10000 ? "Goal Achieved!" : "Almost There!"}</Text></Text>
         <Text style={styles.text}>Goal: <Text style={styles.highlight}>10,000 steps</Text></Text>
-        <Text style={styles.text}>Calories Burned: <Text style={styles.highlight}>300 kcal</Text></Text>
+        <Text style={styles.text}>Calories Burned: <Text style={styles.highlight}>{(healthData.steps * 0.04).toFixed(0)} kcal</Text></Text>
       </View>
 
       {/* Chart Section */}
@@ -20,7 +30,7 @@ const Steps = () => {
       <BarChart
         data={{
           labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{ data: [4000, 7000, 5000, 8000, 10000, 9500, 8500] }],
+          datasets: [{ data: [4000, 7000, 5000, 8000, 10000, 9500, healthData.steps] }],
         }}
         width={320}
         height={220}

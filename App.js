@@ -4,9 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import Navigation from "./Navigation";
 import Header from "./screens/Header";
 import BottomNavBar from "./screens/BottomNavBar";
+import { HealthDataProvider } from "./screens/HealthDataContext";
 
 export default function App() {
   return (
+  <HealthDataProvider>
     <NavigationContainer>
       <View style={styles.container}>
         {/* Header */}
@@ -19,6 +21,7 @@ export default function App() {
         <BottomNavBar />
       </View>
     </NavigationContainer>
+  </HealthDataProvider>
   );
 }
 

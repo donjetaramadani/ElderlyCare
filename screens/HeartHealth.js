@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, ScrollView, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { useHealthData } from './HealthDataContext';
 
 const screenWidth = Dimensions.get('window').width;
 
 const HeartHealth = () => {
+
+  const { healthData } = useHealthData();
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header Section */}
@@ -12,9 +16,11 @@ const HeartHealth = () => {
 
       {/* Summary Section */}
       <View style={styles.card}>
-        <Text style={styles.title}>Current Heart Rate: <Text style={styles.highlight}>75 BPM</Text></Text>
-        <Text style={styles.status}>Status: <Text style={styles.normalStatus}>Normal</Text></Text>
-        <Text style={styles.updated}>Last Updated: 10 mins ago</Text>
+        <Text style={styles.title}>Current Heart Rate: <Text style={styles.highlight}>{healthData.heartRate} BPM</Text></Text>
+        <Text style={styles.status}>Status: <Text style={[styles.status, healthData.heartRate > 100 ? styles.warningStatus : styles.normalStatus]}>
+      {healthData.heartRate > 100 ? "High" : "Normal"}
+    </Text></Text>
+        <Text style={styles.updated}>Last Updated: {healthData.lastUpdated ? healthData.lastUpdated : "Loading..."}</Text>
       </View>
 
       {/* Chart Section */}
@@ -88,6 +94,8 @@ const styles = StyleSheet.create({
   chartContainer: { marginBottom: 20 },
   chart: { borderRadius: 15 },
   text: { fontSize: 16, lineHeight: 22, color: '#333', marginTop: 5 },
+  normalStatus: { color: 'green', fontWeight: 'bold' },
+  warningStatus: { color: 'red', fontWeight: 'bold' },
 });
 
 export default HeartHealth;

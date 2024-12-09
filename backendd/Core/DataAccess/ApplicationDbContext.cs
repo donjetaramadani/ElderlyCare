@@ -20,7 +20,11 @@ namespace backendd.Core.DataAccess
         {
             base.OnModelCreating(builder);
 
-            // Define your entity configurations here
+            builder.Entity<HealthMetrics>()
+                  .HasOne<User>() // Assuming you have a User model
+                  .WithMany()
+                  .HasForeignKey(h => h.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

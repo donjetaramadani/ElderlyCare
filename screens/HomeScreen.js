@@ -4,9 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon, Button } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import QuoteHeader from "../screens/QuoteHeader";
+import { Vibration } from "react-native";
+import { useHealthData } from "./HealthDataContext";
 
 const HomePage = () => {
   const handleEmergency = () => {
+    Vibration.vibrate(1000);
     Alert.alert(
       "Emergency",
       "Are you sure you want to trigger the SOS alert?",
@@ -16,6 +19,10 @@ const HomePage = () => {
       ]
     );
   };
+
+
+
+    const { healthData} = useHealthData();
 
   return (
    
@@ -37,14 +44,14 @@ const HomePage = () => {
             <View style={styles.iconWrapper}>
               <Icon name="heart" type="feather" size={32} color="#FF6B6B" />
             </View>
-            <Text style={styles.metricValue}>72 bpm</Text>
+            <Text style={styles.metricValue}>{healthData.heartRate} bpm</Text>
             <Text style={styles.metricLabel}>Heart Rate</Text>
           </View>
           <View style={styles.metricCard}>
             <View style={styles.iconWrapper}>
               <Icon name="run" type="material-community" size={32} color="#4CAF50" />
             </View>
-            <Text style={styles.metricValue}>4,567</Text>
+            <Text style={styles.metricValue}>{healthData.steps}</Text>
             <Text style={styles.metricLabel}>Steps</Text>
           </View>
           <View style={styles.metricCard}>
@@ -56,7 +63,7 @@ const HomePage = () => {
                 color="#FFA726"
               />
             </View>
-            <Text style={styles.metricValue}>250</Text>
+            <Text style={styles.metricValue}>{healthData.calories}</Text>
             <Text style={styles.metricLabel}>Calories</Text>
           </View>
         </View>

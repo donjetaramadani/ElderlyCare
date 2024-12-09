@@ -7,7 +7,7 @@ export default function HealthScreen() {
       <Text style={styles.title}>Health Metrics</Text>
       <Text style={styles.text}>- Heart Rate: 72 bpm</Text>
       <Text style={styles.text}>- Steps Today: 5,000</Text>
-      <Text style={styles.text}>- Sleep: 7 hours</Text>
+      <Text style={styles.text}>- Calories: </Text>
     </View>
   );
 }

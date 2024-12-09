@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useHealthData } from "./HealthDataContext";
 
 const HealthMetricsPanel = () => {
+    const { healthData } = useHealthData();
+
   const metrics = [
-    { icon: "heart-pulse", label: "Heart Rate", value: "72 bpm", bgColor: "#E8F5E9" },
-    { icon: "run", label: "Steps", value: "5,432", bgColor: "#FFF8E1" },
-    { icon: "sleep", label: "Sleep", value: "7h 45m", bgColor: "#E3F2FD" },
+    { icon: "heart-pulse", label: "Heart Rate", value: `${healthData.heartRate} bpm`, bgColor: "#E8F5E9" },
+    { icon: "run", label: "Steps", value: `${healthData.steps}` , bgColor: "#FFF8E1" },
+    { icon: "fire", label: "Calories", value: `${healthData.calories} kcal`, bgColor: "#E3F2FD" },
   ];
 
   return (

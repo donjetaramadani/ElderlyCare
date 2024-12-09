@@ -1,8 +1,39 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'; // Example library for graphs
+import { useHealthData } from './HealthDataContext';
 
 const Activity = () => {
+
+  const { activityData, isLoading, error} = useHealthData();
+
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading Activity Data...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    console.error("Error loading activity data:", error);
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error loading activity data. Please try again later.</Text>
+      </View>
+    );
+  }
+
+  if (!activityData) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error: Unable to load activity data</Text>
+      </View>
+    );
+  } 
+  const { activeTime, type: activityType, calories, weeklyTrend, goal } = activityData;
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Activity Tracker</Text>
@@ -11,11 +42,11 @@ const Activity = () => {
       <View style={[styles.card, styles.summaryCard]}>
         <Text style={styles.title}>Today's Activity</Text>
         <Text style={styles.text}>
-          <Text style={styles.highlight}>45 mins</Text> of active time
+          <Text style={styles.highlight}>{activeTime || 0} mins</Text> of active time
         </Text>
-        <Text style={styles.text}>Activity Type: <Text style={styles.highlight}>Walking</Text></Text>
-        <Text style={styles.text}>Calories Burned: <Text style={styles.highlight}>250 kcal</Text></Text>
-        <Text style={styles.text}>Goal: <Text style={styles.highlight}>1 hour</Text></Text>
+        <Text style={styles.text}>Activity Type: <Text style={styles.highlight}>{activityType || 'N/A'}</Text></Text>
+        <Text style={styles.text}>Calories Burned: <Text style={styles.highlight}>{calories || 0} kcal</Text></Text>
+        <Text style={styles.text}>Goal: <Text style={styles.highlight}>{goal || 60} hour</Text></Text>
       </View>
 
       {/* Activity Trend Section */}
@@ -23,7 +54,7 @@ const Activity = () => {
       <LineChart
         data={{
           labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{ data: [30, 45, 50, 40, 60, 55, 70] }],
+          datasets: [{ data: weeklyTrend || [0, 0, 0, 0, 0, 0, 0] }],
         }}
         width={320}
         height={220}
@@ -42,7 +73,9 @@ const Activity = () => {
       <View style={[styles.card, styles.insightCard]}>
         <Text style={styles.subtitle}>Insights</Text>
         <Text style={styles.text}>
-          Great progress! You're on track to meet your weekly activity goals. Keep moving!
+        {activeTime >= goal
+            ? "Great work! You've reached your goal today. Keep it up!"
+            : `You're ${goal - activeTime} mins away from your daily goal. Stay active!`}
         </Text>
       </View>
 
