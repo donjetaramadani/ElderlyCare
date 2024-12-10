@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
     alert("Login successful!");
-    navigation.replace("Home");
+    navigation.replace("Home"); 
   };
 
   return (
@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
       <CustomButton title="Login" onPress={handleLogin} backgroundColor="#4CAF50" />
       <CustomLink
         text="Don’t have an account? Sign up"
-        onPress={() => navigation.navigate("SignUp")}
+        onPress={() => navigation.navigate("Signup")} 
       />
     </View>
   );

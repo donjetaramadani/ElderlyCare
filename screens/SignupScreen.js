@@ -19,7 +19,7 @@ const SignupScreen = ({ navigation }) => {
       return;
     }
     alert("Signup successful!");
-    navigation.navigate("Login");
+    navigation.navigate("Login"); 
   };
 
   return (
@@ -42,10 +42,17 @@ const SignupScreen = ({ navigation }) => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
-      <CustomButton title="Sign Up" onPress={handleSignup} backgroundColor="#009688" />
+      <CustomButton
+        title="Sign Up"
+        onPress={handleSignup}
+        backgroundColor="#009688"
+      />
       <CustomLink
         text="Already have an account? Login"
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => {
+          console.log("Navigating to Login");
+          navigation.navigate("Login"); 
+        }}
       />
     </View>
   );

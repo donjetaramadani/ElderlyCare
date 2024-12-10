@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import LoginScreen from "./LoginScreen";
 import SignupScreen from "./SignupScreen";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 
@@ -21,7 +22,7 @@ const ProfileHome = ({ navigation }) => {
       {/* Signup Button */}
       <TouchableOpacity
         style={[styles.button, styles.signupButton]}
-        onPress={() => navigation.navigate("SignUp")}
+        onPress={() => navigation.navigate("Signup")}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
@@ -32,13 +33,48 @@ const ProfileHome = ({ navigation }) => {
 const ProfileScreen = () => {
   return (
     <Stack.Navigator>
+      {/* Profile Home */}
       <Stack.Screen
         name="ProfileHome"
         component={ProfileHome}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignupScreen} />
+      {/* Login Screen */}
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.navigate("ProfileHome")}
+            >
+              <Ionicons name="arrow-back" size={20} color="black" />
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#f5f5f5" },
+        })}
+      />
+      {/* Signup Screen */}
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.navigate("ProfileHome")}
+            >
+              <Ionicons name="arrow-back" size={20} color="black" />
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#f5f5f5" },
+        })}
+      />
     </Stack.Navigator>
   );
 };
@@ -75,6 +111,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: "black",
+    marginLeft: 5,
   },
 });
 
