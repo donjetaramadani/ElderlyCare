@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -88,6 +90,27 @@ app.MapPost("/api/Homepage/health-metrics", async (HttpContext context, Applicat
     return Results.CreatedAtRoute("/api/Homepage/health-metrics", new { id = healthMetric.Id });
 }).WithName("CreateHealthMetric");
 
+
+app.MapPut("/api/Homepage/health-metrics/{id}", async (int id, HttpContext context, ApplicationDbContext db, HealthMetrics updatedMetric) =>
+{
+    var metric = await db.HealthMetrics.FindAsync(id);
+    if (metric == null) return Results.NotFound();
+
+    metric.Description = updatedMetric.Description; // Update only necessary properties
+    await db.SaveChangesAsync();
+    return Results.Ok(metric);
+}).WithTags("Homepage").WithName("UpdateHealthMetric");
+
+app.MapDelete("/api/Homepage/health-metrics/{id}", async (int id, HttpContext context, ApplicationDbContext db) =>
+{
+    var metric = await db.HealthMetrics.FindAsync(id);
+    if (metric == null) return Results.NotFound();
+
+    db.HealthMetrics.Remove(metric);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+}).WithTags("Homepage").WithName("DeleteHealthMetric");
+
 app.MapGet("/api/Homepage/activities", async (HttpContext context, ApplicationDbContext db) =>
 {
     var activities = await db.Activities.ToListAsync();
@@ -115,6 +138,27 @@ app.MapPost("/api/Homepage/add-notification", async (HttpContext context, Applic
     await db.SaveChangesAsync();
     return Results.CreatedAtRoute("/api/Homepage/add-notification", new { id = notification.Id });
 }).WithTags("Homepage").WithName("CreateHomepageNotification");
+
+app.MapPut("/api/Homepage/notifications/{id}", async (int id, HttpContext context, ApplicationDbContext db, Notification updatedNotification) =>
+{
+    var notification = await db.Notifications.FindAsync(id);
+    if (notification == null) return Results.NotFound();
+
+    notification.Message = updatedNotification.Message; // Update only necessary properties
+    await db.SaveChangesAsync();
+    return Results.Ok(notification);
+}).WithTags("Homepage").WithName("UpdateHomepageNotification");
+
+app.MapDelete("/api/Homepage/notifications/{id}", async (int id, HttpContext context, ApplicationDbContext db) =>
+{
+    var notification = await db.Notifications.FindAsync(id);
+    if (notification == null) return Results.NotFound();
+
+    db.Notifications.Remove(notification);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+}).WithTags("Homepage").WithName("DeleteHomepageNotification");
+
 
 app.MapGet("/api/Homepage/recommendations", async (HttpContext context, ApplicationDbContext db) =>
 {
