@@ -6,8 +6,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import QuoteHeader from "../screens/QuoteHeader";
 import { Vibration } from "react-native";
 import { useHealthData } from "./HealthDataContext";
+import { useState, useEffect} from 'react';
 
 const HomePage = () => {
+  const [healthData, setHealthData] = useState({ heartRate: 0, steps: 0, calories: 0 });
+  const { healthData: initialHealthData } = useHealthData();
+
+  
+  useEffect(() => {
+    const fetchHealthData = async () => {
+      try {
+        const response = await fetch("/api/Homepage/health-metrics"); 
+        const data = await response.json();
+        setHealthData(data);
+      } catch (error) {
+        console.error("Error fetching health data:", error);
+      }
+    };
+
+    fetchHealthData();
+  }, []);
+
+
+
+
+
   const handleEmergency = () => {
     Vibration.vibrate(1000);
     Alert.alert(
@@ -22,7 +45,7 @@ const HomePage = () => {
 
 
 
-    const { healthData} = useHealthData();
+    
 
   return (
    
