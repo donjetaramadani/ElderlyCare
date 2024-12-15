@@ -24,6 +24,7 @@ namespace backendd.Core.DataAccess
             builder.Entity<Activity>().Property(a => a.UserId).IsRequired();
             builder.Entity<Recommendation>().Property(r => r.UserId).IsRequired();
             builder.Entity<Notification>().Property(n => n.UserId).IsRequired();
+            builder.Entity<Activity>().Property(d => d.UserId).IsRequired();
         }
     }
 }

@@ -2,50 +2,59 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backendd.Models;
+using backendd.Core.Interfaces;
+using backendd.Core.Services;
+using System.Threading.Tasks;
 
 namespace backendd.Controllers
 {
-
-
     [Route("api/[controller]")]
     [ApiController]
-    public class ReminderController : ControllerBase
+    public class RemindersController : ControllerBase
     {
+        private readonly IReminderService _reminderService;
 
-            private readonly ApplicationDbContext _context;
+        public RemindersController(IReminderService reminderService)
+        {
+            _reminderService = reminderService;
+        }
 
-            public ReminderController(ApplicationDbContext context)
-            {
-                _context = context;
-            }
+        [HttpGet]
+        public async Task<IActionResult> GetAllReminders()
+        {
+            var reminders = await _reminderService.GetAllReminders();
+            return Ok(reminders);
+        }
 
-            // GET: api/reminders
-            [HttpGet]
-            public async Task<ActionResult<IEnumerable<Reminder>>> GetReminders()
-            {
-                var reminders = await _context.Reminders.ToListAsync();
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReminderById(int id)
+        {
+            var reminder = await _reminderService.GetReminderById(id);
+            if (reminder == null) return NotFound();
+            return Ok(reminder);
+        }
 
-                if (reminders == null || !reminders.Any())
-                {
-                    return NotFound("No reminders found.");
-                }
+        [HttpPost]
+        public async Task<IActionResult> CreateReminder([FromBody] Reminder reminder)
+        {
+            var createdReminder = await _reminderService.Add(reminder);
+            return CreatedAtAction(nameof(GetReminderById), new { id = createdReminder.Id }, createdReminder);
+        }
 
-                return Ok(reminders);
-            }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReminder(int id, [FromBody] Reminder reminder)
+        {
+            var updatedReminder = await _reminderService.Update(id, reminder);
+            if (updatedReminder == null) return NotFound();
+            return Ok(updatedReminder);
+        }
 
-            // POST: api/add-reminder
-            [HttpPost]
-            public async Task<ActionResult> AddReminder(Reminder reminder)
-            {
-                if (reminder == null)
-                {
-                    return BadRequest("Invalid reminder data.");
-                }
-
-                _context.Reminders.Add(reminder);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetReminders), new { id = reminder.Id }, reminder);
-            }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReminder(int id)
+        {
+            var result = await _reminderService.Delete(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
     }
 }

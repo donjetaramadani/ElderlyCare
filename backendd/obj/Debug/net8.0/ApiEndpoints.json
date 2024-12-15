@@ -1,107 +1,6 @@
 [
   {
     "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "GetActivities",
-    "RelativePath": "api/Homepage/activities",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "UpdateActivity",
-    "RelativePath": "api/Homepage/activities/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "updatedActivity",
-        "Type": "backendd.Models.Activity",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "DeleteActivity",
-    "RelativePath": "api/Homepage/activities/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "AddActivity",
-    "RelativePath": "api/Homepage/add-activity",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newActivity",
-        "Type": "backendd.Models.Activity",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "AddNotification",
-    "RelativePath": "api/Homepage/add-notification",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newNotification",
-        "Type": "backendd.Models.Notification",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "AddRecommendation",
-    "RelativePath": "api/Homepage/add-recommendation",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newRecommendation",
-        "Type": "backendd.Models.Recommendation",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
     "Method": "GetHealthMetrics",
     "RelativePath": "api/Homepage/health-metrics",
     "HttpMethod": "GET",
@@ -134,6 +33,22 @@
   },
   {
     "ContainingType": "backendd.Controllers.HomepageController",
+    "Method": "GetHealthMetricsById",
+    "RelativePath": "api/Homepage/health-metrics/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.HomepageController",
     "Method": "UpdateHealthMetrics",
     "RelativePath": "api/Homepage/health-metrics/{id}",
     "HttpMethod": "PUT",
@@ -157,91 +72,6 @@
     "ContainingType": "backendd.Controllers.HomepageController",
     "Method": "DeleteHealthMetrics",
     "RelativePath": "api/Homepage/health-metrics/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "GetNotifications",
-    "RelativePath": "api/Homepage/notifications",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "DeleteNotification",
-    "RelativePath": "api/Homepage/notifications/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "GetRecommendations",
-    "RelativePath": "api/Homepage/recommendations",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "UpdateRecommendation",
-    "RelativePath": "api/Homepage/recommendations/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "updatedRecommendation",
-        "Type": "backendd.Models.Recommendation",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "DeleteRecommendation",
-    "RelativePath": "api/Homepage/recommendations/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -334,49 +164,98 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "backendd.Controllers.RecommendationController",
-    "Method": "GetRecommendations",
-    "RelativePath": "api/Recommendation",
+    "ContainingType": "backendd.Controllers.RecommendationsController",
+    "Method": "GetAllRecommendations",
+    "RelativePath": "api/Recommendations",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backendd.Models.Recommendation, backendd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "backendd.Controllers.ReminderController",
-    "Method": "GetReminders",
-    "RelativePath": "api/Reminder",
+    "ContainingType": "backendd.Controllers.RecommendationsController",
+    "Method": "CreateRecommendation",
+    "RelativePath": "api/Recommendations",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recommendation",
+        "Type": "backendd.Models.Recommendation",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RecommendationsController",
+    "Method": "GetRecommendationById",
+    "RelativePath": "api/Recommendations/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RecommendationsController",
+    "Method": "UpdateRecommendation",
+    "RelativePath": "api/Recommendations/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "recommendation",
+        "Type": "backendd.Models.Recommendation",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RecommendationsController",
+    "Method": "DeleteRecommendation",
+    "RelativePath": "api/Recommendations/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RemindersController",
+    "Method": "GetAllReminders",
+    "RelativePath": "api/Reminders",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backendd.Models.Reminder, backendd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "backendd.Controllers.ReminderController",
-    "Method": "AddReminder",
-    "RelativePath": "api/Reminder",
+    "ContainingType": "backendd.Controllers.RemindersController",
+    "Method": "CreateReminder",
+    "RelativePath": "api/Reminders",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -390,8 +269,71 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "backendd.Controllers.RemindersController",
+    "Method": "GetReminderById",
+    "RelativePath": "api/Reminders/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RemindersController",
+    "Method": "UpdateReminder",
+    "RelativePath": "api/Reminders/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "reminder",
+        "Type": "backendd.Models.Reminder",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.RemindersController",
+    "Method": "DeleteReminder",
+    "RelativePath": "api/Reminders/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backendd.Controllers.SOSController",
-    "Method": "SendSOSAlert",
+    "Method": "GetAllSOSLogs",
+    "RelativePath": "api/SOS",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.SOSController",
+    "Method": "CreateSOSLog",
     "RelativePath": "api/SOS",
     "HttpMethod": "POST",
     "IsController": true,
@@ -400,6 +342,59 @@
       {
         "Name": "sosLog",
         "Type": "backendd.Models.SOSLog",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.SOSController",
+    "Method": "GetSOSLogById",
+    "RelativePath": "api/SOS/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.SOSController",
+    "Method": "UpdateSOSLog",
+    "RelativePath": "api/SOS/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "sosLog",
+        "Type": "backendd.Models.SOSLog",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.SOSController",
+    "Method": "DeleteSOSLog",
+    "RelativePath": "api/SOS/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

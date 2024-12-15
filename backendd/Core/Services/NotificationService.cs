@@ -6,47 +6,47 @@ using System.Threading.Tasks;
 
 public class NotificationService : INotificationService
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly ApplicationDbContext _context;
 
-    public NotificationService(ApplicationDbContext dbContext)
+    public NotificationService(ApplicationDbContext context)
     {
-        _dbContext = dbContext;
+        _context = context;
     }
 
     public async Task<List<Notification>> GetAllNotifications()
     {
-        return await _dbContext.Notifications.ToListAsync();
+        return await _context.Notifications.ToListAsync();
     }
 
     public async Task<Notification> GetNotificationById(int id)
     {
-        return await _dbContext.Notifications.FindAsync(id);
+        return await _context.Notifications.FindAsync(id);
     }
 
     public async Task<Notification> Add(Notification notification)
     {
-        await _dbContext.Notifications.AddAsync(notification);
-        await _dbContext.SaveChangesAsync();
+        await _context.Notifications.AddAsync(notification);
+        await _context.SaveChangesAsync();
         return notification;
     }
 
     public async Task<Notification> Update(int id, Notification notification)
     {
-        var existingNotification = await _dbContext.Notifications.FindAsync(id);
+        var existingNotification = await _context.Notifications.FindAsync(id);
         if (existingNotification == null) return null;
 
         existingNotification.Message = notification.Message;
-        await _dbContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
         return existingNotification;
     }
 
     public async Task<bool> Delete(int id)
     {
-        var notification = await _dbContext.Notifications.FindAsync(id);
+        var notification = await _context.Notifications.FindAsync(id);
         if (notification == null) return false;
 
-        _dbContext.Notifications.Remove(notification);
-        await _dbContext.SaveChangesAsync();
+        _context.Notifications.Remove(notification);
+        await _context.SaveChangesAsync();
         return true;
     }
 }

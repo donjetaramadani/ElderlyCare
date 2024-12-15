@@ -1,4 +1,6 @@
 using backendd.Core.DataAccess;
+using backendd.Core.Interfaces;
+using backendd.Core.Services;
 using backendd.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Register application services
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IReminderService, ReminderService>();
+builder.Services.AddScoped<ISOSService, SOSService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<IHealthMetricsService, HealthMetricsService>();
+
 
 // Register MVC services
 builder.Services.AddControllers();
