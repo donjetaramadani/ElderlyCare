@@ -1,35 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import CustomLink from "../components/CustomLink";
+import { UserContext } from "./UserContext";
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-const handleSignup = () => {
-  if (!email.includes("@")) {
-    alert("Please enter a valid email.");
-    return;
-  }
-  if (password !== confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
-  alert("Signup successful!");
-  navigation.replace("Profile"); 
-};
+  const { updateUser } = useContext(UserContext);
+  const handleSignup = () => {
+    if (!email.includes("@")) {
+      alert("Please enter a valid email.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+    updateUser({ email });
+    navigation.replace("EditProfile");
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Sign Up</Text>
-      <CustomInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
+      <CustomInput placeholder="Email" value={email} onChangeText={setEmail} />
       <CustomInput
         placeholder="Password"
         secureTextEntry
@@ -51,7 +49,7 @@ const handleSignup = () => {
         text="Already have an account? Login"
         onPress={() => {
           console.log("Navigating to Login");
-          navigation.navigate("Login"); 
+          navigation.navigate("Login");
         }}
       />
     </View>

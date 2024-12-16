@@ -5,6 +5,9 @@ import LoginScreen from "./LoginScreen";
 import SignupScreen from "./SignupScreen";
 import Profile from "./ProfileUserScreen"; 
 import EditProfile from "./editprofilepage"; 
+import AccountSettings from "./AccountSettings";
+import PrivacySettings from "./PrivacySettings";
+import NotificationSettings from "./NotificationSettings";
 import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
@@ -91,6 +94,30 @@ const ProfileScreen = () => {
         component={EditProfile}
         options={{
           headerTitle: "Edit Profile",
+        }}
+      />
+      {/* Account Settings Screen */}
+      <Stack.Screen
+        name="AccountSettings"
+        component={AccountSettings}
+        options={{
+          headerTitle: "Account Settings",
+        }}
+      />
+      {/* Privacy Settings Screen */}
+      <Stack.Screen
+        name="PrivacySettings"
+        component={PrivacySettings}
+        options={{
+          headerTitle: "Privacy Settings",
+        }}
+      />
+      {/* Notification Settings Screen */}
+      <Stack.Screen
+        name="NotificationSettings"
+        component={NotificationSettings}
+        options={{
+          headerTitle: "Notification Preferences",
         }}
       />
     </Stack.Navigator>

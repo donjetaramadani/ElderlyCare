@@ -1,28 +1,60 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker'; // For selecting a profile picture
+import * as ImagePicker from 'expo-image-picker';
+import { UserContext } from './UserContext'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const EditProfile = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [profileImage, setProfileImage] = useState(null);
+const EditProfile = ({ navigation }) => {
+  const { user, updateUser } = useContext(UserContext); // Access context
+  const [name, setName] = useState(user.name || '');
+  const [email, setEmail] = useState(user.email || '');
+  const [phone, setPhone] = useState(user.phone || '');
+  const [profileImage, setProfileImage] = useState(user.profileImage || null);
+
+  useEffect(() => {
+    const loadProfileData = async () => {
+      const storedData = await AsyncStorage.getItem('userProfile');
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setName(parsedData.name);
+        setEmail(parsedData.email);
+        setPhone(parsedData.phone);
+        setProfileImage(parsedData.profileImage);
+        updateUser(parsedData);
+      }
+    };
+    loadProfileData();
+  }, []);
 
   const handleImagePick = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to upload your profile image.");
+      return;
+    } 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"], 
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.5,
     });
-
+  
     if (!result.canceled) {
-      setProfileImage(result.uri);
+      setProfileImage(result.assets[0].uri);
     }
   };
-
-  const handleSave = () => {
-    alert(`Profile Updated!\nName: ${name}\nEmail: ${email}\nPhone: ${phone}`);
+  
+  const handleSave = async () => {
+    const updatedData = {
+      name,
+      email,
+      phone,
+      profileImage,
+    };
+    updateUser(updatedData);
+    await AsyncStorage.setItem('userProfile', JSON.stringify(updatedData));
+    alert('Profile Updated Successfully!');
+    navigation.navigate('Profile');
   };
 
   return (
@@ -50,7 +82,7 @@ const EditProfile = () => {
       {/* Email Input */}
       <Text style={styles.label}>Email</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: "#e0e0e0" }]}
         placeholder="Enter your email"
         value={email}
         keyboardType="email-address"
