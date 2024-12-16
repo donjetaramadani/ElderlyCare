@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import LoginScreen from "./LoginScreen";
 import SignupScreen from "./SignupScreen";
+import Profile from "./ProfileUserScreen"; 
+import EditProfile from "./editprofilepage"; 
 import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
@@ -74,6 +76,22 @@ const ProfileScreen = () => {
           headerTitle: "",
           headerStyle: { backgroundColor: "#f5f5f5" },
         })}
+      />
+      {/* Profile Screen */}
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerTitle: "Your Profile",
+        }}
+      />
+      {/* Edit Profile Screen */}
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          headerTitle: "Edit Profile",
+        }}
       />
     </Stack.Navigator>
   );

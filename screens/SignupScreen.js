@@ -9,18 +9,18 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSignup = () => {
-    if (!email.includes("@")) {
-      alert("Please enter a valid email.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-    alert("Signup successful!");
-    navigation.navigate("Login"); 
-  };
+const handleSignup = () => {
+  if (!email.includes("@")) {
+    alert("Please enter a valid email.");
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+  alert("Signup successful!");
+  navigation.replace("Profile"); 
+};
 
   return (
     <View style={styles.container}>

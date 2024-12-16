@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Profile Header */}
@@ -9,12 +9,12 @@ const Profile = () => {
         <Image
           style={styles.profileImage}
           source={{
-            uri: 'https://via.placeholder.com/100', // Replace with the actual profile picture URL
+            uri: 'https://via.placeholder.com/100', 
           }}
         />
         <Text style={styles.profileName}>Jane Doe</Text>
         <Text style={styles.profileEmail}>jane.doe@example.com</Text>
-        <Button title="Edit Profile" onPress={() => alert('Edit profile pressed')} />
+        <Button title="Edit Profile" onPress={() => navigation.navigate("EditProfile")} />
       </View>
 
       {/* Statistics Section */}

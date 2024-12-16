@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
     alert("Login successful!");
-    navigation.replace("Home"); 
+    navigation.replace("Profile"); 
   };
 
   return (
