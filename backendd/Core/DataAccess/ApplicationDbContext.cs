@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using backendd.Models;
 
 namespace backendd.Core.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -24,7 +25,6 @@ namespace backendd.Core.DataAccess
             builder.Entity<Activity>().Property(a => a.UserId).IsRequired();
             builder.Entity<Recommendation>().Property(r => r.UserId).IsRequired();
             builder.Entity<Notification>().Property(n => n.UserId).IsRequired();
-            builder.Entity<Activity>().Property(d => d.UserId).IsRequired();
         }
     }
 }
