@@ -1,10 +1,6 @@
-﻿using backendd.Core.DataAccess;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using backendd.Core.Interfaces;
 using backendd.Models;
-using backendd.Core.Interfaces;
-using backendd.Core.Services;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backendd.Controllers
 {
@@ -30,30 +26,38 @@ namespace backendd.Controllers
         public async Task<IActionResult> GetReminderById(int id)
         {
             var reminder = await _reminderService.GetReminderById(id);
-            if (reminder == null) return NotFound();
+            if (reminder == null) return NotFound("Reminder not found");
             return Ok(reminder);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateReminder([FromBody] Reminder reminder)
         {
-            var createdReminder = await _reminderService.Add(reminder);
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid data");
+
+            var createdReminder = await _reminderService.AddReminder(reminder);
             return CreatedAtAction(nameof(GetReminderById), new { id = createdReminder.Id }, createdReminder);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReminder(int id, [FromBody] Reminder reminder)
         {
-            var updatedReminder = await _reminderService.Update(id, reminder);
-            if (updatedReminder == null) return NotFound();
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid data");
+
+            var updatedReminder = await _reminderService.UpdateReminder(id, reminder);
+            if (updatedReminder == null) return NotFound("Reminder not found");
+
             return Ok(updatedReminder);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReminder(int id)
         {
-            var result = await _reminderService.Delete(id);
-            if (!result) return NotFound();
+            var result = await _reminderService.DeleteReminder(id);
+            if (!result) return NotFound("Reminder not found");
+
             return NoContent();
         }
     }

@@ -60,18 +60,21 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()   // Allow any origin
-              .AllowAnyMethod()   // Allow any HTTP method (GET, POST, etc.)
-              .AllowAnyHeader();  // Allow any headers
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
+
+
 
 // Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.Urls.Add("http://0.0.0.0:5196"); 
+
+
 
 // Middleware Pipeline
 if (app.Environment.IsDevelopment())
@@ -79,14 +82,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection(); // Only redirect HTTPS in non-development environments
+}
 
 // Enable CORS middleware
 app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
-app.UseAuthorization();  
+
+//app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

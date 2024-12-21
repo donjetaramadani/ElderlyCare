@@ -341,3 +341,5 @@ C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\obj\Debug\net8.0\refint\bac
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\obj\Debug\net8.0\backendd.pdb
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\obj\Debug\net8.0\backendd.genruntimeconfig.cache
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\obj\Debug\net8.0\ref\backendd.dll
+C:\Users\donje\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\donje\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

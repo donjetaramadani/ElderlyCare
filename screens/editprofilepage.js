@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+//import * as ImagePicker from 'expo-image-picker';
 import { UserContext } from './UserContext'; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EditProfile = ({ navigation }) => {
   const { user, updateUser } = useContext(UserContext); // Access context

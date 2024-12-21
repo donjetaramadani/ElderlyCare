@@ -7,8 +7,9 @@ import QuoteHeader from "../screens/QuoteHeader";
 import { Vibration } from "react-native";
 import { useHealthData } from "./HealthDataContext";
 import { useState, useEffect} from 'react';
+import AddReminderScreen from "./AddReminderScreen";
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   const [healthData, setHealthData] = useState({ heartRate: 0, steps: 0, calories: 0 });
   const { healthData: initialHealthData } = useHealthData();
 
@@ -125,13 +126,15 @@ const HomePage = () => {
                 </LinearGradient>
                 <Text style={styles.actionText}>Call Doctor</Text>
               </TouchableOpacity>
+
               {/* Add Reminder Action */}
-              <TouchableOpacity style={styles.actionButton}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('AddReminderScreen')}>
                 <LinearGradient
                   colors={["#fbc2eb", "#a6c1ee"]}
                   style={[styles.iconCircle, styles.shadow]}
                 >
                   <Icon name="bell" type="feather" size={28} color="#fff" />
+
                 </LinearGradient>
                 <Text style={styles.actionText}>Add Reminder</Text>
               </TouchableOpacity>

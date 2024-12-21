@@ -399,5 +399,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/User/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backendd.Controllers.UserLoginModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "Register",
+    "RelativePath": "api/User/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backendd.Controllers.UserRegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
