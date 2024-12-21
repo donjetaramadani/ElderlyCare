@@ -8,6 +8,7 @@ import { Vibration } from "react-native";
 import { useHealthData } from "./HealthDataContext";
 import { useState, useEffect} from 'react';
 import AddReminderScreen from "./AddReminderScreen";
+import axios from "axios";
 
 const HomePage = ({ navigation }) => {
   const [healthData, setHealthData] = useState({ heartRate: 0, steps: 0, calories: 0 });
@@ -30,21 +31,25 @@ const HomePage = ({ navigation }) => {
 
 
 
-
-
-  const handleEmergency = () => {
-    Vibration.vibrate(1000);
-    Alert.alert(
-      "Emergency",
-      "Are you sure you want to trigger the SOS alert?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Confirm", onPress: () => console.log("SOS Alert Triggered") },
-      ]
-    );
+  const handleEmergency = async () => {
+    try {
+      const sosData = {
+        userId: 1, // Replace with actual user ID from your app's context or state
+        location: "41.3275, 19.8189", // Replace with dynamic location if available
+      };
+  
+      const response = await axios.post("http://192.168.0.42:5196/api/SOS", sosData);
+  
+      if (response.status === 201) {
+        Alert.alert("Success", "SOS alert sent successfully!");
+      } else {
+        Alert.alert("Error", "Failed to send SOS alert. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending SOS alert:", error);
+      Alert.alert("Error", "Something went wrong while sending the SOS alert.");
+    }
   };
-
-
 
     
 
