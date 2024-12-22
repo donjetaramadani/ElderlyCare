@@ -22,6 +22,7 @@ import GaitPosture from "./screens/GaitPosture";
 import Environment from "./screens/Environment";
 import { StyleSheet } from "react-native";
 import AddReminderScreen from "./screens/AddReminderScreen";
+import UpdateReminderScreen from "./screens/UpdateReminderScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,6 +58,7 @@ export default function Navigation() {
       <Tab.Screen name="GaitPosture" component={GaitPosture} />
       <Tab.Screen name="Environment" component={Environment} />
       <Tab.Screen name="AddReminderScreen" component={AddReminderScreen} />
+      <Tab.Screen name="UpdateReminderScreen" component={UpdateReminderScreen} />
     </Tab.Navigator>
   );
 }

@@ -8,12 +8,16 @@ import { Vibration } from "react-native";
 import { useHealthData } from "./HealthDataContext";
 import { useState, useEffect} from 'react';
 import AddReminderScreen from "./AddReminderScreen";
+import UpdateReminderScreen from "./UpdateReminderScreen";
 import axios from "axios";
+import { Swipeable } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const HomePage = ({ navigation }) => {
   const [healthData, setHealthData] = useState({ heartRate: 0, steps: 0, calories: 0 });
   const { healthData: initialHealthData } = useHealthData();
-
+  const [reminders, setReminders] = useState([]); 
   
   useEffect(() => {
     const fetchHealthData = async () => {
@@ -51,7 +55,65 @@ const HomePage = ({ navigation }) => {
     }
   };
 
-    
+
+
+  useEffect(() => {
+    const fetchReminders = async () => {
+      try {
+        const response = await fetch("http://192.168.0.42:5196/api/Reminders");
+        const data = await response.json();
+        setReminders(data); // Save fetched reminders in state
+      } catch (error) {
+        console.error("Error fetching reminders:", error);
+      }
+    };
+
+    fetchReminders();
+  }, []);
+      // Callback function to refresh reminders
+      const refreshReminders = async () => {
+        try {
+          const response = await fetch("http://192.168.0.42:5196/api/Reminders");
+          const data = await response.json();
+          setReminders(data);
+        } catch (error) {
+          console.error("Error refreshing reminders:", error);
+        }
+      };
+
+  const renderRightActions = (id) => {
+    return (
+      <View style={styles.deleteContainer}>
+      <TouchableOpacity
+        style={styles.deleteAction}
+        onPress={() => handleDeleteReminder(id)}
+      >
+        <Icon name="trash" type="feather" size={24} color="#fff" />
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
+      </View>
+    );
+  };
+  
+  const handleDeleteReminder = async (id) => {
+    try {
+      // Delete reminder from the state
+      const updatedReminders = reminders.filter((reminder) => reminder.id !== id);
+      setReminders(updatedReminders);
+  
+      // If you want to delete it from the backend too:
+      await fetch(`http://192.168.0.42:5196/api/Reminders/${id}`, {
+        method: "DELETE",
+      });
+      
+      Alert.alert("Success", "Reminder deleted successfully");
+    } catch (error) {
+      console.error("Error deleting reminder:", error);
+      Alert.alert("Error", "Something went wrong while deleting the reminder");
+    }
+  };
+  
+
 
   return (
    
@@ -98,21 +160,27 @@ const HomePage = ({ navigation }) => {
         </View>
 
 
-              {/* Reminders Section */}
+        {/* Reminders Section */}
         <Text style={styles.sectionTitle}>Reminders</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.remindersScroll}>
-          <View style={styles.reminderCard}>
-            <LinearGradient colors={["#6A11CB", "#2575FC"]} style={styles.gradientCard}>
-              <Icon name="pill" type="material-community" size={24} color="#fff" />
-              <Text style={styles.reminderText}>Take medication at 9 AM</Text>
-            </LinearGradient>
-          </View>
-          <View style={styles.reminderCard}>
-            <LinearGradient colors={["#FF7E5F", "#FEB47B"]} style={styles.gradientCard}>
-              <Icon name="calendar" type="feather" size={24} color="#fff" />
-              <Text style={styles.reminderText}>Doctor's appointment at 3 PM</Text>
-            </LinearGradient>
-          </View>
+          {reminders.map((reminder) => (
+                  <Swipeable
+                    key={reminder.id}
+                    renderRightActions={() => renderRightActions(reminder.id)}
+                  >
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('UpdateReminderScreen', { reminder, refreshReminders })}
+                  >
+              <View style={styles.reminderCard} key={reminder.id}>
+                <LinearGradient colors={["#6A11CB", "#2575FC"]} style={styles.gradientCard}>
+                  <Icon name="bell" type="feather" size={24} color="#fff" />
+                  <Text style={styles.reminderText}>{reminder.message}</Text>
+                  <Text style={styles.reminderText}>{new Date(reminder.time).toLocaleTimeString()}</Text>
+                </LinearGradient>
+              </View>
+                    </TouchableOpacity>
+                    </Swipeable>
+          ))}
         </ScrollView>
 
 
@@ -133,7 +201,7 @@ const HomePage = ({ navigation }) => {
               </TouchableOpacity>
 
               {/* Add Reminder Action */}
-              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('AddReminderScreen')}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('AddReminderScreen', { refreshReminders: refreshReminders })}>
                 <LinearGradient
                   colors={["#fbc2eb", "#a6c1ee"]}
                   style={[styles.iconCircle, styles.shadow]}
@@ -472,8 +540,29 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.3)", 
     textShadowOffset: { width: 1, height: 1 }, 
     textShadowRadius: 5,
+  },
+  deleteContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    backgroundColor: "transparent",
+  },
+  deleteAction: {
+    width: 80,
+    height: "100%",
+    backgroundColor: "#FF4B4B",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginRight: 10,
+    elevation: 5,
+  },
+  deleteText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 5,
   }
-  
 });
 
 export default HomePage;

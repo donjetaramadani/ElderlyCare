@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
+import RefereshReminders from './HomeScreen';
 
-const AddReminderScreen = () => {
+const AddReminderScreen = ({ route }) => {
   const [reminderMessage, setReminderMessage] = useState('');
   const [reminderTime, setReminderTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [reminderStatus, setReminderStatus] = useState('once');
   const [statusOptions] = useState(['Once', 'Daily', 'Weekly']);
+
+  const { refreshReminders } = route.params; 
 
   const handleSaveReminder = async () => {
     if (!reminderMessage || !reminderTime) {
@@ -40,6 +43,7 @@ const AddReminderScreen = () => {
       }
 
       Alert.alert('Success', 'Reminder saved successfully!');
+      refreshReminders();
       // Navigate to the reminders list or other appropriate screen
     } catch (error) {
       console.error('Error saving reminder:', error);
