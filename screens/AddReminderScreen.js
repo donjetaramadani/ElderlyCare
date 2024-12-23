@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import RefereshReminders from './HomeScreen';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const AddReminderScreen = ({ route }) => {
   const [reminderMessage, setReminderMessage] = useState('');
@@ -12,6 +14,16 @@ const AddReminderScreen = ({ route }) => {
   const [statusOptions] = useState(['Once', 'Daily', 'Weekly']);
 
   const { refreshReminders } = route.params; 
+
+    // Clear state when the component unmounts
+    useFocusEffect(
+      React.useCallback(() => {
+        // Reset state when the screen is focused
+        setReminderMessage('');
+        setReminderTime(new Date());
+        setReminderStatus('once');
+      }, [])
+    );
 
   const handleSaveReminder = async () => {
     if (!reminderMessage || !reminderTime) {

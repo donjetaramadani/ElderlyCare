@@ -4,13 +4,29 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useHealthData } from "./HealthDataContext";
 
 const HealthMetricsPanel = () => {
-    const { healthData } = useHealthData();
+    const { healthData, updateHealthData, loading, error } = useHealthData();
+
+
+    if (loading) {
+      return <Text>Loading...</Text>;
+    }
+  
+    if (error) {
+      return <Text>Error: {error}</Text>;
+    }
+
+
 
   const metrics = [
-    { icon: "heart-pulse", label: "Heart Rate", value: `${healthData.heartRate} bpm`, bgColor: "#E8F5E9" },
-    { icon: "run", label: "Steps", value: `${healthData.steps}` , bgColor: "#FFF8E1" },
-    { icon: "fire", label: "Calories", value: `${healthData.calories} kcal`, bgColor: "#E3F2FD" },
+    { icon: "heart-pulse", label: "Heart Rate", value: `${healthData?.heartRate || 0} bpm`, bgColor: "#E8F5E9" },
+    { icon: "run", label: "Steps", value: `${healthData?.steps || 0}` , bgColor: "#FFF8E1" },
+    { icon: "fire", label: "Calories", value: `${healthData?.calories || 0} kcal`, bgColor: "#E3F2FD" },
   ];
+
+    
+
+
+
 
   return (
     <View style={styles.container}>

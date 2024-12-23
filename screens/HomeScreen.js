@@ -15,26 +15,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const HomePage = ({ navigation }) => {
-  const [healthData, setHealthData] = useState({ heartRate: 0, steps: 0, calories: 0 });
-  const { healthData: initialHealthData } = useHealthData();
+  const { healthData, loading, error} = useHealthData();
   const [reminders, setReminders] = useState([]); 
   
-  useEffect(() => {
-    const fetchHealthData = async () => {
-      try {
-        const response = await fetch("/api/Homepage/health-metrics"); 
-        const data = await response.json();
-        setHealthData(data);
-      } catch (error) {
-        console.error("Error fetching health data:", error);
-      }
-    };
 
-    fetchHealthData();
-  }, []);
-
-
-
+  
   const handleEmergency = async () => {
     try {
       const sosData = {
@@ -135,14 +120,14 @@ const HomePage = ({ navigation }) => {
             <View style={styles.iconWrapper}>
               <Icon name="heart" type="feather" size={32} color="#FF6B6B" />
             </View>
-            <Text style={styles.metricValue}>{healthData.heartRate} bpm</Text>
+            <Text style={styles.metricValue}>{healthData?.heartRate} bpm</Text>
             <Text style={styles.metricLabel}>Heart Rate</Text>
           </View>
           <View style={styles.metricCard}>
             <View style={styles.iconWrapper}>
               <Icon name="run" type="material-community" size={32} color="#4CAF50" />
             </View>
-            <Text style={styles.metricValue}>{healthData.steps}</Text>
+            <Text style={styles.metricValue}>{healthData?.steps}</Text>
             <Text style={styles.metricLabel}>Steps</Text>
           </View>
           <View style={styles.metricCard}>
@@ -154,7 +139,7 @@ const HomePage = ({ navigation }) => {
                 color="#FFA726"
               />
             </View>
-            <Text style={styles.metricValue}>{healthData.calories}</Text>
+            <Text style={styles.metricValue}>{healthData?.calories}</Text>
             <Text style={styles.metricLabel}>Calories</Text>
           </View>
         </View>
