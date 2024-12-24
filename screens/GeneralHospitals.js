@@ -16,16 +16,14 @@ const GeneralHospitals = ({ navigation }) => {
             General hospitals provide a variety of healthcare services, including emergency care, surgery, and outpatient treatments. They play a crucial role in offering comprehensive care for individuals with various medical needs.
           </Text>
         </View>
-        {/* Location Section */}
-        <Text style={styles.locationTitle}>Location:</Text>
-        <Text style={styles.location}>123 Health St, Cityville, Country</Text>
+        
 
         {/* Button to See Departments */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Departments")} 
+          onPress={() => navigation.navigate("SpecificGeneralHospitals", { type: "General" })} 
         >
-          <Text style={styles.buttonText}>See Departments</Text>
+          <Text style={styles.buttonText}>See Specific Hospitals</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

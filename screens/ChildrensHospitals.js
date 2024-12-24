@@ -16,16 +16,14 @@ const ChildrenHospitals = ({ navigation }) => {
             Children's hospitals specialize in providing medical care for infants, children, and adolescents. They offer services such as pediatric care, child surgery, and specialized treatment for various childhood diseases.
           </Text>
         </View>
-        {/* Location Section */}
-        <Text style={styles.locationTitle}>Location:</Text>
-        <Text style={styles.location}>456 Kid's Way, Playtown, Country</Text>
+       
 
         {/* Button to See Departments */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Departments")} 
+          onPress={() => navigation.navigate("SpecificChildrenHospitals", { type: "Children" })} 
         >
-          <Text style={styles.buttonText}>See Departments</Text>
+          <Text style={styles.buttonText}>See Specific Hospitals</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -16,16 +16,14 @@ const PsychiatricHospitals = ({ navigation }) => {
             Psychiatric hospitals specialize in the treatment of mental health disorders. They provide a range of services including therapy, counseling, and inpatient care for individuals experiencing severe psychological conditions.
           </Text>
         </View>
-        {/* Location Section */}
-        <Text style={styles.locationTitle}>Location:</Text>
-        <Text style={styles.location}>456 MindCare Ave, Cityville, Country</Text>
+    
 
         {/* Button to See Departments */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Departments")} 
+          onPress={() => navigation.navigate("SpecificPsychiatricHospitals", { type: "Psychiatric" })} 
         >
-          <Text style={styles.buttonText}>See Departments</Text>
+          <Text style={styles.buttonText}>See Specific Hospitals</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

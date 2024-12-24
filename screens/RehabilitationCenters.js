@@ -16,16 +16,14 @@ const RehabilitationCenters = ({ navigation }) => {
             Rehabilitation centers provide specialized care for patients recovering from injuries, surgeries, or medical conditions. These centers focus on physical therapy, mental health support, and recovery programs to help individuals regain their independence and quality of life.
           </Text>
         </View>
-        {/* Location Section */}
-        <Text style={styles.locationTitle}>Location:</Text>
-        <Text style={styles.location}>456 Recovery Ave, Health Town, Country</Text>
+        
 
         {/* Button to See Treatment Programs */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("TreatmentPrograms")} 
+          onPress={() => navigation.navigate("SpecificRehabilitationHospitals", { type: "Rehabilitation" })} 
         >
-          <Text style={styles.buttonText}>See Treatment Programs</Text>
+          <Text style={styles.buttonText}>See Specific Hospitals</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

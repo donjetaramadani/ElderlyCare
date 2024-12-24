@@ -16,16 +16,14 @@ const SpecialtyClinics = ({ navigation }) => {
             Specialty clinics provide specialized medical care for various health conditions, focusing on specific areas such as cardiology, orthopedics, dermatology, and more. These clinics cater to patients requiring expert care and tailored treatments for particular medical needs.
           </Text>
         </View>
-        {/* Location Section */}
-        <Text style={styles.locationTitle}>Location:</Text>
-        <Text style={styles.location}>456 Health Ave, Cityville, Country</Text>
+        
 
         {/* Button to See Departments */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("SpecialtyClinics")} 
+          onPress={() => navigation.navigate("SpecificSpecialtyHospitals", { type: "Specialty" })} 
         >
-          <Text style={styles.buttonText}>See Specialty Departments</Text>
+          <Text style={styles.buttonText}>See Specific Hospitals</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
