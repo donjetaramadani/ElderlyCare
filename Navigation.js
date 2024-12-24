@@ -30,6 +30,10 @@ import RehabilitationCenters from "./screens/RehabilitationCenters";
 import ChildrensHospitals from "./screens/ChildrensHospitals";
 import PsychiatricHospitals from "./screens/PsychiatricHospitals";
 import SpecificGeneralHospitals from "./screens/SpecificGeneralHospitals";
+import SpecificSpecialtyHospitals from "./screens/SpecificSpecialtyHospitals";
+import SpecificRehabilitationHospitals from "./screens/SpecificRehabilitationHospitals";
+import SpecificChildrenHospitals from "./screens/SpecificChildrenHospitals";
+import SpecificPsychiatricHospitals from "./screens/SpecificPsychiatricHospitals";
 
 
 const Tab = createBottomTabNavigator();
@@ -74,6 +78,10 @@ export default function Navigation() {
       <Tab.Screen name="ChildrensHospitals" component={ChildrensHospitals} />
       <Tab.Screen name="PsychiatricHospitals" component={PsychiatricHospitals} />
       <Tab.Screen name="SpecificGeneralHospitals" component={SpecificGeneralHospitals} />
+      <Tab.Screen name="SpecificSpecialtyHospitals" component={SpecificSpecialtyHospitals} />
+      <Tab.Screen name="SpecificRehabilitationHospitals" component={SpecificRehabilitationHospitals} />
+      <Tab.Screen name="SpecificChildrenHospitals" component={SpecificChildrenHospitals} />
+      <Tab.Screen name="SpecificPsychiatricHospitals" component={SpecificPsychiatricHospitals} />
     </Tab.Navigator>
   );
 }

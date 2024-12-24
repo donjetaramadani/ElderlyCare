@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
-// Importing the image for Rehabilitation Centers
+
 import rehabCentersImg from "../assets/images/photo5.jpg"; 
 
 const RehabilitationCenters = ({ navigation }) => {

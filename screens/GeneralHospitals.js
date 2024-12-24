@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
-// Importing the image
+
 import generalHospitalsImg from "../assets/images/photo1.avif"; 
 
 const GeneralHospitals = ({ navigation }) => {

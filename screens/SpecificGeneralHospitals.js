@@ -9,13 +9,13 @@ import {
   TextInput,
 } from "react-native";
 
-// Importing images for specific hospitals
-//import hospital1Img from "../assets/images/photo1.avif";
-//import hospital2Img from "../assets/images/photo2.avif";
-//import hospital3Img from "../assets/images/photo3.avif";
-//import hospital4Img from "../assets/images/photo4.avif";
-//import hospital5Img from "../assets/images/photo5.avif";
-//import hospital6Img from "../assets/images/photo6.avif";
+
+import hospital1Img from "../assets/images/CityGeneralHospital.jpg";
+import hospital2Img from "../assets/images/MetroHealthCenter.jpg";
+import hospital3Img from "../assets/images/PinewoodMedicalFacility.jpg";
+import hospital4Img from "../assets/images/LakesideRegionalHospital.jpg";
+import hospital5Img from "../assets/images/BrightHorizonsClinic.jpg";
+import hospital6Img from "../assets/images/EvergreenHealthHub.webp";
 
 const SpecificGeneralHospitals = ({ navigation, route }) => {
   const { type } = route.params; 
@@ -29,7 +29,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "City General Hospital offers advanced emergency services, outpatient care, and a state-of-the-art surgical unit to serve the community.",
       location: "456 Wellness Blvd, Cityville",
-     // image: hospital1Img,
+      image: hospital1Img,
     },
     {
       id: 2,
@@ -37,7 +37,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "Metro Health Center is renowned for its compassionate care and modern medical facilities, providing comprehensive healthcare services.",
       location: "789 Care Ave, Metropolis",
-    //  image: hospital2Img,
+      image: hospital2Img,
     },
     {
       id: 3,
@@ -45,7 +45,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "Pinewood Medical Facility specializes in family medicine and preventive care for all age groups, with a dedicated team of professionals.",
       location: "123 Healing St, Pinewood",
-     // image: hospital3Img,
+      image: hospital3Img,
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "Lakeside Regional Hospital features a highly experienced surgical team and cutting-edge diagnostic services.",
       location: "456 Lakeview Dr, Lakeside",
-     // image: hospital4Img,
+      image: hospital4Img,
     },
     {
       id: 5,
@@ -61,7 +61,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "Bright Horizons Clinic offers pediatric care, women’s health, and general wellness services in a family-friendly environment.",
       location: "789 Horizon Ln, Sunnyside",
-    //  image: hospital5Img,
+      image: hospital5Img,
     },
     {
       id: 6,
@@ -69,7 +69,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       description:
         "Evergreen Health Hub provides holistic healthcare services, including mental health support and chronic disease management.",
       location: "321 Evergreen Ave, Greenfield",
-     // image: hospital6Img,
+      image: hospital6Img,
     },
   ];
 

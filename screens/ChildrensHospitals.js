@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
-// Importing the image
 import childrensHospitalsImg from "../assets/images/photo6.jpg"; 
 
 const ChildrenHospitals = ({ navigation }) => {

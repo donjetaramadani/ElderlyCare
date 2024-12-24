@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
-// Importing the image
+
 import psychiatricHospitalsImg from "../assets/images/photo7.jpg"; 
 
 const PsychiatricHospitals = ({ navigation }) => {
