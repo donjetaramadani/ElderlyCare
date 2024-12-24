@@ -23,6 +23,13 @@ import Environment from "./screens/Environment";
 import { StyleSheet } from "react-native";
 import AddReminderScreen from "./screens/AddReminderScreen";
 import UpdateReminderScreen from "./screens/UpdateReminderScreen";
+import HospitalTypes from "./screens/HospitalTypes";
+import GeneralHospitals from "./screens/GeneralHospitals";
+import SpecialtyClinics from "./screens/SpecialtyClinics";
+import RehabilitationCenters from "./screens/RehabilitationCenters";
+import ChildrensHospitals from "./screens/ChildrensHospitals";
+import PsychiatricHospitals from "./screens/PsychiatricHospitals";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -59,6 +66,12 @@ export default function Navigation() {
       <Tab.Screen name="Environment" component={Environment} />
       <Tab.Screen name="AddReminderScreen" component={AddReminderScreen} />
       <Tab.Screen name="UpdateReminderScreen" component={UpdateReminderScreen} />
+      <Tab.Screen name="HospitalTypes" component={HospitalTypes} />
+      <Tab.Screen name="GeneralHospitals" component={GeneralHospitals} />
+      <Tab.Screen name="SpecialtyClinics" component={SpecialtyClinics} />
+      <Tab.Screen name="RehabilitationCenters" component={RehabilitationCenters} />
+      <Tab.Screen name="ChildrensHospitals" component={ChildrensHospitals} />
+      <Tab.Screen name="PsychiatricHospitals" component={PsychiatricHospitals} />
     </Tab.Navigator>
   );
 }

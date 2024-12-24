@@ -174,8 +174,10 @@ const HomePage = ({ navigation }) => {
           <View style={styles.quickActionsContainer}>
             <Text style={styles.enhancedTitle}>🚀 Quick Actions</Text>
             <View style={styles.quickActions}>
+
+
               {/* Call Doctor Action */}
-              <TouchableOpacity style={styles.actionButton}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('HospitalTypes')}>
                 <LinearGradient
                   colors={["#667eea", "#764ba2"]}
                   style={[styles.iconCircle, styles.shadow]}
