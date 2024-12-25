@@ -102,7 +102,9 @@ const SpecificRehabilitationHospitals = ({ navigation, route }) => {
           {/* Button to view more details */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => alert(`More details about ${hospital.name}`)}
+            onPress={() =>
+              navigation.navigate("HospitalDetails", { hospital })
+            }
           >
             <Text style={styles.buttonText}>More Details</Text>
           </TouchableOpacity>
