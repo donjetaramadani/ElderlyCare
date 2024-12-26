@@ -37,6 +37,7 @@ import SpecificPsychiatricHospitals from "./screens/SpecificPsychiatricHospitals
 import HospitalDetails from "./screens/HospitalDetails";
 import StaffDetails from "./screens/StaffDetails";
 import ReviewSection from "./screens/ReviewSection";
+import AppointmentBooking from "./screens/AppointmentBooking";
 
 
 const Tab = createBottomTabNavigator();
@@ -88,6 +89,8 @@ export default function Navigation() {
       <Tab.Screen name="HospitalDetails" component={HospitalDetails} />
       <Tab.Screen name="StaffDetails" component={StaffDetails} />
       <Tab.Screen name="ReviewSection" component={ReviewSection} />
+      <Tab.Screen name="AppointmentBooking" component={AppointmentBooking} />
+
     </Tab.Navigator>
   );
 }

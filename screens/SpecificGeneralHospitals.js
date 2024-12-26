@@ -7,23 +7,22 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Pressable,
 } from "react-native";
-import StaffCard from './StaffCard'; 
-import ReviewSection from "./ReviewSection";
-
+// Importing images for specific hospitals
 import hospital1Img from "../assets/images/CityGeneralHospital.jpg";
 import hospital2Img from "../assets/images/MetroHealthCenter.jpg";
 import hospital3Img from "../assets/images/PinewoodMedicalFacility.jpg";
 import hospital4Img from "../assets/images/LakesideRegionalHospital.jpg";
 import hospital5Img from "../assets/images/BrightHorizonsClinic.jpg";
 import hospital6Img from "../assets/images/EvergreenHealthHub.webp";
+import profile1Picture from "../assets/images/emily-smith.jpg";
+import profile2Picture from "../assets/images/john-doe.jpg";
+import profile3Picture from "../assets/images/Sarah-Johnson.jpg";
+import profile4Picture from "../assets/images/Michael-Lee.jpg";
 
 const SpecificGeneralHospitals = ({ navigation, route }) => {
   const { type } = route.params; 
-
   const [searchQuery, setSearchQuery] = useState("");
-
   const hospitals = [
     {
       id: 1,
@@ -33,67 +32,86 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       location: "456 Wellness Blvd, Cityville",
       image: hospital1Img,
       contactInfo: {
-        phone: "123-456-7890",
-        email: "info@citygeneral.com",
-        website: "www.citygeneral.com",
-      },
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
       servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
       visitingHours: {
-        weekdays: "9:00 AM - 6:00 PM",
-        weekends: "10:00 AM - 4:00 PM",
-      },
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
       facilities: [
-        { name: "Parking Lot", availability: 10 },
-        { name: "Restaurant" },
-        { name: "Pharmacy" }
-      ],
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
       reviews: [
-        { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
-        { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
-        { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
-        { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
-      ],
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
       specializedDepartments: ["Oncology", "ICU"],
       healthPackages: [
-        { name: "Basic Checkup", price: "$50" },
-        { name: "Comprehensive Health Package", price: "$200" },
-      ],
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
       admissionInfo: {
-        documentsRequired: ["ID Proof", "Insurance"],
-        paymentMethods: ["Cash", "Credit Card", "Insurance"],
-      },
+                        documentsRequired: ["ID Proof", "Insurance"],
+                        paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                      },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
+              {
+                name: "Dr. Emily Smith",
+                position: "Cardiologist",
+                phone: "+1234567890",
+                email: "emily.smith@hospital.com",
+                history: "Dr. Emily has over 15 years of experience in cardiology...",
+                image: profile1Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "John Doe",
+                position: "Nurse",
+                phone: "+0987654321",
+                email: "john.doe@hospital.com",
+                history: "John has been a compassionate nurse for 10 years...",
+                image: profile2Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Sarah Johnson",
+                position: "Neurologist",
+                phone: "+1234561234",
+                email: "sarah.johnson@hospital.com",
+                history: "Dr. Sarah specializes in neurological disorders...",
+                image: profile3Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Michael Lee",
+                position: "Pediatrician",
+                phone: "+5678901234",
+                email: "michael.lee@hospital.com",
+                history: "Dr. Michael has a passion for pediatric care...",
+                image: profile4Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+            ],    
+      allowsAppointment: true,        
     },
     {
       id: 2,
@@ -102,38 +120,87 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
         "Metro Health Center is renowned for its compassionate care and modern medical facilities, providing comprehensive healthcare services.",
       location: "789 Care Ave, Metropolis",
       image: hospital2Img,
+      contactInfo: {
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
+      servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
+      visitingHours: {
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
+      facilities: [
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
+      reviews: [
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
+      specializedDepartments: ["Oncology", "ICU"],
+      healthPackages: [
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
+      admissionInfo: {
+                        documentsRequired: ["ID Proof", "Insurance"],
+                        paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                      },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
+              {
+                name: "Dr. Emily Smith",
+                position: "Cardiologist",
+                phone: "+1234567890",
+                email: "emily.smith@hospital.com",
+                history: "Dr. Emily has over 15 years of experience in cardiology...",
+                image: profile1Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "John Doe",
+                position: "Nurse",
+                phone: "+0987654321",
+                email: "john.doe@hospital.com",
+                history: "John has been a compassionate nurse for 10 years...",
+                image: profile2Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Sarah Johnson",
+                position: "Neurologist",
+                phone: "+1234561234",
+                email: "sarah.johnson@hospital.com",
+                history: "Dr. Sarah specializes in neurological disorders...",
+                image: profile3Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Michael Lee",
+                position: "Pediatrician",
+                phone: "+5678901234",
+                email: "michael.lee@hospital.com",
+                history: "Dr. Michael has a passion for pediatric care...",
+                image: profile4Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+            ],     
+      allowsAppointment: true,       
     },
     {
       id: 3,
@@ -142,39 +209,88 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
         "Pinewood Medical Facility specializes in family medicine and preventive care for all age groups, with a dedicated team of professionals.",
       location: "123 Healing St, Pinewood",
       image: hospital3Img,
+      contactInfo: {
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
+      servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
+      visitingHours: {
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
+      facilities: [
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
+      reviews: [
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
+      specializedDepartments: ["Oncology", "ICU"],
+      healthPackages: [
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
+      admissionInfo: {
+                        documentsRequired: ["ID Proof", "Insurance"],
+                        paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                      },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
-    },
+              {
+                name: "Dr. Emily Smith",
+                position: "Cardiologist",
+                phone: "+1234567890",
+                email: "emily.smith@hospital.com",
+                history: "Dr. Emily has over 15 years of experience in cardiology...",
+                image: profile1Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "John Doe",
+                position: "Nurse",
+                phone: "+0987654321",
+                email: "john.doe@hospital.com",
+                history: "John has been a compassionate nurse for 10 years...",
+                image: profile2Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Sarah Johnson",
+                position: "Neurologist",
+                phone: "+1234561234",
+                email: "sarah.johnson@hospital.com",
+                history: "Dr. Sarah specializes in neurological disorders...",
+                image: profile3Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Michael Lee",
+                position: "Pediatrician",
+                phone: "+5678901234",
+                email: "michael.lee@hospital.com",
+                history: "Dr. Michael has a passion for pediatric care...",
+                image: profile4Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+            ],  
+      allowsAppointment: true,          
+      },
     {
       id: 4,
       name: "Lakeside Regional Hospital",
@@ -182,38 +298,87 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
         "Lakeside Regional Hospital features a highly experienced surgical team and cutting-edge diagnostic services.",
       location: "456 Lakeview Dr, Lakeside",
       image: hospital4Img,
+      contactInfo: {
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
+      servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
+      visitingHours: {
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
+      facilities: [
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
+      reviews: [
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
+      specializedDepartments: ["Oncology", "ICU"],
+      healthPackages: [
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
+      admissionInfo: {
+                        documentsRequired: ["ID Proof", "Insurance"],
+                        paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                      },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
+              {
+                name: "Dr. Emily Smith",
+                position: "Cardiologist",
+                phone: "+1234567890",
+                email: "emily.smith@hospital.com",
+                history: "Dr. Emily has over 15 years of experience in cardiology...",
+                image: profile1Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "John Doe",
+                position: "Nurse",
+                phone: "+0987654321",
+                email: "john.doe@hospital.com",
+                history: "John has been a compassionate nurse for 10 years...",
+                image: profile2Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Sarah Johnson",
+                position: "Neurologist",
+                phone: "+1234561234",
+                email: "sarah.johnson@hospital.com",
+                history: "Dr. Sarah specializes in neurological disorders...",
+                image: profile3Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+              {
+                name: "Dr. Michael Lee",
+                position: "Pediatrician",
+                phone: "+5678901234",
+                email: "michael.lee@hospital.com",
+                history: "Dr. Michael has a passion for pediatric care...",
+                image: profile4Picture,
+                reviews: [
+                          { author: "Patient A", text: "Excellent service!", rating: 5 },
+                          { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                          ],
+              },
+           ],       
+      allowsAppointment: true,     
     },
     {
       id: 5,
@@ -222,38 +387,87 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
         "Bright Horizons Clinic offers pediatric care, women’s health, and general wellness services in a family-friendly environment.",
       location: "789 Horizon Ln, Sunnyside",
       image: hospital5Img,
+      contactInfo: {
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
+      servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
+      visitingHours: {
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
+      facilities: [
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
+      reviews: [
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
+      specializedDepartments: ["Oncology", "ICU"],
+      healthPackages: [
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
+      admissionInfo: {
+                        documentsRequired: ["ID Proof", "Insurance"],
+                        paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                      },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
+                {
+                  name: "Dr. Emily Smith",
+                  position: "Cardiologist",
+                  phone: "+1234567890",
+                  email: "emily.smith@hospital.com",
+                  history: "Dr. Emily has over 15 years of experience in cardiology...",
+                  image: profile1Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "John Doe",
+                  position: "Nurse",
+                  phone: "+0987654321",
+                  email: "john.doe@hospital.com",
+                  history: "John has been a compassionate nurse for 10 years...",
+                  image: profile2Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "Dr. Sarah Johnson",
+                  position: "Neurologist",
+                  phone: "+1234561234",
+                  email: "sarah.johnson@hospital.com",
+                  history: "Dr. Sarah specializes in neurological disorders...",
+                  image: profile3Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "Dr. Michael Lee",
+                  position: "Pediatrician",
+                  phone: "+5678901234",
+                  email: "michael.lee@hospital.com",
+                  history: "Dr. Michael has a passion for pediatric care...",
+                  image: profile4Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+             ],  
+      allowsAppointment: true,          
     },
     {
       id: 6,
@@ -262,50 +476,96 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
         "Evergreen Health Hub provides holistic healthcare services, including mental health support and chronic disease management.",
       location: "321 Evergreen Ave, Greenfield",
       image: hospital6Img,
+      contactInfo: {
+                      phone: "123-456-7890",
+                      email: "info@citygeneral.com",
+                      website: "www.citygeneral.com",
+                    },
+      servicesOffered: ["Emergency Care", "Outpatient Services", "Surgery"],
+      visitingHours: {
+                        weekdays: "9:00 AM - 6:00 PM",
+                        weekends: "10:00 AM - 4:00 PM",
+                      },
+      facilities: [
+                    { name: "Parking Lot", availability: 10 },
+                    { name: "Restaurant" },
+                    { name: "Pharmacy" }
+                  ],
+      reviews: [
+                  { user: "John Doe", comment: "Great service, very attentive staff!", rating: 5 },
+                  { user: "Jane Smith", comment: "Clean and efficient, would recommend!", rating: 4 },
+                  { user: "Mary Johnson", comment: "Very professional, but the waiting time was long.", rating: 3 },
+                  { user: "Carlos Rodriguez", comment: "The hospital has great facilities, but some staff could be friendlier.", rating: 4 },
+                ],
+      specializedDepartments: ["Oncology", "ICU"],
+      healthPackages: [
+                        { name: "Basic Checkup", price: "$50" },
+                        { name: "Comprehensive Health Package", price: "$200" },
+                      ],
+      admissionInfo: {
+                      documentsRequired: ["ID Proof", "Insurance"],
+                      paymentMethods: ["Cash", "Credit Card", "Insurance"],
+                    },
       staff: [
-        {
-          name: "Dr. Emily Smith",
-          position: "Cardiologist",
-          phone: "+1234567890",
-          email: "emily.smith@hospital.com",
-          history: "Dr. Emily has over 15 years of experience in cardiology...",
-         // profilePicture: require("./assets/emily-smith.jpg"), // Replace with a real image path
-        },
-        {
-          name: "John Doe",
-          position: "Nurse",
-          phone: "+0987654321",
-          email: "john.doe@hospital.com",
-          history: "John has been a compassionate nurse for 10 years...",
-          //profilePicture: require("./assets/john-doe.jpg"), // Replace with a real image path
-        },
-        {
-          name: "Dr. Sarah Johnson",
-          position: "Neurologist",
-          phone: "+1234561234",
-          email: "sarah.johnson@hospital.com",
-          history: "Dr. Sarah specializes in neurological disorders...",
-        },
-        {
-          name: "Dr. Michael Lee",
-          position: "Pediatrician",
-          phone: "+5678901234",
-          email: "michael.lee@hospital.com",
-          history: "Dr. Michael has a passion for pediatric care...",
-        },
-      ],
+                {
+                  name: "Dr. Emily Smith",
+                  position: "Cardiologist",
+                  phone: "+1234567890",
+                  email: "emily.smith@hospital.com",
+                  history: "Dr. Emily has over 15 years of experience in cardiology...",
+                  image: profile1Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "John Doe",
+                  position: "Nurse",
+                  phone: "+0987654321",
+                  email: "john.doe@hospital.com",
+                  history: "John has been a compassionate nurse for 10 years...",
+                  image: profile2Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "Dr. Sarah Johnson",
+                  position: "Neurologist",
+                  phone: "+1234561234",
+                  email: "sarah.johnson@hospital.com",
+                  history: "Dr. Sarah specializes in neurological disorders...",
+                  image: profile3Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+                {
+                  name: "Dr. Michael Lee",
+                  position: "Pediatrician",
+                  phone: "+5678901234",
+                  email: "michael.lee@hospital.com",
+                  history: "Dr. Michael has a passion for pediatric care...",
+                  image: profile4Picture,
+                  reviews: [
+                            { author: "Patient A", text: "Excellent service!", rating: 5 },
+                            { author: "Patient B", text: "Very caring and professional.", rating: 4 }
+                            ],
+                },
+             ], 
+      allowsAppointment: true,           
     },
   ];
-
   const filteredHospitals = hospitals.filter((hospital) =>
     hospital.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
     
       <Text style={styles.title}>Specific {type} Hospitals</Text>
-
         {/* Search Bar */}
         <View style={styles.searchBarContainer}>
         <TextInput
@@ -316,8 +576,6 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
             onChangeText={(text) => setSearchQuery(text)}
         />
         </View>
-
-
       {filteredHospitals.map((hospital) => (
         <View key={hospital.id} style={styles.card}>
           <Image source={hospital.image} style={styles.image} />
@@ -326,26 +584,19 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
           <Text style={styles.locationTitle}>Location:</Text>
           <Text style={styles.location}>{hospital.location}</Text>
           {/* Button to view more details */}
-         <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                navigation.navigate("HospitalDetails", { hospital })
-              }
-            >
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate("HospitalDetails", { hospital })
+            }
+          >
             <Text style={styles.buttonText}>More Details</Text>
           </TouchableOpacity>
         </View>
       ))}
-
-
-   
-
-
-
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -456,95 +707,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  card: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
-    marginBottom: 20,
-    flex: 1,
-  },
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#2c3e50",
-    marginBottom: 15,
-  },
-  staffList: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  staffItem: {
-    width: "48%",
-    alignItems: "center",
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#ecf0f1",
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#f9f9f9",
-  },
-  staffImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginBottom: 10,
-  },
-  staffTextContainer: {
-    alignItems: "center",
-  },
-  staffName: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#34495e",
-    marginBottom: 5,
-  },
-  staffPosition: {
-    fontSize: 14,
-    color: "#7f8c8d",
-  },
-  detailsContainer: {
-    alignItems: "center",
-  },
-  detailsImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 15,
-  },
-  detailsName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2c3e50",
-  },
-  detailsPosition: {
-    fontSize: 16,
-    color: "#7f8c8d",
-    marginBottom: 10,
-  },
-  detailsHeading: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#34495e",
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  detailsInfo: {
-    fontSize: 16,
-    color: "#34495e",
-    marginBottom: 10,
-  },
-  detailsDescription: {
-    fontSize: 14,
-    color: "#7f8c8d",
-    lineHeight: 20,
-    textAlign: "center",
-  },
+  
 });
-
 export default SpecificGeneralHospitals;

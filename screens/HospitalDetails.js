@@ -8,6 +8,10 @@ import ReviewSection from "./ReviewSection";
 import hospital1Img from "../assets/images/CityGeneralHospital.jpg";
 import hospital2Img from "../assets/images/MetroHealthCenter.jpg";
 import hospital3Img from "../assets/images/PinewoodMedicalFacility.jpg";
+import hospital4Img from "../assets/images/restaurant.webp";
+import hospital5Img from "../assets/images/parking.avif";
+import hospital6Img from "../assets/images/pharmacy.jpg";
+
 
 const HospitalDetails = ({ route, navigation }) => {
   const { hospital } = route.params; // Access the passed hospital data
@@ -90,7 +94,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital1Img} // Replace with relevant image
+              source={hospital5Img} // Replace with relevant image
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -105,7 +109,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital2Img} // Replace with relevant image
+              source={hospital6Img} // Replace with relevant image
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -124,7 +128,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital3Img} // Replace with relevant image
+              source={hospital4Img} // Replace with relevant image
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -205,7 +209,7 @@ const HospitalDetails = ({ route, navigation }) => {
           onPress={() => navigation.navigate("StaffDetails", { staff })}
         >
           <Image
-            source={staff.profilePicture || hospital3Img} // Use a default image if missing
+            source={staff.image || hospital3Img} // Use a default image if missing
             style={styles.staffImage}
           />
           <View style={styles.staffTextContainer}>
@@ -217,6 +221,24 @@ const HospitalDetails = ({ route, navigation }) => {
     </View>
   </View>
 )}
+
+{/* Booking Appointment */}
+{hospital.allowsAppointment && (
+  <View style={styles.card}>
+    <Text style={styles.cardTitle}>Book an Appointment</Text>
+    <Text style={styles.infoText}>
+      Schedule a visit to consult with a specialist at {hospital.name}.
+    </Text>
+    <TouchableOpacity
+      style={styles.bookButton}
+      onPress={() => navigation.navigate("AppointmentBooking", { hospital })}
+    >
+      <Text style={styles.bookButtonText}>Book Now</Text>
+    </TouchableOpacity>
+  </View>
+)}
+
+
 
 
 {/* Hospital Reviews */}
@@ -476,6 +498,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#f39c12',
   },
+
+  bookButton: {
+    backgroundColor: "#1abc9c",
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: "center",
+  },
+  bookButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  
 
 });
 
