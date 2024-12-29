@@ -17,6 +17,7 @@ const OrderNowPage = ({ route, navigation }) => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   //const { menuItem } = route.params;
+  const { basket } = route.params;
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => {

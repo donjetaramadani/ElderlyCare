@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const Header = () => {
+const Header = ({ basket = [] }) => {
   const navigation = useNavigation();
 
   return (
@@ -20,6 +20,12 @@ const Header = () => {
         <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
           <Ionicons name="notifications-outline" size={28} color="black" />
         </TouchableOpacity>
+         {/* Basket */}
+        {basket.length > 0 && (
+          <TouchableOpacity onPress={() => navigation.navigate("OrderNowPage", { basket })}>
+            <Ionicons name="basket-outline" size={28} color="black" />
+          </TouchableOpacity>
+        )}
         {/* Profile */}
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Ionicons name="person-circle-outline" size={28} color="black" />

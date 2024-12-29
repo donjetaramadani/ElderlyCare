@@ -3,18 +3,16 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, M
 
 const MenuPage = ({ navigation }) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [filters, setFilters] = useState({
-    category: "",
-    maxPrice: Infinity,
-  });
+  const [filters, setFilters] = useState({ category: "", maxPrice: Infinity });
   const [numColumns, setNumColumns] = useState(2);
+  const [basket, setBasket] = useState([]);
 
   const menuItems = [
     { id: 1, name: "Grilled Chicken", description: "Served with vegetables", price: 12, category: "Main", image: require("../assets/images/GrilledChicken.jpg") },
     { id: 2, name: "Pasta Alfredo", description: "Creamy Alfredo sauce", price: 10, category: "Main", image: require("../assets/images/PastaAlfredo.webp") },
     { id: 3, name: "Caesar Salad", description: "With fresh lettuce and dressing", price: 8, category: "Appetizer", image: require("../assets/images/CaesarSalad.jpg") },
-    { id: 4, name: "Quinoa Salad", description: "With avocado, cherry tomatoes, and lemon dressing", price: 9, category: "Appetizer", image: require("../assets/images/QuinoaSalad.webp") },//
-    { id: 5, name: "Grilled Salmon",description: "Served with steamed broccoli and wild rice", price: 15, category: "Main", image: require("../assets/images/GrilledSalmon.jpg") },
+    { id: 4, name: "Quinoa Salad", description: "With avocado, cherry tomatoes, and lemon dressing", price: 9, category: "Appetizer", image: require("../assets/images/QuinoaSalad.webp") },
+    { id: 5, name: "Grilled Salmon", description: "Served with steamed broccoli and wild rice", price: 15, category: "Main", image: require("../assets/images/GrilledSalmon.jpg") },
     { id: 6, name: "Vegetable Stir-Fry", description: "Fresh veggies with a light soy ginger glaze", price: 11, category: "Main", image: require("../assets/images/VegetableStir-Fry.jpg") },
     { id: 7, name: "Smoothie Bowl", description: "Topped with fresh fruits, nuts, and granola", price: 7, category: "Dessert", image: require("../assets/images/SmoothieBowl.webp") },
     { id: 8, name: "Hummus Platter", description: "With fresh veggie sticks and whole-grain crackers", price: 6, category: "Appetizer", image: require("../assets/images/HummusPlatter.jpg") },
@@ -25,23 +23,15 @@ const MenuPage = ({ navigation }) => {
   const filteredMenu = menuItems.filter((item) => {
     const matchesCategory = filters.category === "" || item.category === filters.category;
     const matchesPrice = item.price <= filters.maxPrice;
-  
     return matchesCategory && matchesPrice;
   });
-  
 
   const handleMenuItemPress = (item) => {
-    navigation.navigate("OrderNowPage", { menuItems: item });
+    navigation.navigate("OrderNowPage", { basket });
   };
-  
-  const renderMenuItem = ({ item }) => {
-    return (
-      <TouchableOpacity onPress={() => handleMenuItemPress(item)} style={styles.menuItem}>
-        <Image source={item.image} style={styles.menuItemImage} />
-        <Text style={styles.menuItemText}>{item.name}</Text>
-        <Text style={styles.menuItemPrice}>£{item.price}</Text>
-      </TouchableOpacity>
-    );
+
+  const handleAddToBasket = (item) => {
+    setBasket((prevBasket) => [...prevBasket, item]);
   };
 
   return (
@@ -64,6 +54,16 @@ const MenuPage = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+
+      {/* Basket Icon in Header */}
+      <TouchableOpacity style={styles.basketIconContainer} onPress={() => navigation.navigate("OrderNowPage", { basket })}>
+            <Text style={styles.basketIcon}>🛒</Text>
+            {basket.length > 0 && (
+              <Text style={styles.basketCount}>{basket.length}</Text>
+            )}
+          </TouchableOpacity>
+
+
       {/* Menu List */}
       <FlatList
         data={filteredMenu}
@@ -76,20 +76,22 @@ const MenuPage = ({ navigation }) => {
               <Text style={styles.menuName}>{item.name}</Text>
               <Text style={styles.menuDescription}>{item.description}</Text>
               <View style={styles.cardFooter}>
-                <Text style={styles.menuPrice}>{item.price}</Text>
-                <TouchableOpacity style={styles.orderButton}  onPress={() => handleMenuItemPress(item)}>
-                  <Text style={styles.orderButtonText}>Order Now</Text>
+                <Text style={styles.menuPrice}>${item.price}</Text>
+                <TouchableOpacity
+                  style={styles.orderButton}
+                  onPress={() => handleAddToBasket(item)}
+                >
+                  <Text style={styles.orderButtonText}>Add to Basket</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
         )}
         numColumns={numColumns}
-        key={`${numColumns}`} 
-        columnWrapperStyle={styles.columnWrapper} 
+        columnWrapperStyle={styles.columnWrapper}
       />
 
-     {/* Filter Modal */}
+      {/* Filter Modal */}
       <Modal
         visible={isFilterVisible}
         transparent={true}
@@ -98,15 +100,16 @@ const MenuPage = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            {/* Modal Header */}
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Filter Menu</Text>
-              <TouchableOpacity onPress={() => setIsFilterVisible(false)} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={() => setIsFilterVisible(false)}
+                style={styles.closeButton}
+              >
                 <Text style={styles.closeButtonText}>×</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Category Filter Section */}
             <Text style={styles.filterLabel}>Category</Text>
             <View style={styles.categoryContainer}>
               {["Main", "Appetizer", "Dessert"].map((category) => (
@@ -123,40 +126,38 @@ const MenuPage = ({ navigation }) => {
               ))}
             </View>
 
-      {/* Max Price Filter Section */}
-      <Text style={styles.filterLabel}>Max Price</Text>
-      <TextInput
-        keyboardType="numeric"
-        placeholder="Enter max price"
-        style={styles.priceInput}
-        placeholderTextColor="#aaa"
-        onChangeText={(text) =>
-          setFilters({ ...filters, maxPrice: parseFloat(text) || Infinity })
-        }
-      />
+            <Text style={styles.filterLabel}>Max Price</Text>
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Enter max price"
+              style={styles.priceInput}
+              placeholderTextColor="#aaa"
+              onChangeText={(text) =>
+                setFilters({ ...filters, maxPrice: parseFloat(text) || Infinity })
+              }
+            />
 
-      {/* Apply and Cancel Buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => setIsFilterVisible(false)}
-        >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.applyButton}
-          onPress={() => setIsFilterVisible(false)}
-        >
-          <Text style={styles.applyButtonText}>Apply</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </View>
-</Modal>
-
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setIsFilterVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.applyButton}
+                onPress={() => setIsFilterVisible(false)}
+              >
+                <Text style={styles.applyButtonText}>Apply</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f4f6fc" },
