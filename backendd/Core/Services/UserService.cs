@@ -38,5 +38,22 @@ namespace backendd.Core.Services
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
+
+        public async Task<IdentityResult> UpdateAsync(User user)
+        {
+            // Find the existing user by ID
+            var existingUser = await _userManager.FindByIdAsync(user.Id);
+            if (existingUser == null)
+                throw new Exception("User not found");
+
+            // Update user properties
+            existingUser.FullName = user.FullName;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.DateOfBirth = user.DateOfBirth;
+            existingUser.ProfileImage = user.ProfileImage;
+
+            // Save changes
+            return await _userManager.UpdateAsync(existingUser);
+        }
     }
 }

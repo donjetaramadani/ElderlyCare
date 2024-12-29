@@ -14,42 +14,51 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSignup = async () => {
     if (!email.includes("@")) {
-        alert("Please enter a valid email.");
-        return;
+      alert("Please enter a valid email.");
+      return;
     }
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
-        return;
+      alert("Passwords do not match.");
+      return;
     }
-
+  
     try {
-        const response = await fetch("http://192.168.255.73:5196/api/User/register", { // Update this line
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              fullName: fullName, // Ensure full name is passed
-              email,
-              phoneNumber: phoneNumber, // Ensure phone number is passed correctly
-              dateOfBirth: dateOfBirth, // Ensure date of birth is passed correctly
-              password,
-            }),
-          });
-
+      const response = await fetch("http://192.168.0.41:5196/api/User/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phoneNumber,
+          dateOfBirth,
+          password,
+        }),
+      });
+  
+      const contentType = response.headers.get("content-type");
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+  
+      if (contentType && contentType.includes("application/json")) {
+        const data = JSON.parse(responseText);
         if (!response.ok) {
-            const data = await response.json();
-            alert(`Signup Failed: ${data}`);
-            return;
+          alert(`Signup Failed: ${data.message || "Unknown error"}`);
+          return;
         }
-
-        alert("Signup successful!");
-        navigation.replace("EditProfile");
+      } else if (!response.ok) {
+        alert(`Signup Failed: ${responseText}`);
+        return;
+      }
+  
+      alert("Signup successful!");
+      navigation.replace("EditProfile");
     } catch (error) {
-        console.error("Error during signup:", error);
-        alert("An error occurred. Please try again later.");
+      console.error("Error during signup:", error);
+      alert("An error occurred. Please try again later.");
     }
-};
+  };
 
 
   return (

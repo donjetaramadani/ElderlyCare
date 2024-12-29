@@ -1,60 +1,99 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
-//import * as ImagePicker from 'expo-image-picker';
-import { UserContext } from './UserContext'; 
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { UserContext } from './UserContext';
 
 const EditProfile = ({ navigation }) => {
   const { user, updateUser } = useContext(UserContext); // Access context
-  const [name, setName] = useState(user.name || '');
-  const [email, setEmail] = useState(user.email || '');
-  const [phone, setPhone] = useState(user.phone || '');
-  const [profileImage, setProfileImage] = useState(user.profileImage || null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
     const loadProfileData = async () => {
-      const storedData = await AsyncStorage.getItem('userProfile');
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        setName(parsedData.name);
-        setEmail(parsedData.email);
-        setPhone(parsedData.phone);
-        setProfileImage(parsedData.profileImage);
-        updateUser(parsedData);
+      try {
+        const response = await fetch('http://192.168.0.41:5196/api/User/getProfile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+
+        const data = await response.json();
+        setName(data.fullName || '');
+        setEmail(data.email || '');
+        setPhone(data.phoneNumber || '');
+        setProfileImage(data.profileImage || null);
+        updateUser(data);
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+        Alert.alert('Error', 'Failed to load profile data. Please try again later.');
       }
     };
+
     loadProfileData();
-  }, []);
+  }, [user.token]);
 
   const handleImagePick = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to upload your profile image.");
-      return;
-    } 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"], 
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.5,
-    });
-  
-    if (!result.canceled) {
-      setProfileImage(result.assets[0].uri);
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'We need camera roll permissions to upload your profile image.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+      });
+
+      if (!result.canceled) {
+        setProfileImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error selecting image:', error);
     }
   };
-  
+
   const handleSave = async () => {
     const updatedData = {
-      name,
-      email,
-      phone,
-      profileImage,
+      ...(name && { fullName: name }),
+      ...(phone && { phoneNumber: phone }),
+      ...(profileImage && { profileImage }),
     };
-    updateUser(updatedData);
-    await AsyncStorage.setItem('userProfile', JSON.stringify(updatedData));
-    alert('Profile Updated Successfully!');
-    navigation.navigate('Profile');
+
+    try {
+      const response = await fetch('http://192.168.0.41:5196/api/User/updateProfile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Update failed:', error);
+        Alert.alert('Error', `Failed to update profile: ${error.message || 'Unknown error'}`);
+        return;
+      }
+
+      const data = await response.json();
+      updateUser(data);
+      Alert.alert('Success', 'Profile updated successfully!');
+      navigation.navigate('Profile');
+    } catch (error) {
+      console.error('Error during update:', error);
+      Alert.alert('Error', 'An error occurred while updating your profile.');
+    }
   };
 
   return (
@@ -82,11 +121,10 @@ const EditProfile = ({ navigation }) => {
       {/* Email Input */}
       <Text style={styles.label}>Email</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: "#e0e0e0" }]}
+        style={[styles.input, { backgroundColor: '#e0e0e0' }]} // Read-only field
         placeholder="Enter your email"
         value={email}
-        keyboardType="email-address"
-        onChangeText={setEmail}
+        editable={false}
       />
 
       {/* Phone Input */}

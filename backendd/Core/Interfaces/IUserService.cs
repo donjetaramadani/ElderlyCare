@@ -9,5 +9,7 @@ namespace backendd.Core.Interfaces
         Task<bool> LoginUserAsync(string email, string password);          // Fixed
         Task<User> FindByEmailAsync(string email);
         Task<bool> CheckPasswordAsync(User user, string password);
+        Task<IdentityResult> UpdateAsync(User user);
+
     }
 }

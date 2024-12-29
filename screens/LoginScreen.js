@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
         return;
     }
     try {
-        const response = await fetch("http://192.168.255.73:5196/api/User/login", { // Update this line
+        const response = await fetch("http://192.168.0.41:5196/api/User/login", { // Update this line
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

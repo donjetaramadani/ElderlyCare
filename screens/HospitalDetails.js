@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Pressable, SafeAreaView, FlatList} from "react-native";
-import MapView, { Marker } from "react-native-maps";
+//import MapView, { Marker } from "react-native-maps";
 import Icon from "react-native-vector-icons/MaterialIcons"; // For icons
 import StaffDetails from "./StaffDetails";
 import ReviewSection from "./ReviewSection";
