@@ -111,7 +111,11 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
                           ],
               },
             ],    
-      allowsAppointment: true,        
+      allowsAppointment: true,    
+      coordinates: {
+        latitude: 37.7749, 
+        longitude: -122.4194 
+      }    
     },
     {
       id: 2,

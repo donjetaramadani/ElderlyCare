@@ -23,8 +23,8 @@ const HomePage = ({ navigation }) => {
   const handleEmergency = async () => {
     try {
       const sosData = {
-        userId: 1, // Replace with actual user ID from your app's context or state
-        location: "41.3275, 19.8189", // Replace with dynamic location if available
+        userId: 1, 
+        location: "41.3275, 19.8189", 
       };
   
       const response = await axios.post("http://192.168.0.42:5196/api/SOS", sosData);

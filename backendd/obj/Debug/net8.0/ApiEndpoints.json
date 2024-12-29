@@ -164,6 +164,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "backendd.Controllers.OrderController",
+    "Method": "SendOrderToCaregiver",
+    "RelativePath": "api/Order/send-to-caregiver",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "backendd.Controllers.OrderController\u002BSendOrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.PaymentController",
+    "Method": "CreatePaymentIntent",
+    "RelativePath": "api/Payment/create-payment-intent",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backendd.Controllers.RecommendationsController",
     "Method": "GetAllRecommendations",
     "RelativePath": "api/Recommendations",

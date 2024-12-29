@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // You can use any icon library
+import { FontAwesome } from '@expo/vector-icons'; 
 
 const ReviewSection = ({ hospital }) => {
-  const [rating, setRating] = useState(0);  // Store the selected rating
-  const [comment, setComment] = useState('');  // Store the comment
-  const [reviews, setReviews] = useState(hospital?.reviews || []);  // Existing reviews
+  const [rating, setRating] = useState(0);  
+  const [comment, setComment] = useState('');  
+  const [reviews, setReviews] = useState(hospital?.reviews || []);  
 
   const handleRating = (starRating) => {
     setRating(starRating);

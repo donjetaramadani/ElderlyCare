@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     padding: 24,
-    backgroundColor: "#f9f9f9", // Light background for a cleaner look
+    backgroundColor: "#f9f9f9", 
   },
   profileImage: {
     width: 140,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 70,
     marginBottom: 24,
     borderWidth: 4,
-    borderColor: "#fff", // Border color to match the light background
+    borderColor: "#fff", 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
@@ -115,13 +115,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 32,
     fontWeight: "600",
-    color: "#2c3e50", // Darker color for text readability
+    color: "#2c3e50", 
     marginBottom: 8,
-    textAlign: "center", // Center the name for balance
+    textAlign: "center", 
   },
   position: {
     fontSize: 20,
-    color: "#7f8c8d", // Subtle gray for the position
+    color: "#7f8c8d", 
     fontStyle: "italic",
     marginBottom: 20,
     textAlign: "center",
@@ -129,10 +129,10 @@ const styles = StyleSheet.create({
   bio: {
     fontSize: 16,
     textAlign: "center",
-    color: "#34495e", // Dark gray for readability
+    color: "#34495e",
     marginBottom: 28,
     lineHeight: 22,
-    paddingHorizontal: 20, // Padding for bio text
+    paddingHorizontal: 20, 
   },
   contactContainer: {
     flexDirection: "row",
@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
   contactLabel: {
     fontSize: 18,
     color: "#2c3e50",
-    fontWeight: "500", // Slightly lighter weight for label text
+    fontWeight: "500", 
   },
   contact: {
     fontSize: 18,
-    color: "#2980b9", // Accent color for contact info
-    fontWeight: "400", // Regular weight for contact details
+    color: "#2980b9",
+    fontWeight: "400", 
   },
   reviewsContainer: {
     marginTop: 20,

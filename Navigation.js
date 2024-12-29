@@ -38,6 +38,11 @@ import HospitalDetails from "./screens/HospitalDetails";
 import StaffDetails from "./screens/StaffDetails";
 import ReviewSection from "./screens/ReviewSection";
 import AppointmentBooking from "./screens/AppointmentBooking";
+import MenuPage from "./screens/MenuPage";
+import PharmacyPage from "./screens/PharmacyPage";
+import OrderNowPage from "./screens/OrderNowPage";
+import Checkout from "./screens/Checkout";
+import Payment from "./screens/PaymentScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -47,10 +52,10 @@ export default function Navigation() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: [styles.tabBarStyle], // Style for the tab bar
-        headerShown: false, // Ensure no header overlaps
-        tabBarInactiveTintColor: "#B0BEC5", // Style for inactive icons
-        tabBarActiveTintColor: "#0077B6", // Style for active icons
+        tabBarStyle: [styles.tabBarStyle], 
+        headerShown: false, 
+        tabBarInactiveTintColor: "#B0BEC5", 
+        tabBarActiveTintColor: "#0077B6",
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -90,6 +95,12 @@ export default function Navigation() {
       <Tab.Screen name="StaffDetails" component={StaffDetails} />
       <Tab.Screen name="ReviewSection" component={ReviewSection} />
       <Tab.Screen name="AppointmentBooking" component={AppointmentBooking} />
+      <Tab.Screen name="MenuPage" component={MenuPage} />
+      <Tab.Screen name="PharmacyPage" component={PharmacyPage} />
+      <Tab.Screen name="OrderNowPage" component={OrderNowPage} />
+      <Tab.Screen name="Checkout" component={Checkout} />
+      <Tab.Screen name="Payment" component={Payment} />
+
 
     </Tab.Navigator>
   );
@@ -98,8 +109,8 @@ export default function Navigation() {
 const styles = StyleSheet.create({
   tabBarStyle: {
     
-    borderTopWidth: 0, // Removes the white border
-    elevation: 5, // Adds shadow for a professional look
-    height: 60, // Adjusts the height for a balanced look
+    borderTopWidth: 0, 
+    elevation: 5,
+    height: 60, 
   },
 });

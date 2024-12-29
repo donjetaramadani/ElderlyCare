@@ -3,14 +3,14 @@ import { View, Text, TextInput, TouchableOpacity, Modal, FlatList, StyleSheet, S
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const AppointmentBooking = ({ route, navigation }) => {
-  const { hospital } = route.params; // Receiving hospital data
+  const { hospital } = route.params; 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState(hospital.staff[0].name); // Default to the first staff member
-  const [modalVisible, setModalVisible] = useState(false); // State for controlling modal visibility
+  const [selectedStaff, setSelectedStaff] = useState(hospital.staff[0].name);
+  const [modalVisible, setModalVisible] = useState(false); 
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -27,13 +27,12 @@ const AppointmentBooking = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  // Function to render each staff item in the modal list
   const renderStaffItem = ({ item }) => (
     <TouchableOpacity
       style={styles.staffItem}
       onPress={() => {
         setSelectedStaff(item.name);
-        setModalVisible(false); // Close the modal after selection
+        setModalVisible(false); 
       }}
     >
       <Text style={styles.staffName}>{item.name} - {item.position}</Text>
@@ -76,7 +75,7 @@ const AppointmentBooking = ({ route, navigation }) => {
       <Text style={styles.label}>Select a Specialist:</Text>
       <TouchableOpacity
         style={styles.staffButton}
-        onPress={() => setModalVisible(true)} // Open the modal when pressed
+        onPress={() => setModalVisible(true)}
       >
         <Text style={styles.staffButtonText}>
           {selectedStaff ? selectedStaff : "Select Specialist"}

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Pressable, SafeAreaView, FlatList} from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import Icon from "react-native-vector-icons/MaterialIcons"; // For icons
+import Icon from "react-native-vector-icons/MaterialIcons"; 
 import StaffDetails from "./StaffDetails";
 import ReviewSection from "./ReviewSection";
 
@@ -14,15 +14,16 @@ import hospital6Img from "../assets/images/pharmacy.jpg";
 
 
 const HospitalDetails = ({ route, navigation }) => {
-  const { hospital } = route.params; // Access the passed hospital data
+  const { hospital } = route.params; 
 
   const handlePharmacyOrder = () => {
-    console.log("Pharmacy order placed");
+    navigation.navigate("PharmacyPage"); 
   };
 
   const handleRestaurantOrder = () => {
-    console.log("Restaurant order placed");
+    navigation.navigate("MenuPage"); 
   };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container} nestedScrollEnabled>
@@ -88,13 +89,13 @@ const HospitalDetails = ({ route, navigation }) => {
   <View style={styles.card}>
     <Text style={styles.cardTitle}>Facilities</Text>
     {hospital.facilities.map((facility, index) => {
-      const facilityName = facility.name || facility; // Fallback for string-only data
+      const facilityName = facility.name || facility; 
 
       if (facilityName === "Parking Lot") {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital5Img} // Replace with relevant image
+              source={hospital5Img} 
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -109,7 +110,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital6Img} // Replace with relevant image
+              source={hospital6Img} 
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -128,7 +129,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital4Img} // Replace with relevant image
+              source={hospital4Img} 
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -147,7 +148,7 @@ const HospitalDetails = ({ route, navigation }) => {
         return (
           <View key={index} style={styles.facilityItem}>
             <Image
-              source={hospital3Img} // Replace with relevant image
+              source={hospital3Img} 
               style={styles.facilityIcon}
             />
             <View style={styles.facilityTextContainer}>
@@ -175,28 +176,6 @@ const HospitalDetails = ({ route, navigation }) => {
         </View>
       )}
 
-      {/* Map */}
-      {hospital.coordinates && (
-        <View style={styles.mapContainer}>
-          <Text style={styles.cardTitle}>Location Map</Text>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: hospital.coordinates.latitude,
-              longitude: hospital.coordinates.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
-          >
-            <Marker
-              coordinate={hospital.coordinates}
-              title={hospital.name}
-              description={hospital.location}
-            />
-          </MapView>
-        </View>
-      )}
-
   {/* Staff Section */}
   {hospital.staff && (
   <View style={styles.card}>
@@ -209,7 +188,7 @@ const HospitalDetails = ({ route, navigation }) => {
           onPress={() => navigation.navigate("StaffDetails", { staff })}
         >
           <Image
-            source={staff.image || hospital3Img} // Use a default image if missing
+            source={staff.image || hospital3Img} 
             style={styles.staffImage}
           />
           <View style={styles.staffTextContainer}>
@@ -245,6 +224,27 @@ const HospitalDetails = ({ route, navigation }) => {
 <ReviewSection hospital={hospital} />
 
 
+  {/* Map */}
+  {hospital.coordinates && (
+        <View style={styles.mapContainer}>
+          <Text style={styles.cardTitle}>Location Map</Text>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: hospital.coordinates.latitude,
+              longitude: hospital.coordinates.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}
+          >
+            <Marker
+              coordinate={hospital.coordinates}
+              title={hospital.name}
+              description={hospital.location}
+            />
+          </MapView>
+        </View>
+      )}
 
 
     </ScrollView>

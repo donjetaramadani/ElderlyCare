@@ -6,10 +6,12 @@ import Navigation from "./Navigation";
 import Header from "./screens/Header";
 import BottomNavBar from "./screens/BottomNavBar";
 import { HealthDataProvider } from "./screens/HealthDataContext";
-import { UserProvider } from "./screens/UserContext"; // Import UserContext
+import { UserProvider } from "./screens/UserContext"; 
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 export default function App() {
   return (
+    <StripeProvider publishableKey="pk_test_51PUzHw02TSHp6Y0YvAbvo9mi3ZMKYE4NP5YHdR4hr8rSzaArwbwRnOxCpnmCwa5Ve5BF0UvWQbR80fGObo8ZkHfx00ehf3Czl7">
     <GestureHandlerRootView style={{ flex: 1 }}> 
       <HealthDataProvider>
         <UserProvider>
@@ -28,6 +30,7 @@ export default function App() {
         </UserProvider>
       </HealthDataProvider>
     </GestureHandlerRootView>
+    </StripeProvider>
   );
 }
 
