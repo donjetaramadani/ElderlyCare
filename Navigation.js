@@ -43,6 +43,7 @@ import PharmacyPage from "./screens/PharmacyPage";
 import OrderNowPage from "./screens/OrderNowPage";
 import Checkout from "./screens/Checkout";
 import Payment from "./screens/PaymentScreen";
+import { BasketContext } from "./screens/BasketContext";
 
 
 const Tab = createBottomTabNavigator();
@@ -100,7 +101,7 @@ export default function Navigation() {
       <Tab.Screen name="OrderNowPage" component={OrderNowPage} />
       <Tab.Screen name="Checkout" component={Checkout} />
       <Tab.Screen name="Payment" component={Payment} />
-
+      <Tab.Screen name="BasketContext" component={BasketContext} />
 
     </Tab.Navigator>
   );

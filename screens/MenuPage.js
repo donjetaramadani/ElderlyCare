@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, Modal } from "react-native";
+import { BasketContext } from "./BasketContext";
 
 const MenuPage = ({ navigation }) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -8,13 +9,14 @@ const MenuPage = ({ navigation }) => {
     maxPrice: Infinity,
   });
   const [numColumns, setNumColumns] = useState(2);
+  const { addToBasket } = useContext(BasketContext);
 
   const menuItems = [
     { id: 1, name: "Grilled Chicken", description: "Served with vegetables", price: 12, category: "Main", image: require("../assets/images/GrilledChicken.jpg") },
     { id: 2, name: "Pasta Alfredo", description: "Creamy Alfredo sauce", price: 10, category: "Main", image: require("../assets/images/PastaAlfredo.webp") },
     { id: 3, name: "Caesar Salad", description: "With fresh lettuce and dressing", price: 8, category: "Appetizer", image: require("../assets/images/CaesarSalad.jpg") },
-    { id: 4, name: "Quinoa Salad", description: "With avocado, cherry tomatoes, and lemon dressing", price: 9, category: "Appetizer", image: require("../assets/images/QuinoaSalad.webp") },//
-    { id: 5, name: "Grilled Salmon",description: "Served with steamed broccoli and wild rice", price: 15, category: "Main", image: require("../assets/images/GrilledSalmon.jpg") },
+    { id: 4, name: "Quinoa Salad", description: "With avocado, cherry tomatoes, and lemon dressing", price: 9, category: "Appetizer", image: require("../assets/images/QuinoaSalad.webp") },
+    { id: 5, name: "Grilled Salmon", description: "Served with steamed broccoli and wild rice", price: 15, category: "Main", image: require("../assets/images/GrilledSalmon.jpg") },
     { id: 6, name: "Vegetable Stir-Fry", description: "Fresh veggies with a light soy ginger glaze", price: 11, category: "Main", image: require("../assets/images/VegetableStir-Fry.jpg") },
     { id: 7, name: "Smoothie Bowl", description: "Topped with fresh fruits, nuts, and granola", price: 7, category: "Dessert", image: require("../assets/images/SmoothieBowl.webp") },
     { id: 8, name: "Hummus Platter", description: "With fresh veggie sticks and whole-grain crackers", price: 6, category: "Appetizer", image: require("../assets/images/HummusPlatter.jpg") },
@@ -25,24 +27,31 @@ const MenuPage = ({ navigation }) => {
   const filteredMenu = menuItems.filter((item) => {
     const matchesCategory = filters.category === "" || item.category === filters.category;
     const matchesPrice = item.price <= filters.maxPrice;
-  
     return matchesCategory && matchesPrice;
   });
-  
 
-  const handleMenuItemPress = (item) => {
-    navigation.navigate("OrderNowPage", { menuItems: item });
+  const handleAddToBasket = (item) => {
+    addToBasket(item); // Add the item to the basket using BasketContext
   };
-  
-  const renderMenuItem = ({ item }) => {
-    return (
-      <TouchableOpacity onPress={() => handleMenuItemPress(item)} style={styles.menuItem}>
-        <Image source={item.image} style={styles.menuItemImage} />
-        <Text style={styles.menuItemText}>{item.name}</Text>
-        <Text style={styles.menuItemPrice}>£{item.price}</Text>
-      </TouchableOpacity>
-    );
-  };
+
+  const renderMenuItem = ({ item }) => (
+    <View style={styles.menuCard}>
+      <Image source={item.image} style={styles.menuImage} />
+      <View style={styles.cardContent}>
+        <Text style={styles.menuName}>{item.name}</Text>
+        <Text style={styles.menuDescription}>{item.description}</Text>
+        <View style={styles.cardFooter}>
+          <Text style={styles.menuPrice}>£{item.price}</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => handleAddToBasket(item)}
+          >
+            <Text style={styles.addButtonText}>Add to Basket</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -68,26 +77,12 @@ const MenuPage = ({ navigation }) => {
       <FlatList
         data={filteredMenu}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.menuCard}>
-            <Image source={item.image} style={styles.menuImage} />
-            <View style={styles.cardContent}>
-              <Text style={styles.menuName}>{item.name}</Text>
-              <Text style={styles.menuDescription}>{item.description}</Text>
-              <View style={styles.cardFooter}>
-                <Text style={styles.menuPrice}>{item.price}</Text>
-                <TouchableOpacity style={styles.orderButton}  onPress={() => handleMenuItemPress(item)}>
-                  <Text style={styles.orderButtonText}>Order Now</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
+        renderItem={renderMenuItem}
         numColumns={numColumns}
-        key={`${numColumns}`} 
-        columnWrapperStyle={styles.columnWrapper} 
+        contentContainerStyle={styles.listContainer}
+        columnWrapperStyle={styles.columnWrapper}
       />
+    
 
      {/* Filter Modal */}
       <Modal

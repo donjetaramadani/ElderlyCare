@@ -1,26 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { BasketContext } from "./BasketContext";
+import MenuPage from "./MenuPage";
 
 const Header = () => {
   const navigation = useNavigation();
+  const { basketItems } = useContext(BasketContext);
+  const basketCount = basketItems.length; // Get basket item count
+  const showBasketIcon = basketCount > 0; // Conditionally show basket icon
 
   return (
     <View style={styles.headerContainer}>
-      {/* App Name */}
-            <Text style={styles.logoText}>
-                  |ElderlyCare
-                  <Text style={styles.highlight}>+</Text>
-        </Text>
+      <Text style={styles.logoText}>
+        |ElderlyCare
+        <Text style={styles.highlight}>+</Text>
+      </Text>
 
-      {/* Icons */}
       <View style={styles.iconContainer}>
-        {/* Notifications */}
+        {/* Notifications Icon */}
         <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
           <Ionicons name="notifications-outline" size={28} color="black" />
         </TouchableOpacity>
-        {/* Profile */}
+
+        {/* Basket Icon */}
+        {showBasketIcon && (
+          <TouchableOpacity onPress={() => navigation.navigate("OrderNowPage")}>
+            <View style={styles.basketIcon}>
+              <Ionicons name="basket-outline" size={28} color="black" />
+              {basketCount > 0 && <View style={styles.redDot} />}
+            </View>
+          </TouchableOpacity>
+        )}
+
+        {/* Profile Icon */}
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Ionicons name="person-circle-outline" size={28} color="black" />
         </TouchableOpacity>
@@ -54,6 +68,18 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: "row",
     gap: 20,
+  },
+  basketIcon: {
+    position: "relative",
+  },
+  redDot: {
+    position: "absolute",
+    top: -5,
+    right: -5,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "red",
   },
 });
 
