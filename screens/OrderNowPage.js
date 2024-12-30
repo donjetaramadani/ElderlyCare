@@ -56,7 +56,11 @@ const OrderNowPage = ({ route, navigation }) => {
 
 
   if (!menuItems) {
-    return <Text>Menu item not found</Text>; 
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No menu item found. Please go back and select an item.</Text>
+      </View>
+    );
   }
 
   const handleLocationChange = () => {

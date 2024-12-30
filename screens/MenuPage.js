@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, Modal } from "react-native";
+import { BasketContext } from "./BasketContext";
 
 const MenuPage = ({ navigation }) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [filters, setFilters] = useState({ category: "", maxPrice: Infinity });
+  const [filters, setFilters] = useState({
+    category: "",
+    maxPrice: Infinity,
+  });
   const [numColumns, setNumColumns] = useState(2);
-  const [basket, setBasket] = useState([]);
+  const { addToBasket } = useContext(BasketContext);
 
   const menuItems = [
     { id: 1, name: "Grilled Chicken", description: "Served with vegetables", price: 12, category: "Main", image: require("../assets/images/GrilledChicken.jpg") },
@@ -26,13 +30,28 @@ const MenuPage = ({ navigation }) => {
     return matchesCategory && matchesPrice;
   });
 
-  const handleMenuItemPress = (item) => {
-    navigation.navigate("OrderNowPage", { basket });
+  const handleAddToBasket = (item) => {
+    addToBasket(item); // Add the item to the basket using BasketContext
   };
 
-  const handleAddToBasket = (item) => {
-    setBasket((prevBasket) => [...prevBasket, item]);
-  };
+  const renderMenuItem = ({ item }) => (
+    <View style={styles.menuCard}>
+      <Image source={item.image} style={styles.menuImage} />
+      <View style={styles.cardContent}>
+        <Text style={styles.menuName}>{item.name}</Text>
+        <Text style={styles.menuDescription}>{item.description}</Text>
+        <View style={styles.cardFooter}>
+          <Text style={styles.menuPrice}>£{item.price}</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => handleAddToBasket(item)}
+          >
+            <Text style={styles.addButtonText}>Add to Basket</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -54,44 +73,18 @@ const MenuPage = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-
-      {/* Basket Icon in Header */}
-      <TouchableOpacity style={styles.basketIconContainer} onPress={() => navigation.navigate("OrderNowPage", { basket })}>
-            <Text style={styles.basketIcon}>🛒</Text>
-            {basket.length > 0 && (
-              <Text style={styles.basketCount}>{basket.length}</Text>
-            )}
-          </TouchableOpacity>
-
-
       {/* Menu List */}
       <FlatList
         data={filteredMenu}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.menuCard}>
-            <Image source={item.image} style={styles.menuImage} />
-            <View style={styles.cardContent}>
-              <Text style={styles.menuName}>{item.name}</Text>
-              <Text style={styles.menuDescription}>{item.description}</Text>
-              <View style={styles.cardFooter}>
-                <Text style={styles.menuPrice}>${item.price}</Text>
-                <TouchableOpacity
-                  style={styles.orderButton}
-                  onPress={() => handleAddToBasket(item)}
-                >
-                  <Text style={styles.orderButtonText}>Add to Basket</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
+        renderItem={renderMenuItem}
         numColumns={numColumns}
+        contentContainerStyle={styles.listContainer}
         columnWrapperStyle={styles.columnWrapper}
       />
+    
 
-      {/* Filter Modal */}
+     {/* Filter Modal */}
       <Modal
         visible={isFilterVisible}
         transparent={true}
@@ -100,16 +93,15 @@ const MenuPage = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
+            {/* Modal Header */}
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Filter Menu</Text>
-              <TouchableOpacity
-                onPress={() => setIsFilterVisible(false)}
-                style={styles.closeButton}
-              >
+              <TouchableOpacity onPress={() => setIsFilterVisible(false)} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>×</Text>
               </TouchableOpacity>
             </View>
 
+            {/* Category Filter Section */}
             <Text style={styles.filterLabel}>Category</Text>
             <View style={styles.categoryContainer}>
               {["Main", "Appetizer", "Dessert"].map((category) => (
@@ -126,38 +118,40 @@ const MenuPage = ({ navigation }) => {
               ))}
             </View>
 
-            <Text style={styles.filterLabel}>Max Price</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="Enter max price"
-              style={styles.priceInput}
-              placeholderTextColor="#aaa"
-              onChangeText={(text) =>
-                setFilters({ ...filters, maxPrice: parseFloat(text) || Infinity })
-              }
-            />
+      {/* Max Price Filter Section */}
+      <Text style={styles.filterLabel}>Max Price</Text>
+      <TextInput
+        keyboardType="numeric"
+        placeholder="Enter max price"
+        style={styles.priceInput}
+        placeholderTextColor="#aaa"
+        onChangeText={(text) =>
+          setFilters({ ...filters, maxPrice: parseFloat(text) || Infinity })
+        }
+      />
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setIsFilterVisible(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.applyButton}
-                onPress={() => setIsFilterVisible(false)}
-              >
-                <Text style={styles.applyButtonText}>Apply</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/* Apply and Cancel Buttons */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => setIsFilterVisible(false)}
+        >
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.applyButton}
+          onPress={() => setIsFilterVisible(false)}
+        >
+          <Text style={styles.applyButtonText}>Apply</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View>
+</Modal>
+
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f4f6fc" },
