@@ -3,18 +3,22 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "rea
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Checkout = ({ route, navigation }) => {
-  const { menuItems, quantity, serviceType, collectionTime, location } = route.params || {};
+  const { selectedItems, quantity, serviceType, collectionTime, location } = route.params || {};
 
-  if (!menuItems) {
+  if (!selectedItems) {
     return <Text>Menu item not found</Text>; 
   }
   
 
   const handlePlaceOrder = () => {
     alert("Order placed successfully!");
-    const totalAmount = menuItems.price * quantity;
+    const totalAmount = selectedItems.reduce(
+      (total, item) => total + item.price * quantity,
+      0
+    );
     navigation.navigate("Payment", { totalAmount }); 
   };
+
 
   return (
     <View style={styles.container}>
@@ -25,16 +29,18 @@ const Checkout = ({ route, navigation }) => {
         {/* Order Summary */}
         <View style={styles.orderSummary}>
           <Text style={styles.sectionTitle}>Order Summary</Text>
-          <View style={styles.itemDetails}>
-            <Image source={menuItems.image} style={styles.productImage} />
+          {selectedItems.map((item, index) => (
+          <View key={index} style={styles.itemDetails}>
+            <Image source={item.image} style={styles.productImage} />
             <View style={styles.detailsText}>
-              <Text style={styles.title}>{menuItems.name}</Text>
-              <Text style={styles.description}>{menuItems.description}</Text>
+              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.description}>{item.description}</Text>
               <Text style={styles.price}>
-                £{(menuItems.price * quantity).toFixed(2)} ({quantity}x)
+                ${(item.price * quantity).toFixed(2)} ({quantity}x)
               </Text>
             </View>
           </View>
+        ))}
         </View>
 
         {/* Service Type */}
@@ -59,7 +65,10 @@ const Checkout = ({ route, navigation }) => {
       {/* Total and Place Order */}
       <View style={styles.footer}>
         <Text style={styles.totalPrice}>
-          Total: £{(menuItems.price * quantity).toFixed(2)}
+        Total: ${selectedItems.reduce(
+          (total, item) => total + item.price * quantity,
+          0
+        ).toFixed(2)}
         </Text>
         <TouchableOpacity style={styles.placeOrderButton} onPress={handlePlaceOrder}>
           <MaterialIcons name="check-circle" size={24} color="#fff" />
@@ -75,46 +84,63 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  scrollViewContent: {
+    paddingBottom: 80, 
+  },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     padding: 20,
     color: "#333",
+    backgroundColor: "#f8f8f8",
+    elevation: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   orderSummary: {
-    backgroundColor: "#f8f8f8",
-    padding: 20,
+    backgroundColor: "#fff",
+    padding: 15,
     margin: 10,
     borderRadius: 10,
     elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   section: {
-    padding: 20,
+    padding: 15,
     margin: 10,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#fff",
     borderRadius: 10,
     elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 8,
     color: "#444",
   },
   sectionContent: {
     fontSize: 14,
     color: "#666",
+    lineHeight: 20,
   },
   itemDetails: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 15,
   },
   productImage: {
     width: 80,
     height: 80,
     borderRadius: 10,
-    marginRight: 20,
+    marginRight: 15,
   },
   detailsText: {
     flex: 1,
@@ -143,6 +169,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
   totalPrice: {
     fontSize: 18,

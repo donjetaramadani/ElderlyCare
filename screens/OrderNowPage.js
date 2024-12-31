@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Modal} from "react-native";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Ionicons } from '@expo/vector-icons';
-import { TextInput } from 'react-native';
-
 
 const OrderNowPage = ({ route, navigation }) => {
-  const { menuItems } = route.params; 
   const [quantity, setQuantity] = useState(1);
   const [serviceType, setServiceType] = useState("Take Away");
-  const [collectionTime, setCollectionTime] = useState("09:55 - 02:55");
-
+  const [collectionTime, setCollectionTime] = useState("09:55");
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [newLocation, setNewLocation] = useState('');
-  const [showLocationModal, setShowLocationModal] = useState(false);
-  const [isModalVisible, setModalVisible] = useState(false);
-  //const { menuItem } = route.params;
-  const { basket } = route.params;
+  const [newLocation, setNewLocation] = useState("");
+
+  
+  const { selectedItems } = route.params;
+
+ 
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => {
@@ -26,23 +22,14 @@ const OrderNowPage = ({ route, navigation }) => {
 
   const handleCheckout = () => {
     navigation.navigate("Checkout", {
-      menuItems: menuItems,
+      selectedItems,
+      // menuItems: menuItems,
       quantity: quantity,
       serviceType: serviceType,
       collectionTime: collectionTime,
       location: newLocation,
     });
   };
-
-  const handleEdit = () => {
-    alert("Edit functionality is under development.");
-  };
-
-  const handleRemove = () => {
-    alert("Item removed from the order.");
-    navigation.goBack();
-  };
-
 
   const onTimeChange = (event, selectedTime) => {
     setShowTimePicker(false);
@@ -54,51 +41,44 @@ const OrderNowPage = ({ route, navigation }) => {
   };
 
 
-
-  if (!menuItems) {
+  if (!selectedItems || selectedItems.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>No menu item found. Please go back and select an item.</Text>
+        <Text>No menu items found. Please go back and select an item.</Text>
       </View>
     );
   }
 
-  const handleLocationChange = () => {
-    setShowLocationModal(false);
-  };
 
-  console.log(route.params); 
-
-  useEffect(() => {
-    console.log("Received menuItems:", route.params?.menuItems);
-  }, [route.params?.menuItems]);
-  
 
 
   return (
     <View style={styles.container}>
       <ScrollView>
         {/* Header Section */}
+       
         <Text style={styles.header}>Order Details</Text>
-
-        {/* Selected Item Details */}
-        <View style={styles.orderDetails}>
-          <Image source={menuItems.image} style={styles.productImage} />
-          <View style={styles.detailsText}>
-            <Text style={styles.title}>{menuItems.name}</Text>
-            <Text style={styles.description}>{menuItems.description}</Text>
-            <Text style={styles.price}>£{menuItems.price.toFixed(2)}</Text>
+        {selectedItems.map((item, index) => (
+          <View key={index} style={styles.orderDetails}>
+            <Image source={item.image} style={styles.productImage} />
+            <View style={styles.detailsText}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.price}>£{item.price}</Text>
+            </View>
+            
+            
           </View>
-        </View>
+        ))}
 
         {/* Actions and Quantity Section */}
         <View style={styles.actionAndQuantityContainer}>
-          <TouchableOpacity style={styles.actionButton} onPress={handleEdit}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => alert("Edit functionality under development.")}>
             <MaterialIcons name="edit" size={20} color="#007bff" />
             <Text style={styles.actionButtonText}>Edit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton} onPress={handleRemove}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => alert("Item removed from the order.")}>
             <FontAwesome name="trash" size={20} color="#e53935" />
             <Text style={styles.actionButtonText}>Remove</Text>
           </TouchableOpacity>
@@ -115,30 +95,27 @@ const OrderNowPage = ({ route, navigation }) => {
         </View>
 
         {/* Service Type */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>SELECT SERVICE TYPE</Text>
-        <View style={styles.serviceOptions}>
-          {["Dine In", "Take Away", "Table Service", "Drive Thru"].map((type) => (
-            <TouchableOpacity
-              key={type}
-              style={[styles.serviceType, serviceType === type && styles.serviceActive]}
-              onPress={() => setServiceType(type)}
-            >
-              <Text style={[styles.serviceText, serviceType === type && styles.serviceTextActive]}>
-                {type}
-              </Text>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Select Service Type</Text>
+          <View style={styles.serviceOptions}>
+            {["Dine In", "Take Away", "Table Service", "Drive Thru"].map((type) => (
+              <TouchableOpacity
+                key={type}
+                style={[styles.serviceType, serviceType === type && styles.serviceActive]}
+                onPress={() => setServiceType(type)}
+              >
+                <Text style={[styles.serviceText, serviceType === type && styles.serviceTextActive]}>{type}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
-
 
         {/* Collection Time */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Collection Time</Text>
           <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-          <View style={styles.changeLinkContainer}>
-            <Text style={styles.changeLink}>{collectionTime}</Text>
+            <View style={styles.changeLinkContainer}>
+              <Text style={styles.changeLink}>{collectionTime}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -155,25 +132,20 @@ const OrderNowPage = ({ route, navigation }) => {
         </View>
       )}
 
-
-   {/* Location display and input */}
-   <View style={styles.locationContainer}>
-        <Text style={styles.label}>Collect From</Text>
-        <TextInput
-          style={styles.input}
-          value={newLocation}
-          onChangeText={setNewLocation}
-          placeholder="Enter location"
-          placeholderTextColor="#999"
-        />
-        <TouchableOpacity onPress={() => setShowLocationModal(true)} style={styles.iconContainer}>
+        {/* Location Input */}
+        <View style={styles.locationContainer}>
+          <Text style={styles.label}>Collect From</Text>
+          <TextInput
+            style={styles.input}
+            value={newLocation}
+            onChangeText={setNewLocation}
+            placeholder="Enter location"
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity onPress={() => setShowLocationModal(true)} style={styles.iconContainer}>
           <Ionicons name="map" size={20} color="#007bff" />
         </TouchableOpacity>
-      </View>
-
-      
-
-    
+        </View>
 
         {/* Add More Items */}
         <TouchableOpacity style={styles.addMoreButton} onPress={() => alert("Add More Items clicked!")}>
@@ -182,12 +154,19 @@ const OrderNowPage = ({ route, navigation }) => {
       </ScrollView>
 
       {/* Order Summary */}
+      
       <View style={styles.orderSummary}>
-        <Text style={styles.totalPrice}>Total: ${(menuItems.price * quantity).toFixed(2)}</Text>
-        <TouchableOpacity style={styles.orderButton} onPress={handleCheckout}>
-          <Text style={styles.orderButtonText}>Checkout</Text>
-        </TouchableOpacity>
+          <Text style={styles.totalPrice}>
+            Total: ${selectedItems && selectedItems.length > 0
+              ? (selectedItems.reduce((total, item) => total + (item.price * quantity), 0)).toFixed(2)
+              : "0.00"}
+          </Text>
+          <TouchableOpacity style={styles.orderButton} onPress={handleCheckout}>
+            <Text style={styles.orderButtonText}>Checkout</Text>
+          </TouchableOpacity>
       </View>
+
+
     </View>
   );
 };
@@ -487,7 +466,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-
 });
 
 export default OrderNowPage;

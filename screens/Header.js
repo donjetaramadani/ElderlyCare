@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -8,8 +8,13 @@ import MenuPage from "./MenuPage";
 const Header = () => {
   const navigation = useNavigation();
   const { basketItems } = useContext(BasketContext);
-  const basketCount = basketItems.length; // Get basket item count
-  const showBasketIcon = basketCount > 0; // Conditionally show basket icon
+  const basketCount = basketItems.length; 
+  const showBasketIcon = basketCount > 0; 
+  //const [selectedItems, setSelectedItems] = useState([]);
+
+  
+
+
 
   return (
     <View style={styles.headerContainer}>
@@ -26,7 +31,10 @@ const Header = () => {
 
         {/* Basket Icon */}
         {showBasketIcon && (
-          <TouchableOpacity onPress={() => navigation.navigate("OrderNowPage")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OrderNowPage", {
+            selectedItems: basketItems 
+           
+          })}>
             <View style={styles.basketIcon}>
               <Ionicons name="basket-outline" size={28} color="black" />
               {basketCount > 0 && <View style={styles.redDot} />}
@@ -48,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingTop: 45, // Padding to push the header down
+    paddingTop: 45, 
     paddingVertical: 20,
     paddingHorizontal: 25,
     borderBottomLeftRadius: 20,
@@ -56,14 +64,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   logoText: {
-    fontFamily: "ProximaNova ", // Replace with your downloaded font name
+    fontFamily: "ProximaNova ", 
     fontSize: 22,
     fontWeight: "bold",
     color: "#001",
-    letterSpacing: 1, // Adds a futuristic touch
+    letterSpacing: 1,
   },
   highlight: {
-    color: "#0078D7", // Highlight color for "+"
+    color: "#0078D7", 
   },
   iconContainer: {
     flexDirection: "row",

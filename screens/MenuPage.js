@@ -31,8 +31,10 @@ const MenuPage = ({ navigation }) => {
   });
 
   const handleAddToBasket = (item) => {
-    addToBasket(item); // Add the item to the basket using BasketContext
+    console.log("Adding item to basket:", item);
+    addToBasket(item);
   };
+  
 
   const renderMenuItem = ({ item }) => (
     <View style={styles.menuCard}>
@@ -41,10 +43,10 @@ const MenuPage = ({ navigation }) => {
         <Text style={styles.menuName}>{item.name}</Text>
         <Text style={styles.menuDescription}>{item.description}</Text>
         <View style={styles.cardFooter}>
-          <Text style={styles.menuPrice}>£{item.price}</Text>
+          <Text style={styles.menuPrice}>${item.price}</Text>
           <TouchableOpacity
             style={styles.addButton}
-            onPress={() => handleAddToBasket(item)}
+            onPress={() => addToBasket(item)}
           >
             <Text style={styles.addButtonText}>Add to Basket</Text>
           </TouchableOpacity>
@@ -256,17 +258,20 @@ const styles = StyleSheet.create({
     color: "#333",
     flexShrink: 1, 
   },
-  orderButton: {
-    backgroundColor: "#3E8E7E",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+  addButton: {
+    backgroundColor: "#3E8E7E",  
+    paddingVertical: 11,  
+    paddingHorizontal: 10,  
+    borderRadius: 6, 
     flexShrink: 0, 
   },
-  orderButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
+  
+  addButtonText: {
+    color: "#fff",  
+    fontWeight: "bold",  
+    textAlign: "center",  
+    fontSize: 12,  
+    letterSpacing: 0.5,  
   },
   
 

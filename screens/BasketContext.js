@@ -1,17 +1,20 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
 
 export const BasketContext = createContext();
 
 export const BasketProvider = ({ children }) => {
   const [basketItems, setBasketItems] = useState([]);
 
-  // Function to add items to the basket
   const addToBasket = (item) => {
-    setBasketItems((prevItems) => [...prevItems, item]);
+    setBasketItems((prevItems) => [...prevItems, item]); 
+  };
+
+  const removeFromBasket = (itemId) => {
+    setBasketItems((prevItems) => prevItems.filter(item => item.id !== itemId)); 
   };
 
   return (
-    <BasketContext.Provider value={{ basketItems, addToBasket }}>
+    <BasketContext.Provider value={{ basketItems, addToBasket, removeFromBasket }}>
       {children}
     </BasketContext.Provider>
   );
