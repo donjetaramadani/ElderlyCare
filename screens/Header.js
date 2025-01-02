@@ -2,19 +2,15 @@ import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { BasketContext } from "./BasketContext";
+import { useBasket } from "./BasketContext";
 import MenuPage from "./MenuPage";
 
 const Header = () => {
   const navigation = useNavigation();
-  const { basketItems } = useContext(BasketContext);
-  const basketCount = basketItems.length; 
+  const { basketItems } = useBasket();
+  const basketCount = basketItems?.length || 0;  
   const showBasketIcon = basketCount > 0; 
   //const [selectedItems, setSelectedItems] = useState([]);
-
-  
-
-
 
   return (
     <View style={styles.headerContainer}>

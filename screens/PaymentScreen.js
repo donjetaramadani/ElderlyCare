@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
+import { useCart } from './CartContext';
+import { useBasket } from "./BasketContext";
 
 const Payment = ({ route, navigation }) => {
-  
   const { totalAmount } = route.params || {};
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  // State to manage the cart
+  const { clearBasket } = useBasket();
 
   const handlePayment = async () => {
     try {
       const response = await fetch("http://192.168.0.42:5196/api/Payment/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount * 100 }), 
+        body: JSON.stringify({ amount: Math.round(totalAmount * 100) }),
       });
       const { clientSecret } = await response.json();
 
@@ -30,7 +34,10 @@ const Payment = ({ route, navigation }) => {
         alert(`Payment Failed: ${paymentError.message}`);
       } else {
         alert("Payment successful!");
-        navigation.navigate("OrderSummary", { paymentStatus: "Success" });
+
+       clearBasket();
+
+       navigation.navigate("Home");
       }
     } catch (error) {
       console.error("Payment Error:", error);
@@ -41,7 +48,6 @@ const Payment = ({ route, navigation }) => {
  
   const handleSendOrderToCaregiver = async () => {
     try {
-      
       const response = await fetch("http://192.168.0.42:5196/api/Order/send-to-caregiver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +60,10 @@ const Payment = ({ route, navigation }) => {
       const result = await response.json();
       if (response.ok) {
         alert("Order sent to caregiver successfully!");
+
+        clearBasket();
+
+        navigation.navigate("Home");
       } else {
         alert(`Error sending order: ${result.message}`);
       }

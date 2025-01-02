@@ -273,7 +273,13 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "paymentRequest",
+        "Type": "backendd.Controllers.PaymentController\u002BPaymentRequest",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

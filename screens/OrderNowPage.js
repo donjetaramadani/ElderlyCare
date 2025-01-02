@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Swipeable } from "react-native-gesture-handler";
+import { BasketContext } from "./BasketContext";
 
 const OrderNowPage = ({ route, navigation }) => {
   const [quantity, setQuantity] = useState(1);
@@ -10,24 +13,46 @@ const OrderNowPage = ({ route, navigation }) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [newLocation, setNewLocation] = useState("");
 
-  
-  const { selectedItems } = route.params;
+  // Safely extract initialItems from route.params
+  const { selectedItems: initialItems = [] } = route.params || {};
 
- 
+  // State for selected items and their quantities
+  const [selectedItems, setSelectedItems] = useState(initialItems);
+  const [quantities, setQuantities] = useState(initialItems.map(() => 1));
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+  const { basketItems, removeFromBasket } = useContext(BasketContext);
+  //const { selectedItems } = route.params;
+
+  const handleIncrease = (index) => {
+    const newQuantities = [...quantities];
+    newQuantities[index]++;
+    setQuantities(newQuantities);
+  };
+
+  const handleDecrease = (index) => {
+    const newQuantities = [...quantities];
+    if (newQuantities[index] > 1) newQuantities[index]--;
+    setQuantities(newQuantities);
+  };
+
+  const handleDelete = (index) => {
+    const updatedItems = selectedItems.filter((_, i) => i !== index);
+    const updatedQuantities = quantities.filter((_, i) => i !== index);
+    setSelectedItems(updatedItems);
+    setQuantities(updatedQuantities);
   };
 
   const handleCheckout = () => {
     navigation.navigate("Checkout", {
-      selectedItems,
+      selectedItems: basketItems, 
+      //selectedItems,
+      basketItems,
       // menuItems: menuItems,
       quantity: quantity,
       serviceType: serviceType,
       collectionTime: collectionTime,
       location: newLocation,
+      initialQuantities: quantities, 
     });
   };
 
@@ -40,8 +65,13 @@ const OrderNowPage = ({ route, navigation }) => {
     }
   };
 
+  useEffect(() => {
+    // Ensure that quantities are synchronized with the basket items
+    setQuantities(basketItems.map(() => 1)); // Reset quantities when items are added
+  }, [basketItems]);
 
-  if (!selectedItems || selectedItems.length === 0) {
+
+  if (!basketItems || basketItems.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>No menu items found. Please go back and select an item.</Text>
@@ -49,6 +79,14 @@ const OrderNowPage = ({ route, navigation }) => {
     );
   }
 
+  const totalPrice = basketItems.reduce(
+    (total, item, index) => total + item.price * quantities[index],
+    0
+  ).toFixed(2);
+
+  const handleAddMoreItems = () => {
+    navigation.navigate("MenuPage");
+  };
 
 
 
@@ -58,20 +96,39 @@ const OrderNowPage = ({ route, navigation }) => {
         {/* Header Section */}
        
         <Text style={styles.header}>Order Details</Text>
-        {selectedItems.map((item, index) => (
-          <View key={index} style={styles.orderDetails}>
-            <Image source={item.image} style={styles.productImage} />
-            <View style={styles.detailsText}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.description}>{item.description}</Text>
-            <Text style={styles.price}>£{item.price}</Text>
+        {basketItems.map((item, index) => (
+          <Swipeable
+            key={index}
+            renderRightActions={() => (
+              <TouchableOpacity
+                style={styles.swipeDeleteButton}
+                onPress={() => removeFromBasket(item.id)}
+              >
+                <Text style={styles.swipeDeleteText}>Delete</Text>
+              </TouchableOpacity>
+            )}
+          >
+            <View style={styles.orderDetails}>
+              <Image source={item.image} style={styles.productImage} />
+              <View style={styles.detailsText}>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+                <Text style={styles.price}>${item.price}</Text>
+              </View>
+              <View style={styles.quantityAdjuster}>
+                <TouchableOpacity onPress={() => handleDecrease(index)} style={styles.quantityButton}>
+                  <Text style={styles.quantityButtonText}>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.quantity}>{quantities[index]}</Text>
+                <TouchableOpacity onPress={() => handleIncrease(index)} style={styles.quantityButton}>
+                  <Text style={styles.quantityButtonText}>+</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            
-            
-          </View>
+          </Swipeable>
         ))}
 
-        {/* Actions and Quantity Section */}
+        {/* Actions and Quantity Section 
         <View style={styles.actionAndQuantityContainer}>
           <TouchableOpacity style={styles.actionButton} onPress={() => alert("Edit functionality under development.")}>
             <MaterialIcons name="edit" size={20} color="#007bff" />
@@ -82,17 +139,7 @@ const OrderNowPage = ({ route, navigation }) => {
             <FontAwesome name="trash" size={20} color="#e53935" />
             <Text style={styles.actionButtonText}>Remove</Text>
           </TouchableOpacity>
-
-          <View style={styles.quantityAdjuster}>
-            <TouchableOpacity style={styles.quantityButton} onPress={handleDecrease}>
-              <Text style={styles.quantityButtonText}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.quantity}>{quantity}</Text>
-            <TouchableOpacity style={styles.quantityButton} onPress={handleIncrease}>
-              <Text style={styles.quantityButtonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </View>*/}
 
         {/* Service Type */}
         <View style={styles.section}>
@@ -148,24 +195,20 @@ const OrderNowPage = ({ route, navigation }) => {
         </View>
 
         {/* Add More Items */}
-        <TouchableOpacity style={styles.addMoreButton} onPress={() => alert("Add More Items clicked!")}>
+        <TouchableOpacity style={styles.addMoreButton} onPress={handleAddMoreItems}>
           <Text style={styles.addMoreButtonText}>Add More Items</Text>
         </TouchableOpacity>
       </ScrollView>
 
       {/* Order Summary */}
-      
       <View style={styles.orderSummary}>
-          <Text style={styles.totalPrice}>
-            Total: ${selectedItems && selectedItems.length > 0
-              ? (selectedItems.reduce((total, item) => total + (item.price * quantity), 0)).toFixed(2)
-              : "0.00"}
-          </Text>
-          <TouchableOpacity style={styles.orderButton} onPress={handleCheckout}>
-            <Text style={styles.orderButtonText}>Checkout</Text>
-          </TouchableOpacity>
+        <Text style={styles.totalPrice}>
+          Total: ${totalPrice}
+        </Text>
+        <TouchableOpacity style={styles.orderButton} onPress={handleCheckout}>
+          <Text style={styles.orderButtonText}>Checkout</Text>
+        </TouchableOpacity>
       </View>
-
 
     </View>
   );
@@ -466,6 +509,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  swipeDeleteButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#e53935",
+    width: 80,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  swipeDeleteText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },  
 });
 
 export default OrderNowPage;

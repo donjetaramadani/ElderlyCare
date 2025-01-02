@@ -35,6 +35,9 @@ const MenuPage = ({ navigation }) => {
     addToBasket(item);
   };
   
+  const handleNavigateToOrderNow = () => {
+    navigation.navigate("OrderNowPage", { selectedItems: basketItems });
+  };
 
   const renderMenuItem = ({ item }) => (
     <View style={styles.menuCard}>

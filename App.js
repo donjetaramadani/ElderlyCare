@@ -8,11 +8,13 @@ import BottomNavBar from "./screens/BottomNavBar";
 import { HealthDataProvider } from "./screens/HealthDataContext";
 import { UserProvider } from "./screens/UserContext"; 
 import { StripeProvider } from '@stripe/stripe-react-native';
-import { BasketProvider } from "./screens/BasketContext";
+import { CartProvider } from "./screens/CartContext";
+import { BasketProvider } from './screens/BasketContext';
 
 export default function App() {
   return (
     <BasketProvider>
+    <CartProvider>
     <StripeProvider publishableKey="pk_test_51PUzHw02TSHp6Y0YvAbvo9mi3ZMKYE4NP5YHdR4hr8rSzaArwbwRnOxCpnmCwa5Ve5BF0UvWQbR80fGObo8ZkHfx00ehf3Czl7">
     <GestureHandlerRootView style={{ flex: 1 }}> 
       <HealthDataProvider>
@@ -33,6 +35,7 @@ export default function App() {
       </HealthDataProvider>
     </GestureHandlerRootView>
     </StripeProvider>
+    </CartProvider>
     </BasketProvider>
   );
 }

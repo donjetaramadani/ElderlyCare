@@ -1,46 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Checkout = ({ route, navigation }) => {
-  const { selectedItems, quantity, serviceType, collectionTime, location } = route.params || {};
+  const { 
+    selectedItems = [], 
+    initialQuantities = [],  // Get initial quantities from params
+    serviceType = "Not specified", 
+    collectionTime = "Not specified", 
+    location = "Not specified" 
+  } = route.params || {};
 
-  if (!selectedItems) {
-    return <Text>Menu item not found</Text>; 
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    // Calculate total amount based on selectedItems and quantities
+    const newTotal = selectedItems.reduce((total, item, index) => {
+      const itemQuantity = initialQuantities[index] || 1;
+      return total + item.price * itemQuantity;
+    }, 0);
+    setTotalAmount(newTotal);
+  }, [selectedItems, initialQuantities]);
+
+  if (!Array.isArray(selectedItems) || selectedItems.length === 0) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorMessage}>No items found in your order!</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backButton}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
-  
 
   const handlePlaceOrder = () => {
+    if (!totalAmount) {
+      alert("Unable to calculate total. Please try again.");
+      return;
+    }
     alert("Order placed successfully!");
-    const totalAmount = selectedItems.reduce(
-      (total, item) => total + item.price * quantity,
-      0
-    );
-    navigation.navigate("Payment", { totalAmount }); 
+    navigation.navigate("Payment", { totalAmount });
   };
-
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        {/* Header */}
         <Text style={styles.header}>Checkout</Text>
 
         {/* Order Summary */}
         <View style={styles.orderSummary}>
           <Text style={styles.sectionTitle}>Order Summary</Text>
           {selectedItems.map((item, index) => (
-          <View key={index} style={styles.itemDetails}>
-            <Image source={item.image} style={styles.productImage} />
-            <View style={styles.detailsText}>
-              <Text style={styles.title}>{item.name}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-              <Text style={styles.price}>
-                ${(item.price * quantity).toFixed(2)} ({quantity}x)
-              </Text>
+            <View key={index} style={styles.itemDetails}>
+              {item.image && <Image source={item.image} style={styles.productImage} />}
+              <View style={styles.detailsText}>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+                <Text style={styles.price}>
+                  ${(item.price * (initialQuantities[index] || 1)).toFixed(2)} 
+                  ({initialQuantities[index] || 1}x)
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
         </View>
 
         {/* Service Type */}
@@ -64,12 +86,7 @@ const Checkout = ({ route, navigation }) => {
 
       {/* Total and Place Order */}
       <View style={styles.footer}>
-        <Text style={styles.totalPrice}>
-        Total: ${selectedItems.reduce(
-          (total, item) => total + item.price * quantity,
-          0
-        ).toFixed(2)}
-        </Text>
+        <Text style={styles.totalPrice}>Total: ${totalAmount.toFixed(2)}</Text>
         <TouchableOpacity style={styles.placeOrderButton} onPress={handlePlaceOrder}>
           <MaterialIcons name="check-circle" size={24} color="#fff" />
           <Text style={styles.placeOrderButtonText}>Place Order</Text>
