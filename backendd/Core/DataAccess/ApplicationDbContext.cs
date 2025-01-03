@@ -21,10 +21,21 @@ namespace backendd.Core.DataAccess
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<HealthMetrics>().Property(h => h.UserId).IsRequired();
-            builder.Entity<Activity>().Property(a => a.UserId).IsRequired();
-            builder.Entity<Recommendation>().Property(r => r.UserId).IsRequired();
-            builder.Entity<Notification>().Property(n => n.UserId).IsRequired();
+            // Configure the User entity
+            builder.Entity<User>(entity =>
+            {
+                // Ensure FullName is required
+                entity.Property(u => u.FullName).IsRequired();
+
+                // Ensure PhoneNumber is required
+                entity.Property(u => u.PhoneNumber).IsRequired(false); // Optional if nullable is desired
+
+                // Ensure DateOfBirth is required
+                entity.Property(u => u.DateOfBirth).IsRequired();
+
+                // Optional: Set a default value for ProfileImage if needed
+                entity.Property(u => u.ProfileImage).HasDefaultValue(null); // Optional
+            });
         }
     }
 }

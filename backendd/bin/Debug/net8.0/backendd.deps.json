@@ -15,6 +15,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.0",
           "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "RestSharp": "112.1.0",
           "Stripe": "1.12.0",
           "Stripe.net": "47.2.0",
           "Swashbuckle.AspNetCore": "6.6.2"
@@ -786,17 +787,17 @@
           }
         }
       },
-      "RestSharp/105.0.1": {
+      "RestSharp/112.1.0": {
         "runtime": {
-          "lib/net4/RestSharp.dll": {
-            "assemblyVersion": "105.0.1.0",
-            "fileVersion": "105.0.1.0"
+          "lib/net8.0/RestSharp.dll": {
+            "assemblyVersion": "112.1.0.0",
+            "fileVersion": "112.1.0.0"
           }
         }
       },
       "Stripe/1.12.0": {
         "dependencies": {
-          "RestSharp": "105.0.1"
+          "RestSharp": "112.1.0"
         },
         "runtime": {
           "lib/net40/Stripe.dll": {
@@ -1431,12 +1432,12 @@
       "path": "newtonsoft.json/13.0.3",
       "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
-    "RestSharp/105.0.1": {
+    "RestSharp/112.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2jEivNmSZFsK/iyoOu0l9+pEM2hXLQCvOQdLgQcr92cdnirl2xm+Wddy7lP6JTwZSLjAQ1ogHlal1tLu5hfZPw==",
-      "path": "restsharp/105.0.1",
-      "hashPath": "restsharp.105.0.1.nupkg.sha512"
+      "sha512": "sha512-bOUGNZqhhv/QeCXHTKEUil846yBjwWXpzPKjO67kFvaAOoF361z7jLY5BMnuZ6WD2WQRA750sNMcK7MSPCQ5Mg==",
+      "path": "restsharp/112.1.0",
+      "hashPath": "restsharp.112.1.0.nupkg.sha512"
     },
     "Stripe/1.12.0": {
       "type": "package",

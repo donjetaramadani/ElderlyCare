@@ -1,28 +1,44 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import CustomLink from "../components/CustomLink";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment"; // For formatting the date
+import { UserContext } from "./UserContext"; // Import UserContext correctly
 
 const SignupScreen = ({ navigation }) => {
-  const [fullName, setFullName] = useState(""); // New field for Full Name
+  const { updateUser } = useContext(UserContext); // Use useContext hook
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); // New field for Phone Number
-  const [dateOfBirth, setDateOfBirth] = useState(""); // New field for Date of Birth
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const handleSignup = async () => {
-    if (!email.includes("@")) {
-      alert("Please enter a valid email.");
+    if (!email.includes("@") || !email.includes(".")) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
       return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      Alert.alert("Password Mismatch", "Passwords do not match.");
       return;
     }
-  
+    if (!dateOfBirth) {
+      Alert.alert("Missing Date of Birth", "Please select your date of birth.");
+      return;
+    }
+
     try {
+      // Sign up the user
       const response = await fetch("http://192.168.0.41:5196/api/User/register", {
         method: "POST",
         headers: {
@@ -32,34 +48,73 @@ const SignupScreen = ({ navigation }) => {
           fullName,
           email,
           phoneNumber,
-          dateOfBirth,
+          dateOfBirth: moment(dateOfBirth).format("YYYY-MM-DD"), // Convert to YYYY-MM-DD
           password,
         }),
       });
-  
-      const contentType = response.headers.get("content-type");
+
       const responseText = await response.text();
       console.log("Raw response:", responseText);
-  
-      if (contentType && contentType.includes("application/json")) {
-        const data = JSON.parse(responseText);
-        if (!response.ok) {
-          alert(`Signup Failed: ${data.message || "Unknown error"}`);
-          return;
-        }
-      } else if (!response.ok) {
-        alert(`Signup Failed: ${responseText}`);
+
+      if (!response.ok) {
+        const errorData = JSON.parse(responseText);
+        Alert.alert("Signup Failed", errorData.message || "Unknown error.");
         return;
       }
-  
-      alert("Signup successful!");
-      navigation.replace("EditProfile");
+
+      const data = JSON.parse(responseText);
+      console.log("Signup successful:", data);
+
+      // Log in the user automatically after signup
+      const loginResponse = await fetch("http://192.168.0.41:5196/api/User/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (!loginResponse.ok) {
+        const loginError = await loginResponse.json();
+        Alert.alert("Login Failed", loginError.message || "Unknown error.");
+        return;
+      }
+
+      const loginData = await loginResponse.json();
+      console.log("Login successful:", loginData);
+
+      // Save the user data and token in the context
+      updateUser({
+        token: loginData.token,
+        name: fullName,
+        email,
+        phoneNumber,
+        profileImage: null,
+      });
+
+      // Navigate to the Profile screen
+      navigation.replace("Profile");
     } catch (error) {
-      console.error("Error during signup:", error);
-      alert("An error occurred. Please try again later.");
+      console.error("Error during signup/login:", error);
+      Alert.alert("Error", "An error occurred. Please try again later.");
     }
   };
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (selectedDate) => {
+    setDateOfBirth(selectedDate); // Set the selected date
+    hideDatePicker();
+  };
 
   return (
     <View style={styles.container}>
@@ -80,10 +135,23 @@ const SignupScreen = ({ navigation }) => {
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
       />
-      <CustomInput
-        placeholder="Date of Birth (YYYY-MM-DD)"
-        value={dateOfBirth}
-        onChangeText={setDateOfBirth}
+      <TouchableOpacity
+        style={styles.datePickerButton}
+        onPress={showDatePicker}
+      >
+        <Text style={styles.datePickerText}>
+          {dateOfBirth
+            ? moment(dateOfBirth).format("YYYY-MM-DD") // Format selected date
+            : "Select your date of birth"}
+        </Text>
+      </TouchableOpacity>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        maximumDate={new Date()} // Prevent future dates
+        display="spinner"
       />
       <CustomInput
         placeholder="Password"
@@ -122,6 +190,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+  },
+  datePickerButton: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 15,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    marginBottom: 15,
+  },
+  datePickerText: {
+    fontSize: 16,
+    color: "#555",
   },
 });
 
