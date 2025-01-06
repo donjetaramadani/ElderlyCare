@@ -6,6 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace backendd.Controllers
 {
@@ -14,6 +16,7 @@ namespace backendd.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly UserManager<User> _userManager; 
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _cache;
         private bool IsValidEmail(string email)
@@ -24,11 +27,13 @@ namespace backendd.Controllers
 }
 
 
-        public UserController(IUserService userService, IConfiguration configuration, IMemoryCache cache)
+        public UserController(IUserService userService, UserManager<User> userManager, IConfiguration configuration, IMemoryCache cache)
         {
             _userService = userService;
+            _userManager = userManager;
             _configuration = configuration;
             _cache = cache;
+            
         }
 
         [HttpPost("register")]
@@ -137,6 +142,59 @@ public async Task<IActionResult> GetProfile()
 
             return Ok(new { success = true, message = "Profile updated successfully." });
         }
+
+        [HttpGet("profile/notifications")]
+public async Task<IActionResult> GetNotificationPreferences()
+{
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    if (string.IsNullOrEmpty(email))
+        return Unauthorized(new { success = false, message = "Invalid token." });
+
+    var user = await _userService.FindByEmailAsync(email);
+    if (user == null)
+        return NotFound(new { success = false, message = "User not found." });
+
+    return Ok(new
+    {
+        success = true,
+        preferences = new
+        {
+            emailNotifications = user.EmailNotifications,
+            pushNotifications = user.PushNotifications,
+            smsNotifications = user.SmsNotifications,
+        }
+    });
+}
+
+[HttpPut("profile/notifications")]
+public async Task<IActionResult> UpdateNotificationPreferences([FromBody] NotificationPreferencesModel model)
+{
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    if (string.IsNullOrEmpty(email))
+        return Unauthorized(new { success = false, message = "Invalid token." });
+
+    var user = await _userService.FindByEmailAsync(email);
+    if (user == null)
+        return NotFound(new { success = false, message = "User not found." });
+
+    user.EmailNotifications = model.EmailNotifications;
+    user.PushNotifications = model.PushNotifications;
+    user.SmsNotifications = model.SmsNotifications;
+
+    var result = await _userManager.UpdateAsync(user);
+    if (!result.Succeeded)
+        return BadRequest(new { success = false, message = "Failed to update preferences." });
+
+    return Ok(new { success = true, message = "Preferences updated successfully." });
+}
+
+public class NotificationPreferencesModel
+{
+    public bool EmailNotifications { get; set; }
+    public bool PushNotifications { get; set; }
+    public bool SmsNotifications { get; set; }
+}
+
         
 
 private string GenerateJwtToken(string email)
