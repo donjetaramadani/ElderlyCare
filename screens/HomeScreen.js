@@ -86,7 +86,6 @@ const HomePage = ({ navigation }) => {
       const updatedReminders = reminders.filter((reminder) => reminder.id !== id);
       setReminders(updatedReminders);
   
-      // If you want to delete it from the backend too:
       await fetch(`http://192.168.0.42:5196/api/Reminders/${id}`, {
         method: "DELETE",
       });
@@ -381,7 +380,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   sosContainer: {
-    marginTop: 20, // Add margin to push the button down
+    marginTop: 20,
     alignItems: "center",
   },
   
@@ -419,7 +418,7 @@ const styles = StyleSheet.create({
   reminderCard: {
     borderRadius: 15,
     marginRight: 15,
-    width: 180, // Fixed card width
+    width: 180, 
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },

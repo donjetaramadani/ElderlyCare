@@ -16,7 +16,11 @@ namespace backendd.Core.DataAccess
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<SOSLog> SOSLogs { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<StaffReview> StaffReviews { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<StaffMember> StaffMembers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

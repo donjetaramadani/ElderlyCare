@@ -26,4 +26,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Core\Dtos\Auth\" />
+	  <Folder Include="Core\Dtos\General\" />
+	  <Folder Include="Core\Dtos\Log\" />
+	</ItemGroup>
+
 </Project>

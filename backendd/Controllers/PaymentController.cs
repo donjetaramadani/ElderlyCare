@@ -26,7 +26,7 @@ namespace backendd.Controllers
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = paymentRequest.Amount, // Use the dynamic amount from the request
+                    Amount = paymentRequest.Amount, 
                     Currency = "usd",
                     PaymentMethodTypes = new List<string> { "card" },
                 };

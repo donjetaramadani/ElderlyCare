@@ -1,11 +1,39 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
+import { UserContext } from './UserContext'; 
 
 const ReviewSection = ({ hospital }) => {
+  const navigation = useNavigation();
+  const { currentUser } = useContext(UserContext); 
   const [rating, setRating] = useState(0);  
   const [comment, setComment] = useState('');  
   const [reviews, setReviews] = useState(hospital?.reviews || []);  
+  const hospitalId = hospital?.id;
+
+  // Fetch reviews from the backend when the component mounts
+  useEffect(() => {
+    if (hospitalId) {
+      fetchReviews();
+    } else {
+      console.error('Hospital ID is not provided');
+    }
+  }, [hospitalId]);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://192.168.0.42:5196/api/Reviews/${hospitalId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reviews');
+      }
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      Alert.alert('Error', 'Failed to load reviews. Please try again later.');
+    }
+  };
 
   const handleRating = (starRating) => {
     setRating(starRating);
@@ -15,11 +43,71 @@ const ReviewSection = ({ hospital }) => {
     setComment(text);
   };
 
-  const handleSubmitReview = () => {
-    const newReview = { user: 'User', comment, rating };
-    setReviews([...reviews, newReview]);
-    setComment('');
-    setRating(0);
+  /*
+  const handleSubmitReview = async () => {
+    const newReview = {
+      user: currentUser, // Replace with the actual user, if available
+      hospitalId, 
+      comment, 
+      rating,
+    };*/
+
+    const handleSubmitReview = async () => {
+      if (!currentUser) {
+        Alert.alert(
+          'Login Required',
+          'You need to log in to write a review.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Login', onPress: () => navigation.navigate('Login') },
+          ]
+        );
+        return;
+      }
+      
+
+    const newReview = { user: currentUser, hospitalId, comment, rating };
+    try {
+      const response = await fetch(`http://192.168.0.42:5196/api/Reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newReview),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit review');
+      }
+
+      const savedReview = await response.json();
+      setReviews([...reviews, savedReview]); // Add the new review to the local list
+      setComment('');
+      setRating(0);
+      Alert.alert('Success', 'Review submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      Alert.alert('Error', 'Failed to submit review. Please try again later.');
+    }
+  };
+
+
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      const response = await fetch(`http://192.168.0.42:5196/api/Reviews/${reviewId}?user=${currentUser}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete review');
+      }
+
+      setReviews(reviews.filter((review) => review.id !== reviewId));
+      Alert.alert('Success', 'Review deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      Alert.alert('Error', 'Failed to delete review. Please try again later.');
+    }
   };
 
   return (
@@ -35,6 +123,11 @@ const ReviewSection = ({ hospital }) => {
               <Text style={styles.reviewAuthor}>{item.user}</Text>
               <Text style={styles.reviewText}>{item.comment}</Text>
               <Text style={styles.reviewRating}>Rating: {item.rating}/5</Text>
+              {item.user === currentUser && (
+                <TouchableOpacity onPress={() => handleDeleteReview(item.id)}>
+                  <Text style={styles.deleteButton}>Delete</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
         />

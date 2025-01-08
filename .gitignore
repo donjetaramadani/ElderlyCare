@@ -39,3 +39,7 @@ app-example
 
 # Visual Studio
 .vs/
+
+# Ignore generated files
+backendd/bin/
+backendd/obj/

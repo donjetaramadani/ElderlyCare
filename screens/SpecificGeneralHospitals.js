@@ -8,6 +8,9 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
+
 // Importing images for specific hospitals
 import hospital1Img from "../assets/images/CityGeneralHospital.jpg";
 import hospital2Img from "../assets/images/MetroHealthCenter.jpg";
@@ -63,6 +66,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
                       },
       staff: [
               {
+                id: 1,
                 name: "Dr. Emily Smith",
                 position: "Cardiologist",
                 phone: "+1234567890",
@@ -75,6 +79,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
                           ],
               },
               {
+                id: 2,
                 name: "John Doe",
                 position: "Nurse",
                 phone: "+0987654321",
@@ -87,6 +92,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
                           ],
               },
               {
+                id: 3,
                 name: "Dr. Sarah Johnson",
                 position: "Neurologist",
                 phone: "+1234561234",
@@ -99,6 +105,7 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
                           ],
               },
               {
+                id: 4,
                 name: "Dr. Michael Lee",
                 position: "Pediatrician",
                 phone: "+5678901234",
@@ -563,12 +570,31 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
       allowsAppointment: true,           
     },
   ];
-  const filteredHospitals = hospitals.filter((hospital) =>
-    hospital.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredHospitals = hospitals.filter(hospital =>
+    hospital.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    hospital.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  console.log("Route:", route);
+  console.log("Route Params:", route.params);
+  
+  console.log("Hospitals:", hospitals); 
+console.log("Search Query:", searchQuery); 
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    
+
+      {/* Go Back Button */}
+      <TouchableOpacity
+            style={styles.goBackButton}
+            onPress={() => {
+              navigation.navigate("GeneralHospitals");
+            }}
+          >
+          <Icon name="arrow-back" size={24} color="#fff" />
+       </TouchableOpacity>
+
       <Text style={styles.title}>Specific {type} Hospitals</Text>
         {/* Search Bar */}
         <View style={styles.searchBarContainer}>
@@ -601,11 +627,13 @@ const SpecificGeneralHospitals = ({ navigation, route }) => {
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: "center",
     paddingVertical: 20,
+    paddingTop: 50,
     backgroundColor: "#f4f4f4",
   },
   title: {
@@ -710,6 +738,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 10, 
+    left: 20, 
+    width: 35,
+    height: 35,
+    borderRadius: 20, 
+    backgroundColor: "#2471a3",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#34495e",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   
 });

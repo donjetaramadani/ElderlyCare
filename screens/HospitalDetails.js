@@ -16,18 +16,43 @@ import hospital6Img from "../assets/images/pharmacy.jpg";
 const HospitalDetails = ({ route, navigation }) => {
   const { hospital } = route.params; 
 
+ 
+  console.log("HospitalDetails - Hospital:", hospital);
+
+
+  if (!hospital) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Hospital data is missing.</Text>
+      </View>
+    );
+  }
+
   const handlePharmacyOrder = () => {
-    navigation.navigate("PharmacyPage"); 
+    navigation.navigate("PharmacyPage", { hospital }); 
   };
 
   const handleRestaurantOrder = () => {
-    navigation.navigate("MenuPage"); 
+    navigation.navigate("MenuPage", { hospital }); 
   };
-
+ 
 
   return (
     <ScrollView contentContainerStyle={styles.container} nestedScrollEnabled>
+      {/* Go Back Button */}
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => navigation.navigate("SpecificGeneralHospitals", { type: "General" })}
+      >
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
+      {/* Check if hospital.image exists before rendering */}
+      {hospital.image ? (
       <Image source={hospital.image} style={styles.image} />
+    ) : (
+      <Text>No image available</Text> 
+    )}
       <Text style={styles.hospitalName}>{hospital.name}</Text>
       <Text style={styles.description}>{hospital.description}</Text>
 
@@ -177,25 +202,27 @@ const HospitalDetails = ({ route, navigation }) => {
       )}
 
   {/* Staff Section */}
-  {hospital.staff && (
+  {hospital.staff && hospital.staff.length > 0 && (
   <View style={styles.card}>
     <Text style={styles.cardTitle}>Our Staff</Text>
     <View style={styles.staffList}>
       {hospital.staff.map((staff, index) => (
-        <Pressable
-          key={index}
-          style={styles.staffItem}
-          onPress={() => navigation.navigate("StaffDetails", { staff })}
-        >
-          <Image
-            source={staff.image || hospital3Img} 
-            style={styles.staffImage}
-          />
-          <View style={styles.staffTextContainer}>
-            <Text style={styles.staffName}>{staff.name}</Text>
-            <Text style={styles.staffPosition}>{staff.position}</Text>
-          </View>
-        </Pressable>
+       <Pressable
+       key={index}
+       style={styles.staffItem}
+       onPress={() => navigation.navigate("StaffDetails", { staffId: staff.id, hospital })}
+
+     >
+       <Image
+         source={staff.image || hospital3Img} 
+         style={styles.staffImage}
+       />
+       <View style={styles.staffTextContainer}>
+         <Text style={styles.staffName}>{staff.name}</Text>
+         <Text style={styles.staffPosition}>{staff.position}</Text>
+       </View>
+     </Pressable>
+     
       ))}
     </View>
   </View>
@@ -252,9 +279,12 @@ const HospitalDetails = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+ 
   container: {
+    flexGrow: 1,
+    paddingTop: 60,
     padding: 20,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#f7f9fb",
   },
   image: {
     width: "100%",
@@ -345,7 +375,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 15,
     borderRadius: 8,
-    backgroundColor: "#ecf0f1", // Light background color for icons
+    backgroundColor: "#ecf0f1", 
   },
   facilityTextContainer: {
     flex: 1,
@@ -511,6 +541,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 10, 
+    left: 20,
+    width: 35,
+    height: 35,
+    borderRadius: 20, 
+    backgroundColor: "#2471a3",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#34495e",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   
 

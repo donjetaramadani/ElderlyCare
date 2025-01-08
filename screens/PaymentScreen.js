@@ -8,7 +8,6 @@ const Payment = ({ route, navigation }) => {
   const { totalAmount } = route.params || {};
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-  // State to manage the cart
   const { clearBasket } = useBasket();
 
   const handlePayment = async () => {

@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/MaterialIcons"; 
 
 const hospitalTypes = [
   { id: 1, name: "General Hospitals", icon: "🏥", screen: "GeneralHospitals" },
@@ -12,6 +14,17 @@ const hospitalTypes = [
 const HospitalTypes = ({ navigation }) => {
   return (
     <View style={styles.container}>
+
+       {/* Go Back Button */}
+       <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => {
+          navigation.navigate("Home"); 
+        }}
+      >
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Select Hospital Type</Text>
       <View style={styles.grid}>
         {hospitalTypes.map((type) => (
@@ -33,6 +46,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     alignItems: "center",
+    position: "relative",
   },
   title: {
     fontSize: 24,
@@ -62,6 +76,22 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     color: "#555",
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 10,
+    left: 20, 
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+    backgroundColor: "#2471a3",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#34495e",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
 });
 

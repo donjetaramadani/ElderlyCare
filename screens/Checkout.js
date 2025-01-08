@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+
 const Checkout = ({ route, navigation }) => {
   const { 
     selectedItems = [], 
-    initialQuantities = [],  // Get initial quantities from params
+    initialQuantities = [],  
     serviceType = "Not specified", 
     collectionTime = "Not specified", 
     location = "Not specified" 
@@ -14,7 +15,6 @@ const Checkout = ({ route, navigation }) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
-    // Calculate total amount based on selectedItems and quantities
     const newTotal = selectedItems.reduce((total, item, index) => {
       const itemQuantity = initialQuantities[index] || 1;
       return total + item.price * itemQuantity;
@@ -44,7 +44,8 @@ const Checkout = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+   
+      <ScrollView contentContainerStyle={styles.scrollViewContent} >
         <Text style={styles.header}>Checkout</Text>
 
         {/* Order Summary */}
@@ -93,6 +94,7 @@ const Checkout = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
     </View>
+ 
   );
 };
 
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   scrollViewContent: {
-    paddingBottom: 80, 
+    paddingBottom: 150, 
   },
   header: {
     fontSize: 24,

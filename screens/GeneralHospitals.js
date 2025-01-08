@@ -1,12 +1,24 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import generalHospitalsImg from "../assets/images/photo1.avif"; 
 
 const GeneralHospitals = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
+   
+       {/* Go Back Button */}
+       <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => {
+          navigation.navigate("HospitalTypes"); 
+        }}
+      >
+         <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <View style={styles.card}>
         <Image source={generalHospitalsImg} style={styles.image} />
         <Text style={styles.title}>Welcome to General Hospitals</Text>
@@ -36,7 +48,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingVertical: 20,
+    paddingTop: 50,
     backgroundColor: "#f4f4f4", 
+    position: "relative",
   },
   card: {
     backgroundColor: "#fff", 
@@ -108,6 +122,22 @@ const styles = StyleSheet.create({
     color: "#fff", 
     fontSize: 18,
     fontWeight: "600",
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 10, 
+    left: 20, 
+    width: 35,
+    height: 35,
+    borderRadius: 20, 
+    backgroundColor: "#2471a3",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#34495e",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
 });
 

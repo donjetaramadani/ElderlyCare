@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Swipeable } from "react-native-gesture-handler";
 import { BasketContext } from "./BasketContext";
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 const OrderNowPage = ({ route, navigation }) => {
   const [quantity, setQuantity] = useState(1);
@@ -12,11 +12,10 @@ const OrderNowPage = ({ route, navigation }) => {
   const [collectionTime, setCollectionTime] = useState("09:55");
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [newLocation, setNewLocation] = useState("");
+  const { hospital } = route.params; 
 
-  // Safely extract initialItems from route.params
   const { selectedItems: initialItems = [] } = route.params || {};
 
-  // State for selected items and their quantities
   const [selectedItems, setSelectedItems] = useState(initialItems);
   const [quantities, setQuantities] = useState(initialItems.map(() => 1));
 
@@ -66,7 +65,6 @@ const OrderNowPage = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    // Ensure that quantities are synchronized with the basket items
     setQuantities(basketItems.map(() => 1)); // Reset quantities when items are added
   }, [basketItems]);
 
@@ -85,13 +83,17 @@ const OrderNowPage = ({ route, navigation }) => {
   ).toFixed(2);
 
   const handleAddMoreItems = () => {
-    navigation.navigate("MenuPage");
+    navigation.navigate("MenuPage", { hospital: route.params.hospital });
   };
 
 
 
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView
+         style={{ flex: 1 }}
+         behavior={Platform.OS === "ios" ? "padding" : "height"}
+       >
       <ScrollView>
         {/* Header Section */}
        
@@ -199,6 +201,7 @@ const OrderNowPage = ({ route, navigation }) => {
           <Text style={styles.addMoreButtonText}>Add More Items</Text>
         </TouchableOpacity>
       </ScrollView>
+       </KeyboardAvoidingView>
 
       {/* Order Summary */}
       <View style={styles.orderSummary}>

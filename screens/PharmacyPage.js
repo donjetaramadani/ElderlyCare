@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, Modal } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/MaterialIcons"; 
 
-const PharmacyPage = ({ navigation }) => {
+const PharmacyPage = ({ navigation, route }) => {
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [filters, setFilters] = useState({
         category: "",
         maxPrice: Infinity,
     });
     const [numColumns, setNumColumns] = useState(2);
+    const { hospital } = route.params; 
+
+    
+    const handleGoBack = () => {
+        navigation.navigate("HospitalDetails", { hospital: route.params.hospital });
+    };
 
     const menuItems = [
         { id: 1, name: "Aspirin", description: "Pain relief for headaches and minor aches", price: "$5", category: "Pain Relief", image: require("../assets/images/Aspirin.png") },
@@ -33,6 +41,12 @@ const PharmacyPage = ({ navigation }) => {
         <View style={styles.container}>
             {/* Search Bar */}
             <View style={styles.searchBarContainer}>
+
+                {/* Go Back Button */}
+                <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
+                 <Icon name="arrow-back" size={24} color="#fff" />
+                </TouchableOpacity>
+
                 <TextInput
                     placeholder="Search for dishes..."
                     style={styles.searchInput}
@@ -358,6 +372,17 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
     },
+    goBackButton: {
+        backgroundColor: "#2471a3",
+        shadowColor: "#34495e",
+        padding: 10,
+        borderRadius: 20, 
+        marginRight: 12, 
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 6,
+      },
 });
 
 export default PharmacyPage;
