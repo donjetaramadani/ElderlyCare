@@ -86,7 +86,7 @@ public async Task<IActionResult> Login([FromBody] UserLoginModel model)
 [HttpGet("profile")]
 public async Task<IActionResult> GetProfile()
 {
-    // Extract the user's email from the JWT
+        // Extract the user's email from the JWT
     var email = User.FindFirstValue(ClaimTypes.Email);
     if (string.IsNullOrEmpty(email))
         return Unauthorized(new { success = false, message = "Invalid token. Email is missing." });
@@ -95,53 +95,94 @@ public async Task<IActionResult> GetProfile()
     if (user == null)
         return NotFound(new { success = false, message = "User not found." });
 
-    return Ok(new
+     return Ok(new
     {
         fullName = user.FullName,
         email = user.Email,
         phoneNumber = user.PhoneNumber,
-       profileImage = user.ProfileImage ?? "https://example.com/default-avatar.png", 
+        profileImage = string.IsNullOrEmpty(user.ProfileImage)
+            ? "http://192.168.255.242:5196/assets/images/default-avatar.png" // Provide full URL for default image
+            : user.ProfileImage,
         dateOfBirth = user.DateOfBirth
     });
 }
 
-        [HttpPut("updateProfile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserModel model)
+    [HttpPut("updateProfile")]
+public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserModel model)
+{
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    if (string.IsNullOrEmpty(email))
+        return Unauthorized(new { success = false, message = "Invalid token." });
+
+    var user = await _userService.FindByEmailAsync(email);
+    if (user == null)
+        return NotFound(new { success = false, message = "User not found." });
+
+    if (!string.IsNullOrEmpty(model.CurrentPassword) && !string.IsNullOrEmpty(model.NewPassword))
+    {
+        var isPasswordValid = await _userService.CheckPasswordAsync(user, model.CurrentPassword);
+        if (!isPasswordValid)
         {
-            var email = User.FindFirstValue(ClaimTypes.Email);
-            if (string.IsNullOrEmpty(email))
-                return Unauthorized(new { success = false, message = "Invalid token." });
-
-            var user = await _userService.FindByEmailAsync(email);
-            if (user == null)
-                return NotFound(new { success = false, message = "User not found." });
-
-            if (!string.IsNullOrEmpty(model.FullName))
-                user.FullName = model.FullName;
-
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
-                user.PhoneNumber = model.PhoneNumber;
-
-            user.ProfileImage = string.IsNullOrEmpty(model.ProfileImage) ? null : model.ProfileImage;
-
-            if (!string.IsNullOrEmpty(model.DateOfBirth))
-            {
-                if (DateTime.TryParse(model.DateOfBirth, out var parsedDate))
-                {
-                    user.DateOfBirth = parsedDate;
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Invalid date format. Use YYYY-MM-DD." });
-                }
-            }
-
-            var result = await _userService.UpdateAsync(user);
-            if (!result.Succeeded)
-                return BadRequest(new { success = false, message = "Failed to update profile." });
-
-            return Ok(new { success = true, message = "Profile updated successfully." });
+            return BadRequest(new { success = false, message = "Invalid current password." });
         }
+        var passwordChangeResult = await _userService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        if (!passwordChangeResult.Succeeded)
+        {
+            return BadRequest(new { success = false, message = "Failed to change password.", errors = passwordChangeResult.Errors });
+        }
+    }
+    if (!string.IsNullOrEmpty(model.Email) && model.Email != user.Email)
+    {
+        user.Email = model.Email;
+    }
+    if (!string.IsNullOrEmpty(model.FullName))
+    {
+        user.FullName = model.FullName;
+    }
+
+
+    if (!string.IsNullOrEmpty(model.PhoneNumber))
+    {
+        user.PhoneNumber = model.PhoneNumber;
+    }
+   user.ProfileImage = string.IsNullOrEmpty(model.ProfileImage)
+    ? $"{Request.Scheme}://{Request.Host}/assets/images/default-avatar.png"
+    : model.ProfileImage;
+
+
+
+    if (!string.IsNullOrEmpty(model.DateOfBirth))
+    {
+        if (DateTime.TryParse(model.DateOfBirth, out var parsedDate))
+        {
+            user.DateOfBirth = parsedDate;
+        }
+        else
+        {
+            return BadRequest(new { success = false, message = "Invalid date format. Use YYYY-MM-DD." });
+        }
+    }
+
+    var updateResult = await _userService.UpdateAsync(user);
+    if (!updateResult.Succeeded)
+        return BadRequest(new { success = false, message = "Failed to update profile." });
+
+    var newToken = GenerateJwtToken(user.Email);
+    return Ok(new
+    {
+        success = true,
+        message = "Profile updated successfully.",
+        token = newToken,
+        userData = new
+        {
+            fullName = user.FullName,
+            email = user.Email,
+            phoneNumber = user.PhoneNumber,
+            profileImage = user.ProfileImage,
+            dateOfBirth = user.DateOfBirth
+        }
+    });
+}
 
         [HttpGet("profile/notifications")]
 public async Task<IActionResult> GetNotificationPreferences()
@@ -195,6 +236,33 @@ public class NotificationPreferencesModel
     public bool SmsNotifications { get; set; }
 }
 
+[HttpPost("change-password")]
+public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+{
+    var email = User.FindFirstValue(ClaimTypes.Email); // Extract email from JWT
+    if (string.IsNullOrEmpty(email))
+        return Unauthorized(new { success = false, message = "Invalid token." });
+
+    var user = await _userService.FindByEmailAsync(email); // Find user by email
+    if (user == null)
+        return NotFound(new { success = false, message = "User not found." });
+
+    var result = await _userService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+    if (!result.Succeeded)
+    {
+        return BadRequest(new { success = false, message = "Password change failed.", errors = result.Errors });
+    }
+
+    return Ok(new { success = true, message = "Password changed successfully!" });
+}
+
+
+public class ChangePasswordModel
+{
+    public string CurrentPassword { get; set; } = string.Empty;
+    public string NewPassword { get; set; } = string.Empty;
+}
+
         
 
 private string GenerateJwtToken(string email)
@@ -242,11 +310,14 @@ private string GenerateJwtToken(string email)
     }
 
     // User Update Model
-    public class UpdateUserModel
-    {
-        public string? FullName { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? ProfileImage { get; set; }
-        public string? DateOfBirth { get; set; }
-    }
+public class UpdateUserModel
+{
+    public string? FullName { get; set; }      
+    public string? PhoneNumber { get; set; }  
+    public string? ProfileImage { get; set; } 
+    public string? DateOfBirth { get; set; }
+    public string? Email { get; set; }   
+    public string? CurrentPassword { get; set; }
+    public string? NewPassword { get; set; }      
+}
 }

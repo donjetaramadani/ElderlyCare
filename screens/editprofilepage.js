@@ -13,7 +13,7 @@ const EditProfile = ({ navigation }) => {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        const response = await fetch("http://192.168.0.41:5196/api/user/profile", {
+        const response = await fetch("http://192.168.255.242:5196/api/user/profile", {
           method: "GET",
           headers: { Authorization: `Bearer ${user.token}` },
         });
@@ -65,13 +65,14 @@ const EditProfile = ({ navigation }) => {
 
   const handleSave = async () => {
     const updatedData = {
+      email,
       fullName: name,
       phoneNumber: phone,
-      profileImage: profileImage || null, 
-        };
-
+      profileImage: profileImage || null,
+    };
+  
     try {
-      const response = await fetch("http://192.168.0.41:5196/api/user/updateProfile", {
+      const response = await fetch("http://192.168.255.242:5196/api/user/updateProfile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -79,16 +80,24 @@ const EditProfile = ({ navigation }) => {
         },
         body: JSON.stringify(updatedData),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Update failed:", errorData);
         Alert.alert("Error", `Failed to update profile: ${errorData.message || "Unknown error"}`);
         return;
       }
-
+  
       const data = await response.json();
-      updateUser(data);
+      console.log("Update response:", data);
+      updateUser({
+        token: data.token,
+        fullName: data.userData.fullName,
+        email: data.userData.email,
+        phoneNumber: data.userData.phoneNumber,
+        profileImage: data.userData.profileImage || "http://192.168.255.242:5196/assets/images/default-avatar.png",
+      });
+  
       Alert.alert("Success", "Profile updated successfully!");
       navigation.navigate("Profile");
     } catch (error) {
@@ -102,14 +111,14 @@ const EditProfile = ({ navigation }) => {
       <Text style={styles.header}>Edit Profile</Text>
 
       <View style={styles.imageContainer}>
-        <Image
-          source={
-            profileImage
-              ? { uri: profileImage }
-              : require("../assets/images/default-avatar.png")
-          }
-          style={styles.profileImage}
-        />
+      <Image
+  source={{
+    uri: profileImage
+      ? profileImage
+      :"http://192.168.255.242:5196/assets/images/default-avatar.png" // Default avatar
+  }}
+  style={styles.profileImage}
+/>
         <TouchableOpacity style={styles.imageButton} onPress={handleImagePick}>
           <Text style={styles.imageButtonText}>
             {profileImage ? "Change Photo" : "Upload Photo"}

@@ -39,7 +39,7 @@ const SignupScreen = ({ navigation }) => {
 
     try {
       // Sign up the user
-      const response = await fetch("http://192.168.0.41:5196/api/User/register", {
+      const response = await fetch("http://192.168.255.242:5196/api/User/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,7 @@ const SignupScreen = ({ navigation }) => {
       console.log("Signup successful:", data);
 
       // Log in the user automatically after signup
-      const loginResponse = await fetch("http://192.168.0.41:5196/api/User/login", {
+      const loginResponse = await fetch("http://192.168.255.242:5196/api/User/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

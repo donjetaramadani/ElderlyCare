@@ -12,7 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://192.168.0.41:5196/api/User/login", {
+      const response = await fetch("http://192.168.255.242:5196/api/User/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,18 +26,36 @@ const LoginScreen = ({ navigation }) => {
         return;
       }
 
-      const data = await response.json();
+      const loginData = await response.json();
+      const profileResponse = await fetch("http://192.168.255.242:5196/api/User/profile", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${loginData.token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!profileResponse.ok) {
+        const profileErrorData = await profileResponse.json();
+        Alert.alert("Error", profileErrorData.message || "Failed to fetch profile.");
+        return;
+      }
+
+      const profileData = await profileResponse.json();
       updateUser({
-        token: data.token, 
-        email: email,     
-        name: data.name || "", 
-        profileImage: data.profileImage || null,
+        token: loginData.token,           
+        email: profileData.email,         
+        name: profileData.fullName || "",  
+        phoneNumber: profileData.phoneNumber || "", 
+        profileImage: profileData.profileImage || null, 
+        dateOfBirth: profileData.dateOfBirth || "",
       });
 
       Alert.alert("Login Successful", "Welcome back!");
-      navigation.replace("Profile");
+      navigation.replace("Profile"); 
     } catch (error) {
-      Alert.alert("Error", "An error occurred during login.");
+      console.error("Error during login:", error);
+      Alert.alert("Error", "An error occurred during login. Please try again.");
     }
   };
 

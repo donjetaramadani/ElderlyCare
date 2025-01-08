@@ -4,32 +4,27 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
-    name: "",
+    token: "",
+    fullName: "",
     email: "",
+    phoneNumber: "",
     profileImage: "",
-    token: "", // Store the user's authentication token
   });
 
-  /**
-   * Update user data (e.g., name, email, token)
-   * @param {Object} updatedData - The updated user data
-   */
   const updateUser = (updatedData) => {
     setUser((prevState) => ({
       ...prevState,
-      ...updatedData, // Merge the new data into the existing user object
+      ...updatedData,
     }));
   };
 
-  /**
-   * Reset user data on logout
-   */
   const logout = () => {
     setUser({
-      name: "",
+      token: "",
+      fullName: "",
       email: "",
+      phoneNumber: "",
       profileImage: "",
-      token: "", // Clear the token on logout
     });
   };
 

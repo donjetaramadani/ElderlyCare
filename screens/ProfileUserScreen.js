@@ -15,45 +15,52 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://192.168.0.41:5196/api/User/profile", {
+        const response = await fetch("http://192.168.255.242:5196/api/User/profile", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${user.token}`, 
+            Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json",
           },
         });
-
+    
         if (!response.ok) {
           const errorData = await response.json();
           console.error("Error fetching profile data:", errorData);
           throw new Error(errorData.message || "Failed to fetch profile data");
         }
-
+    
         const data = await response.json();
-        console.log("Profile data:", data); 
+        console.log("Fetched profile data:", data);
         setProfileData(data);
+        updateUser({
+          token: user.token,
+          fullName: data.fullName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          profileImage: data.profileImage,
+        });
       } catch (error) {
         console.error("Error fetching profile data:", error);
         Alert.alert("Error", "Failed to fetch profile data.");
       }
     };
-
+    
     fetchProfileData();
-  }, [user.token]);
+  }, [user.token]); 
   const handleLogout = () => {
     updateUser(null);
     navigation.replace("ProfileHome");
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image
-        source={
-          profileData.profileImage
-            ? { uri: profileData.profileImage }
-            : require("../assets/images/default-avatar.png")
-        }
-        style={styles.profileImage}
-      />
+<Image
+  source={{
+    uri: profileData.profileImage 
+      ? profileData.profileImage 
+      : "http://192.168.255.242:5196/assets/images/default-avatar.png"
+  }}
+  style={styles.profileImage}
+/>
       <Text style={styles.name}>{profileData.fullName || "Name not set"}</Text>
       <Text style={styles.email}>{profileData.email || "Email not set"}</Text>
       <Text style={styles.phone}>{profileData.phoneNumber || "Phone not set"}</Text>
