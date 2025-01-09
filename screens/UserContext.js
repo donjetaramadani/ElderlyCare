@@ -27,9 +27,18 @@ export const UserProvider = ({ children }) => {
       profileImage: "",
     });
   };
+  const resetUser = () => {
+    setUser({
+      token: "",
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      profileImage: "",
+    });
+  };
 
   return (
-    <UserContext.Provider value={{ user, updateUser, logout }}>
+    <UserContext.Provider value={{ user, updateUser, logout, resetUser }}>
       {children}
     </UserContext.Provider>
   );

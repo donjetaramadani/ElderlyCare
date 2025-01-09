@@ -13,7 +13,7 @@ const NotificationSettings = () => {
     const fetchNotificationPreferences = async () => {
       try {
         const response = await fetch(
-          "http://192.168.255.242:5196/api/User/profile/notifications",
+          "http://192.168.0.247:5196/api/User/profile/notifications",
           {
             method: "GET",
             headers: {
@@ -45,7 +45,7 @@ const NotificationSettings = () => {
   const saveNotificationPreferences = async () => {
     try {
       const response = await fetch(
-        "http://192.168.255.242:5196/api/User/profile/notifications",
+        "http://192.168.0.247:5196/api/User/profile/notifications",
         {
           method: "PUT",
           headers: {

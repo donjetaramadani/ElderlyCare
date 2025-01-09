@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
@@ -12,6 +13,7 @@ import CustomLink from "../components/CustomLink";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment"; // For formatting the date
 import { UserContext } from "./UserContext"; // Import UserContext correctly
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignupScreen = ({ navigation }) => {
   const { updateUser } = useContext(UserContext); // Use useContext hook
@@ -39,7 +41,7 @@ const SignupScreen = ({ navigation }) => {
 
     try {
       // Sign up the user
-      const response = await fetch("http://192.168.255.242:5196/api/User/register", {
+      const response = await fetch("http://192.168.0.247:5196/api/User/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +68,7 @@ const SignupScreen = ({ navigation }) => {
       console.log("Signup successful:", data);
 
       // Log in the user automatically after signup
-      const loginResponse = await fetch("http://192.168.255.242:5196/api/User/login", {
+      const loginResponse = await fetch("http://192.168.0.247:5196/api/User/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,6 +119,12 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.scrollContainer}
+      extraHeight={Platform.OS === "ios" ? 150 : 100}
+      enableOnAndroid={true}
+      enableAutomaticScroll={true}
+    >
     <View style={styles.container}>
       <Text style={styles.header}>Sign Up</Text>
       <CustomInput
@@ -141,7 +149,7 @@ const SignupScreen = ({ navigation }) => {
       >
         <Text style={styles.datePickerText}>
           {dateOfBirth
-            ? moment(dateOfBirth).format("YYYY-MM-DD") // Format selected date
+            ? moment(dateOfBirth).format("YYYY-MM-DD")
             : "Select your date of birth"}
         </Text>
       </TouchableOpacity>
@@ -175,10 +183,17 @@ const SignupScreen = ({ navigation }) => {
         onPress={() => navigation.navigate("Login")}
       />
     </View>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
   container: {
     flex: 1,
     justifyContent: "center",

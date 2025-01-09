@@ -8,6 +8,8 @@ import EditProfile from "./editprofilepage";
 import AccountSettings from "./AccountSettings";
 import PrivacySettings from "./PrivacySettings";
 import NotificationSettings from "./NotificationSettings";
+import ChangePasswordScreen from "./ChangePasswordScreen";
+import DeleteAccountScreen from "./DeleteAccountScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
@@ -118,6 +120,22 @@ const ProfileScreen = () => {
         component={NotificationSettings}
         options={{
           headerTitle: "Notification Preferences",
+        }}
+      />
+      {/* Change Password Screen */}
+      <Stack.Screen
+        name="ChangePasswordScreen"
+        component={ChangePasswordScreen}
+        options={{
+          headerTitle: "Change Password",
+        }}
+      />
+      {/* Delete Account Screen */}
+      <Stack.Screen
+        name="DeleteAccountScreen"
+        component={DeleteAccountScreen}
+        options={{
+          headerTitle: "Delete Account",
         }}
       />
     </Stack.Navigator>

@@ -59,5 +59,9 @@ namespace backendd.Core.Services
         {
             return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
+        public async Task<IdentityResult> DeleteUserAsync(User user)
+        {
+            return await _userManager.DeleteAsync(user);
+        }
     }
 }

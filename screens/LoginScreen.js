@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ScrollView  } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import CustomLink from "../components/CustomLink";
@@ -12,7 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://192.168.255.242:5196/api/User/login", {
+      const response = await fetch("http://192.168.0.247:5196/api/User/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
       }
 
       const loginData = await response.json();
-      const profileResponse = await fetch("http://192.168.255.242:5196/api/User/profile", {
+      const profileResponse = await fetch("http://192.168.0.247:5196/api/User/profile", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${loginData.token}`,
@@ -60,6 +60,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
       <Text style={styles.header}>Login</Text>
       <CustomInput
@@ -83,10 +84,17 @@ const LoginScreen = ({ navigation }) => {
         onPress={() => navigation.navigate("Signup")}
       />
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
   container: {
     flex: 1,
     justifyContent: "center",

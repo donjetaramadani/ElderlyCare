@@ -94,17 +94,42 @@ public async Task<IActionResult> GetProfile()
     var user = await _userService.FindByEmailAsync(email);
     if (user == null)
         return NotFound(new { success = false, message = "User not found." });
-
+        
      return Ok(new
     {
         fullName = user.FullName,
         email = user.Email,
         phoneNumber = user.PhoneNumber,
         profileImage = string.IsNullOrEmpty(user.ProfileImage)
-            ? "http://192.168.255.242:5196/assets/images/default-avatar.png" // Provide full URL for default image
+            ? "http://192.168.0.247:5196/assets/images/default-avatar.png" // Provide full URL for default image
             : user.ProfileImage,
         dateOfBirth = user.DateOfBirth
     });
+    
+}
+[HttpDelete("deleteAccount")]
+public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountModel model)
+{
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    if (string.IsNullOrEmpty(email))
+        return Unauthorized(new { success = false, message = "Invalid token. Email is missing." });
+
+    var user = await _userService.FindByEmailAsync(email);
+    if (user == null)
+        return NotFound(new { success = false, message = "User not found." });
+
+    if (!string.Equals(email, model.Email, StringComparison.OrdinalIgnoreCase))
+        return BadRequest(new { success = false, message = "Provided email does not match the account email." });
+
+    var isPasswordValid = await _userService.CheckPasswordAsync(user, model.Password);
+    if (!isPasswordValid)
+        return BadRequest(new { success = false, message = "Invalid password. Please try again." });
+
+    var result = await _userManager.DeleteAsync(user);
+    if (!result.Succeeded)
+        return BadRequest(new { success = false, message = "Failed to delete account." });
+
+    return Ok(new { success = true, message = "Account deleted successfully." });
 }
 
     [HttpPut("updateProfile")]
@@ -319,5 +344,10 @@ public class UpdateUserModel
     public string? Email { get; set; }   
     public string? CurrentPassword { get; set; }
     public string? NewPassword { get; set; }      
+}
+public class DeleteAccountModel
+{
+    public string Email { get; set; } = string.Empty; // Email confirmation
+    public string Password { get; set; } = string.Empty; // Password confirmation
 }
 }

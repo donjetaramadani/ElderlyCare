@@ -11,6 +11,7 @@ namespace backendd.Core.Interfaces
         Task<bool> CheckPasswordAsync(User user, string password);
         Task<IdentityResult> UpdateAsync(User user);
          Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+         Task<IdentityResult> DeleteUserAsync(User user);
 
     }
 }

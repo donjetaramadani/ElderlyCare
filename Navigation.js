@@ -47,6 +47,9 @@ import { BasketContext } from "./screens/BasketContext";
 import { CartProvider } from "./screens/CartContext";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
+import AccountSettings from "./screens/AccountSettings";
+import ChangePasswordScreen from "./screens/ChangePasswordScreen";
+import DeleteAccountScreen from "./screens/DeleteAccountScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -108,6 +111,10 @@ export default function Navigation() {
       <Tab.Screen name="CartContext" component={CartProvider} />
       <Tab.Screen name="Login" component={LoginScreen} />
       <Tab.Screen name="Signup" component={SignupScreen} />
+      <Tab.Screen name="AccountSettings" component={AccountSettings} />
+      <Tab.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
+      <Tab.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} />
+      
 
     </Tab.Navigator>
   );
