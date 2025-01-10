@@ -69,10 +69,22 @@ const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * @swagger
  * /health-metrics:
  *   post:
  *     summary: Create a new health metric
  *     tags: [Health Metrics]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -108,43 +120,41 @@ const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 // POST route - Create new health metric
 router.post('/', async (req, res) => {
   try {
-    if (!isValidObjectId(req.body.userId)) {
-      return res.status(400).json({ 
-        message: 'Invalid userId format. Must be a valid MongoDB ObjectId.'
-      });
+    // Validate heart rate
+    if (req.body.heartRate) {
+      if (req.body.heartRate.value < 40 || req.body.heartRate.value > 200) {
+        return res.status(400).json({ message: 'Heart rate must be between 40 and 200 bpm.' });
+      }
+    } else {
+      return res.status(400).json({ message: 'Heart rate is required.' });
     }
 
-    const metric = new HealthMetric({
-      userId: req.body.userId,
-      heartRate: req.body.heartRate,
-      bloodPressure: req.body.bloodPressure,
-      oxygenSaturation: req.body.oxygenSaturation,
-      temperature: req.body.temperature,
-      bloodSugar: req.body.bloodSugar,
-      weight: req.body.weight,
-      steps: req.body.steps,
-      notes: req.body.notes
-    });
+    // Validate blood pressure
+    if (req.body.bloodPressure) {
+      if (req.body.bloodPressure.systolic < 50 || req.body.bloodPressure.systolic > 300) {
+        return res.status(400).json({ message: 'Systolic blood pressure must be between 50 and 300 mmHg.' });
+      }
+      if (req.body.bloodPressure.diastolic < 30 || req.body.bloodPressure.diastolic > 200) {
+        return res.status(400).json({ message: 'Diastolic blood pressure must be between 30 and 200 mmHg.' });
+      }
+    } else {
+      return res.status(400).json({ message: 'Blood pressure is required.' });
+    }
 
+    // Validate oxygen saturation
+    if (req.body.oxygenSaturation) {
+      if (req.body.oxygenSaturation.value < 0 || req.body.oxygenSaturation.value > 100) {
+        return res.status(400).json({ message: 'Oxygen saturation must be between 0 and 100%.' });
+      }
+    } else {
+      return res.status(400).json({ message: 'Oxygen saturation is required.' });
+    }
+
+    const metric = new HealthMetric(req.body);
     const newMetric = await metric.save();
     res.status(201).json(newMetric);
   } catch (error) {
-    res.status(400).json({ 
-      message: error.message,
-      example: {
-        userId: "65f1234567890abcdef12345",
-        heartRate: {
-          value: 75
-        },
-        bloodPressure: {
-          systolic: 120,
-          diastolic: 80
-        },
-        oxygenSaturation: {
-          value: 98
-        }
-      }
-    });
+    res.status(400).json({ message: error.message });
   }
 });
 

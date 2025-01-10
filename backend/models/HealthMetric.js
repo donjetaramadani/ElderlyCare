@@ -16,7 +16,12 @@ const healthMetricSchema = new mongoose.Schema({
     
     // Heart Rate
     heartRate: {
-        value: Number,
+        value: {
+            type: Number,
+            min: 40, // Minimum realistic heart rate
+            max: 200, // Maximum realistic heart rate
+            required: true // Make it required
+        },
         unit: {
             type: String,
             default: 'bpm'
@@ -29,8 +34,18 @@ const healthMetricSchema = new mongoose.Schema({
     
     // Blood Pressure
     bloodPressure: {
-        systolic: Number,
-        diastolic: Number,
+        systolic: {
+            type: Number,
+            min: 50, // Minimum realistic systolic pressure
+            max: 300, // Maximum realistic systolic pressure
+            required: true // Make it required
+        },
+        diastolic: {
+            type: Number,
+            min: 30, // Minimum realistic diastolic pressure
+            max: 200, // Maximum realistic diastolic pressure
+            required: true // Make it required
+        },
         unit: {
             type: String,
             default: 'mmHg'
@@ -43,7 +58,12 @@ const healthMetricSchema = new mongoose.Schema({
     
     // Oxygen Saturation
     oxygenSaturation: {
-        value: Number,
+        value: {
+            type: Number,
+            min: 0,
+            max: 100,
+            required: true // Make it required
+        },
         unit: {
             type: String,
             default: '%'

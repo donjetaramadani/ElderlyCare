@@ -4,7 +4,7 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./swagger');
 const authRoutes = require('./routes/auth');
-const healthMetricsRouter = require('./routes/healthMetrics');
+const healthMetricsRoutes = require('./routes/healthMetrics');
 
 const app = express();
 
@@ -26,7 +26,7 @@ mongoose.connect('mongodb://your_username:your_password@localhost:27017/elderlyc
 });
 
 // Routes
-app.use('/health-metrics', healthMetricsRouter);
+app.use('/health-metrics', healthMetricsRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
