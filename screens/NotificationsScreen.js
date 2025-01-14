@@ -1,12 +1,55 @@
-import React from 'react';
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Button, ScrollView, Alert } from 'react-native';
+import * as signalR from '@microsoft/signalr';
 
 const NotificationsScreen = () => {
+  const [notifications, setNotifications] = useState([]);
+  const hubConnection = useRef(null);
+
+  // SignalR connection setup
+  useEffect(() => {
+    const connectSignalR = async () => {
+      const connection = new signalR.HubConnectionBuilder()
+        .withUrl("http://192.168.0.105:5196/hubs/notification") // Adjust to your backend SignalR endpoint
+        .withAutomaticReconnect()
+        .build();
+
+      try {
+        await connection.start();
+        console.log("SignalR Connected");
+
+        connection.on("ReceiveNotification", (message) => {
+          setNotifications((prev) => [...prev, message]);
+          Alert.alert("New Notification", message);
+        });
+
+        hubConnection.current = connection;
+      } catch (error) {
+        console.error("SignalR Connection Error:", error);
+      }
+    };
+
+    connectSignalR();
+
+    return () => {
+      if (hubConnection.current) {
+        hubConnection.current.stop();
+      }
+    };
+  }, []);
+
+  const sendTestNotification = () => {
+    const testMessage = "This is a test notification!";
+    setNotifications((prev) => [...prev, testMessage]);
+    Alert.alert("Test Notification", testMessage);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Header */}
       <Text style={styles.header}>Alerts</Text>
 
-      {/* Alert Section */}
+      {/* Static Alert Section */}
       <View style={[styles.card, styles.alertCard]}>
         <Text style={styles.alertTitle}>High Heart Rate Detected</Text>
         <Text style={styles.alertText}>Heart rate: 130 BPM</Text>
@@ -28,7 +71,19 @@ const NotificationsScreen = () => {
         <Button title="Contact Emergency" onPress={() => alert('Contacting emergency services.')} />
       </View>
 
-      {/* Notification Section */}
+      {/* SignalR-Driven Notifications */}
+      <Text style={styles.subtitle}>Real-Time Notifications</Text>
+      <Button title="Send Test Notification" onPress={sendTestNotification} />
+      {notifications.length === 0 && (
+        <Text style={styles.noNotificationsText}>No new notifications</Text>
+      )}
+      {notifications.map((notif, index) => (
+        <View key={index} style={styles.card}>
+          <Text style={styles.notificationText}>{notif}</Text>
+        </View>
+      ))}
+
+      {/* Static Notification Section */}
       <Text style={styles.subtitle}>Recent Notifications</Text>
       <View style={styles.card}>
         <Text style={styles.notificationText}>Reminder: Take your medication at 10:00 AM</Text>
@@ -91,7 +146,12 @@ const styles = StyleSheet.create({
     fontSize: 16, 
     color: '#6d6d6d' 
   },
+  noNotificationsText: {
+    fontSize: 16,
+    color: '#9e9e9e',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
 });
 
 export default NotificationsScreen;
-

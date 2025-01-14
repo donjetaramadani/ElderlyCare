@@ -1,7 +1,10 @@
 ﻿using backendd.Core.DataAccess;
 using backendd.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using backendd.Hubs;
+using System.Linq;
 
 namespace backendd.Controllers
 {
@@ -10,10 +13,12 @@ namespace backendd.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public NotificationController(ApplicationDbContext context)
+        public NotificationController(ApplicationDbContext context, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: api/notifications
@@ -65,6 +70,10 @@ namespace backendd.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            // Notify clients about updated notifications
+            await _hubContext.Clients.All.SendAsync("UpdateNotifications", notificationIds);
+
             return Ok("Notifications marked as read.");
         }
 
@@ -79,6 +88,9 @@ namespace backendd.Controllers
 
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
+
+            // Notify connected clients of the new notification
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
 
             return CreatedAtAction(nameof(GetNotifications), new { id = notification.Id }, notification);
         }
@@ -98,6 +110,9 @@ namespace backendd.Controllers
 
             _context.Notifications.RemoveRange(notifications);
             await _context.SaveChangesAsync();
+
+            // Notify clients about deleted notifications
+            await _hubContext.Clients.All.SendAsync("DeleteNotifications", notificationIds);
 
             return Ok("Notifications deleted successfully.");
         }
@@ -160,12 +175,7 @@ namespace backendd.Controllers
                 return NotFound("No notifications found for the given filter criteria.");
             }
 
-            
             return Ok(notifications);
         }
-
-
-        
     }
 }
-  

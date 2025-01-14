@@ -2,6 +2,7 @@ using backendd.Core.DataAccess;
 using backendd.Core.Interfaces;
 using backendd.Core.Services;
 using backendd.Models;
+using backendd.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,16 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 
 // Configure JWT Authentication
-var jwtSettings = builder.Configuration.GetSection("Jwt");
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtKey = jwtSection["Key"];
+var jwtIssuer = jwtSection["Issuer"];
+var jwtAudience = jwtSection["Audience"];
+
+if (string.IsNullOrWhiteSpace(jwtKey) || string.IsNullOrWhiteSpace(jwtIssuer) || string.IsNullOrWhiteSpace(jwtAudience))
+{
+    throw new ArgumentNullException("Jwt settings are missing in the configuration file.");
+}
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,15 +45,14 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
 });
 
-builder.Services.AddMemoryCache();
-// Add Authorization
-builder.Services.AddAuthorization();
+// Add SignalR
+builder.Services.AddSignalR();
 
 // Register Application Services
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -54,10 +63,10 @@ builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IHealthMetricsService, HealthMetricsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-// Register MVC services
+// Add MVC services
 builder.Services.AddControllers();
 
-// CORS Configuration: Allow all origins
+// Configure CORS to allow all origins
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -68,16 +77,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-
-// Add Swagger for API documentation
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.Urls.Add("http://0.0.0.0:5196");  
-
-
+app.Urls.Add("http://0.0.0.0:5196");
 
 // Middleware Pipeline
 if (app.Environment.IsDevelopment())
@@ -85,27 +90,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else
+
+app.UseCors("AllowAll");
+
+var parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory());
+if (parentDirectory == null)
 {
-    app.UseHttpsRedirection(); // Only redirect HTTPS in non-development environments
+    throw new InvalidOperationException("Unable to determine the parent directory.");
 }
 
-// Enable CORS middleware
-app.UseCors("AllowAll");
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "assets")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(parentDirectory.FullName, "assets")),
     RequestPath = "/assets"
 });
-
-
-
-
-//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notification");
 
 app.Run();

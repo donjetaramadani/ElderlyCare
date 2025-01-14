@@ -101,7 +101,7 @@ public async Task<IActionResult> GetProfile()
         email = user.Email,
         phoneNumber = user.PhoneNumber,
         profileImage = string.IsNullOrEmpty(user.ProfileImage)
-            ? "http://192.168.0.247:5196/assets/images/default-avatar.png" // Provide full URL for default image
+            ? "http://192.168.0.105:5196/assets/images/default-avatar.png" // Provide full URL for default image
             : user.ProfileImage,
         dateOfBirth = user.DateOfBirth
     });
