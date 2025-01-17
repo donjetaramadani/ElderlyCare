@@ -9,10 +9,14 @@ const NotificationsScreen = () => {
   // SignalR connection setup
   useEffect(() => {
     const connectSignalR = async () => {
-      const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://192.168.0.105:5196/hubs/notification") // Adjust to your backend SignalR endpoint
-        .withAutomaticReconnect()
-        .build();
+      const connection =  new SignalR.HubConnectionBuilder()
+      .withUrl("http://192.168.0.247:5196/hubs/notification", {
+        skipNegotiation: true, // 
+        transport: SignalR.HttpTransportType.WebSockets, 
+        accessTokenFactory: () => user.token,
+      })
+      .withAutomaticReconnect()
+      .build();
 
       try {
         await connection.start();

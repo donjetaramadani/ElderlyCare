@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Switch, TouchableOpacity, Alert, ScrollView, } from "react-native";
+import { UserContext } from "./UserContext";
 
 const PrivacySettings = () => {
   const [dataSharing, setDataSharing] = useState(false); 
   const [profileVisibility, setProfileVisibility] = useState(true);
+   const { user } = useContext(UserContext);
 
   const handleSavePreferences = async () => {
     try {

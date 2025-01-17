@@ -22,7 +22,7 @@ const NotificationSettings = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://192.168.0.105:5196/api/User/profile/notifications",
+          "http://192.168.0.247:5196/api/User/profile/notifications",
           {
             method: "GET",
             headers: {
@@ -53,11 +53,13 @@ const NotificationSettings = () => {
     const setupSignalRConnection = async () => {
       try {
         const newConnection = new SignalR.HubConnectionBuilder()
-          .withUrl("http://192.168.0.105:5196/notificationHub", {
-            accessTokenFactory: () => user.token,
-          })
-          .withAutomaticReconnect()
-          .build();
+        .withUrl("http://192.168.0.247:5196/hubs/notification", {
+          skipNegotiation: true, 
+          transport: SignalR.HttpTransportType.WebSockets, 
+          accessTokenFactory: () => user.token,
+        })
+        .withAutomaticReconnect()
+        .build();
 
         newConnection.on("UpdateNotificationPreferences", (updatedPreferences) => {
           // Update state with real-time changes from SignalR
@@ -100,7 +102,7 @@ const NotificationSettings = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://192.168.0.105:5196/api/User/profile/notifications",
+        "http://192.168.0.247:5196/api/User/profile/notifications",
         {
           method: "PUT",
           headers: {

@@ -80,7 +80,7 @@ builder.Services.AddCors(options =>
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 app.Urls.Add("http://0.0.0.0:5196");
 
@@ -104,7 +104,7 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(Path.Combine(parentDirectory.FullName, "assets")),
     RequestPath = "/assets"
 });
-
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
