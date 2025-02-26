@@ -62,7 +62,7 @@ const AppointmentBooking = ({ route, navigation }) => {
 
     try {
       const response = await fetch(
-        "http://192.168.0.42:5196/api/Appointments",
+        "http://192.168.0.36:5196/api/Appointments",
         {
           method: "POST",
           headers: {

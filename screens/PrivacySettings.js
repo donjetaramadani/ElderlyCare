@@ -9,7 +9,7 @@ const PrivacySettings = () => {
 
   const handleSavePreferences = async () => {
     try {
-      const response = await fetch("http://192.168.0.41:247/api/User/privacy-settings", {
+      const response = await fetch("http://192.168.0.36:247/api/User/privacy-settings", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -26,7 +26,7 @@ const UpdateReminderScreen = ({ route, navigation }) => {
       };
 
       await axios.put(
-        `http://192.168.0.42:5196/api/Reminders/${reminder.id}`,
+        `http://192.168.0.36:5196/api/Reminders/${reminder.id}`,
         updatedReminder
       );
 

@@ -15,40 +15,41 @@ namespace backendd.Core.Services
             _context = context;
         }
 
-        public async Task<List<SOSLog>> GetAllSOSLogs()
+        public async Task<List<SOSLog>> GetAllSOSLogsAsync()
         {
             return await _context.SOSLogs.ToListAsync();
         }
 
-        public async Task<SOSLog> GetSOSLogById(int id)
+        public async Task<SOSLog> GetSOSLogByIdAsync(int id)
         {
             return await _context.SOSLogs.FindAsync(id);
         }
 
-        public async Task<SOSLog> Add(SOSLog sosLog)
+        public async Task<SOSLog> AddAsync(SOSLog sosLog)
         {
             await _context.SOSLogs.AddAsync(sosLog);
             await _context.SaveChangesAsync();
             return sosLog;
         }
 
-        public async Task<SOSLog> Update(int id, SOSLog sosLog)
+        public async Task<SOSLog> UpdateAsync(int id, SOSLog sosLog)
         {
-            var existingSOSLog = await _context.SOSLogs.FindAsync(id);
-            if (existingSOSLog == null) return null;
+            var existing = await _context.SOSLogs.FindAsync(id);
+            if (existing == null) return null;
 
-            existingSOSLog.Timestamp = sosLog.Timestamp;
-            existingSOSLog.Location = sosLog.Location;
+            existing.Timestamp = sosLog.Timestamp;
+            existing.Location = sosLog.Location;
+
             await _context.SaveChangesAsync();
-            return existingSOSLog;
+            return existing;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var sosLog = await _context.SOSLogs.FindAsync(id);
-            if (sosLog == null) return false;
+            var log = await _context.SOSLogs.FindAsync(id);
+            if (log == null) return false;
 
-            _context.SOSLogs.Remove(sosLog);
+            _context.SOSLogs.Remove(log);
             await _context.SaveChangesAsync();
             return true;
         }

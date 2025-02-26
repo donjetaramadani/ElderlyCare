@@ -1,5 +1,7 @@
+using backendd.Core.Interfaces;
 using backendd.Models;
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace backendd.Hubs
 {
@@ -9,22 +11,18 @@ namespace backendd.Hubs
 
         public NotificationHub(INotificationService notificationService)
         {
-        _notificationService = notificationService;
+            _notificationService = notificationService;
         }
 
         public async Task SendNotification(Notification notification)
         {
-            // Add notification to the database
-            await _notificationService.Add(notification);
-
-            // Send the notification to connected clients
-            await Clients.All.SendAsync("ReceiveNotification", notification);
+            var createdNotification = await _notificationService.AddNotificationAsync(notification);
+            await Clients.All.SendAsync("ReceiveNotification", createdNotification);
         }
 
-        public async Task BroadcastNotification(string message)
+        public async Task BroadcastMessage(string message)
         {
-            // Broadcasts a notification to all connected users
-            await Clients.All.SendAsync("ReceiveNotification", message);
+            await Clients.All.SendAsync("ReceiveBroadcast", message);
         }
     }
 }

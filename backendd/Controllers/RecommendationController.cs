@@ -20,14 +20,14 @@ namespace backendd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRecommendations()
         {
-            var recommendations = await _recommendationService.GetAllRecommendations();
+            var recommendations = await _recommendationService.GetAllRecommendationsAsync();
             return Ok(recommendations);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRecommendationById(int id)
         {
-            var recommendation = await _recommendationService.GetRecommendationById(id);
+            var recommendation = await _recommendationService.GetRecommendationByIdAsync(id);
             if (recommendation == null) return NotFound();
             return Ok(recommendation);
         }
@@ -35,22 +35,22 @@ namespace backendd.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRecommendation([FromBody] Recommendation recommendation)
         {
-            var createdRecommendation = await _recommendationService.Add(recommendation);
-            return CreatedAtAction(nameof(GetRecommendationById), new { id = createdRecommendation.Id }, createdRecommendation);
+            var created = await _recommendationService.AddAsync(recommendation);
+            return CreatedAtAction(nameof(GetRecommendationById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRecommendation(int id, [FromBody] Recommendation recommendation)
         {
-            var updatedRecommendation = await _recommendationService.Update(id, recommendation);
-            if (updatedRecommendation == null) return NotFound();
-            return Ok(updatedRecommendation);
+            var updated = await _recommendationService.UpdateAsync(id, recommendation);
+            if (updated == null) return NotFound();
+            return Ok(updated);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecommendation(int id)
         {
-            var result = await _recommendationService.Delete(id);
+            var result = await _recommendationService.DeleteAsync(id);
             if (!result) return NotFound();
             return NoContent();
         }

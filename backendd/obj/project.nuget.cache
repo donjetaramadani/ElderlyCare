@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xhm76eSfQ/Q=",
+  "dgSpecHash": "Z+7Rvca+Gww=",
   "success": true,
   "projectFilePath": "C:\\Users\\donje\\OneDrive\\Desktop\\ElderlyCare\\backendd\\backendd.csproj",
   "expectedPackageFiles": [
@@ -55,6 +55,7 @@
     "C:\\Users\\donje\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\donje\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\donje\\.nuget\\packages\\restsharp\\112.1.0\\restsharp.112.1.0.nupkg.sha512",
+    "C:\\Users\\donje\\.nuget\\packages\\scrutor\\5.0.0\\scrutor.5.0.0.nupkg.sha512",
     "C:\\Users\\donje\\.nuget\\packages\\stripe\\1.12.0\\stripe.1.12.0.nupkg.sha512",
     "C:\\Users\\donje\\.nuget\\packages\\stripe.net\\47.2.0\\stripe.net.47.2.0.nupkg.sha512",
     "C:\\Users\\donje\\.nuget\\packages\\swashbuckle.aspnetcore\\6.6.2\\swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
@@ -92,6 +93,16 @@
     "C:\\Users\\donje\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "backendd depends on Scrutor (>= 4.7.1) but Scrutor 4.7.1 was not found. An approximate best match of Scrutor 5.0.0 was resolved.",
+      "libraryId": "Scrutor",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

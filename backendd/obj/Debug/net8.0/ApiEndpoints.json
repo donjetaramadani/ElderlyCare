@@ -17,8 +17,8 @@
   },
   {
     "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "GetHealthMetrics",
-    "RelativePath": "api/Homepage/health-metrics",
+    "Method": "GetUnifiedHealthData",
+    "RelativePath": "api/Homepage/health-data",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -33,69 +33,16 @@
   },
   {
     "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "AddOrUpdateHealthMetrics",
+    "Method": "GetHealthMetrics",
     "RelativePath": "api/Homepage/health-metrics",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newMetrics",
-        "Type": "backendd.Models.HealthMetrics",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "GetHealthMetricsById",
-    "RelativePath": "api/Homepage/health-metrics/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "userId",
         "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "UpdateHealthMetrics",
-    "RelativePath": "api/Homepage/health-metrics/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "updatedMetrics",
-        "Type": "backendd.Models.HealthMetrics",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backendd.Controllers.HomepageController",
-    "Method": "DeleteHealthMetrics",
-    "RelativePath": "api/Homepage/health-metrics/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -742,12 +689,34 @@
   },
   {
     "ContainingType": "backendd.Controllers.UserController",
-    "Method": "GetProfile",
-    "RelativePath": "api/User/getProfile",
-    "HttpMethod": "GET",
+    "Method": "ChangePassword",
+    "RelativePath": "api/User/change-password",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backendd.Controllers.UserController\u002BChangePasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "DeleteAccount",
+    "RelativePath": "api/User/deleteAccount",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backendd.Controllers.DeleteAccountModel",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -761,6 +730,42 @@
       {
         "Name": "model",
         "Type": "backendd.Controllers.UserLoginModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "GetProfile",
+    "RelativePath": "api/User/profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "GetNotificationPreferences",
+    "RelativePath": "api/User/profile/notifications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backendd.Controllers.UserController",
+    "Method": "UpdateNotificationPreferences",
+    "RelativePath": "api/User/profile/notifications",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backendd.Controllers.UserController\u002BNotificationPreferencesModel",
         "IsRequired": true
       }
     ],

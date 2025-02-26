@@ -12,7 +12,7 @@ export const HealthDataProvider = ({ children }) => {
     // Function to fetch health data from API
     const fetchHealthData = async () => {
         try {
-            const response = await fetch('http://192.168.0.42:5196/api/Homepage/health-metrics');
+            const response = await fetch('http://192.168.0.36:5196/api/Homepage/health-metrics');
             if (!response.ok) throw new Error("Failed to fetch data");
             const data = await response.json();
             console.log(data);
@@ -37,7 +37,7 @@ export const HealthDataProvider = ({ children }) => {
             setHealthData(updatedData);
 
             // Send the updated data to the backend
-            const response = await fetch(`http://192.168.0.42:5196/api/Homepage/health-metrics`, {
+            const response = await fetch(`http://192.168.0.36:5196/api/Homepage/health-metrics`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

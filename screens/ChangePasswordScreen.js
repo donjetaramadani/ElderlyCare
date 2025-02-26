@@ -15,7 +15,7 @@ const ChangePasswordScreen = ({ navigation }) => {
 
     try {
       const response = await fetch(
-        "http://192.168.0.247:5196/api/user/change-password",
+        "http://192.168.0.36:5196/api/user/change-password",
         {
           method: "POST",
           headers: {

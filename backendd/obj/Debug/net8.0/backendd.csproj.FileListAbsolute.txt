@@ -333,3 +333,4 @@ C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Newtonsoft
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\RestSharp.dll
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Stripe.dll
 C:\Users\vesag\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Stripe.net.dll
+C:\Users\donje\OneDrive\Desktop\ElderlyCare\backendd\bin\Debug\net8.0\Scrutor.dll

@@ -2,7 +2,7 @@
 using backendd.Core.Interfaces;
 using backendd.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System.Threading.Tasks;
 
 namespace backendd.Core.Services
 {
@@ -16,37 +16,37 @@ namespace backendd.Core.Services
             _context = context;
         }
 
-      
-        public async Task<List<Recommendation>> GetAllRecommendations()
+        public async Task<List<Recommendation>> GetAllRecommendationsAsync()
         {
             return await _context.Recommendations.ToListAsync();
         }
 
-        public async Task<Recommendation> GetRecommendationById(int id)
+        public async Task<Recommendation> GetRecommendationByIdAsync(int id)
         {
             return await _context.Recommendations.FindAsync(id);
         }
 
-        public async Task<Recommendation> Add(Recommendation recommendation)
+        public async Task<Recommendation> AddAsync(Recommendation recommendation)
         {
             await _context.Recommendations.AddAsync(recommendation);
             await _context.SaveChangesAsync();
             return recommendation;
         }
 
-        public async Task<Recommendation> Update(int id, Recommendation recommendation)
+        public async Task<Recommendation> UpdateAsync(int id, Recommendation recommendation)
         {
-            var existingRecommendation = await _context.Recommendations.FindAsync(id);
-            if (existingRecommendation == null) return null;
+            var existing = await _context.Recommendations.FindAsync(id);
+            if (existing == null) return null;
 
-            existingRecommendation.Title = recommendation.Title;
-            existingRecommendation.Description = recommendation.Description;
-            existingRecommendation.Tip = recommendation.Tip;
+            existing.Title = recommendation.Title;
+            existing.Description = recommendation.Description;
+            existing.Tip = recommendation.Tip;
+
             await _context.SaveChangesAsync();
-            return existingRecommendation;
+            return existing;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var recommendation = await _context.Recommendations.FindAsync(id);
             if (recommendation == null) return false;
@@ -55,5 +55,5 @@ namespace backendd.Core.Services
             await _context.SaveChangesAsync();
             return true;
         }
-     }
+    }
 }

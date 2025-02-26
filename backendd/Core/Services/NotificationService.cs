@@ -1,4 +1,5 @@
 ﻿using backendd.Core.DataAccess;
+using backendd.Core.Interfaces;
 using backendd.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -13,40 +14,58 @@ public class NotificationService : INotificationService
         _context = context;
     }
 
-    public async Task<List<Notification>> GetAllNotifications()
+    public async Task<List<Notification>> GetAllNotificationsAsync()
     {
-        return await _context.Notifications.ToListAsync();
+        return await _context.Notifications
+            .AsNoTracking()
+            .ToListAsync()
+            .ConfigureAwait(false);
     }
 
-    public async Task<Notification> GetNotificationById(int id)
+    public async Task<Notification?> GetNotificationByIdAsync(int id)
     {
-        return await _context.Notifications.FindAsync(id);
+        return await _context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id)
+            .ConfigureAwait(false);
     }
 
-    public async Task<Notification> Add(Notification notification)
+    public async Task<Notification> AddNotificationAsync(Notification notification)
     {
-        await _context.Notifications.AddAsync(notification);
-        await _context.SaveChangesAsync();
+        await _context.Notifications.AddAsync(notification)
+            .ConfigureAwait(false);
+        await _context.SaveChangesAsync()
+            .ConfigureAwait(false);
         return notification;
     }
 
-    public async Task<Notification> Update(int id, Notification notification)
+    public async Task<Notification?> UpdateNotificationAsync(int id, Notification notification)
     {
-        var existingNotification = await _context.Notifications.FindAsync(id);
-        if (existingNotification == null) return null;
+        var existing = await _context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id)
+            .ConfigureAwait(false);
 
-        existingNotification.Message = notification.Message;
-        await _context.SaveChangesAsync();
-        return existingNotification;
+        if (existing == null) return null;
+
+        existing.Message = notification.Message;
+        existing.Status = notification.Status;
+        existing.CreatedAt = notification.CreatedAt;
+
+        await _context.SaveChangesAsync()
+            .ConfigureAwait(false);
+        return existing;
     }
 
-    public async Task<bool> Delete(int id)
+    public async Task<bool> DeleteNotificationAsync(int id)
     {
-        var notification = await _context.Notifications.FindAsync(id);
+        var notification = await _context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id)
+            .ConfigureAwait(false);
+
         if (notification == null) return false;
 
         _context.Notifications.Remove(notification);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync()
+            .ConfigureAwait(false);
         return true;
     }
 }

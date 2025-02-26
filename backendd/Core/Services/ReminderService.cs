@@ -2,6 +2,7 @@
 using backendd.Core.Interfaces;
 using backendd.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace backendd.Core.Services
 {
@@ -14,40 +15,37 @@ namespace backendd.Core.Services
             _context = context;
         }
 
-        public async Task<List<Reminder>> GetAllReminders()
+        public async Task<List<Reminder>> GetAllRemindersAsync()
         {
-            return await _context.Reminders.AsNoTracking().ToListAsync();
+            return await _context.Reminders.ToListAsync();
         }
 
-        public async Task<Reminder?> GetReminderById(int id)
+        public async Task<Reminder> GetReminderByIdAsync(int id)
         {
-            return await _context.Reminders.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.Reminders.FindAsync(id);
         }
 
-        public async Task<Reminder> AddReminder(Reminder reminder)
+        public async Task<Reminder> AddAsync(Reminder reminder)
         {
-            if (reminder == null)
-                throw new ArgumentNullException(nameof(reminder));
-
             await _context.Reminders.AddAsync(reminder);
             await _context.SaveChangesAsync();
             return reminder;
         }
 
-        public async Task<Reminder?> UpdateReminder(int id, Reminder reminder)
+        public async Task<Reminder> UpdateAsync(int id, Reminder reminder)
         {
-            var existingReminder = await _context.Reminders.FindAsync(id);
-            if (existingReminder == null) return null;
+            var existing = await _context.Reminders.FindAsync(id);
+            if (existing == null) return null;
 
-            existingReminder.Message = reminder.Message;
-            existingReminder.Time = reminder.Time;
-            existingReminder.Status = reminder.Status;
+            existing.Message = reminder.Message;
+            existing.Time = reminder.Time;
+            existing.Status = reminder.Status;
 
             await _context.SaveChangesAsync();
-            return existingReminder;
+            return existing;
         }
 
-        public async Task<bool> DeleteReminder(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var reminder = await _context.Reminders.FindAsync(id);
             if (reminder == null) return false;

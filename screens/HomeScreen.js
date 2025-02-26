@@ -27,7 +27,7 @@ const HomePage = ({ navigation }) => {
         location: "41.3275, 19.8189", 
       };
   
-      const response = await axios.post("http://192.168.0.42:5196/api/SOS", sosData);
+      const response = await axios.post("http://192.168.0.36:5196/api/SOS", sosData);
   
       if (response.status === 201) {
         Alert.alert("Success", "SOS alert sent successfully!");
@@ -45,7 +45,7 @@ const HomePage = ({ navigation }) => {
   useEffect(() => {
     const fetchReminders = async () => {
       try {
-        const response = await fetch("http://192.168.0.42:5196/api/Reminders");
+        const response = await fetch("http://192.168.0.36:5196/api/Reminders");
         const data = await response.json();
         setReminders(data); // Save fetched reminders in state
       } catch (error) {
@@ -58,7 +58,7 @@ const HomePage = ({ navigation }) => {
       // Callback function to refresh reminders
       const refreshReminders = async () => {
         try {
-          const response = await fetch("http://192.168.0.42:5196/api/Reminders");
+          const response = await fetch("http://192.168.0.36:5196/api/Reminders");
           const data = await response.json();
           setReminders(data);
         } catch (error) {
@@ -86,7 +86,7 @@ const HomePage = ({ navigation }) => {
       const updatedReminders = reminders.filter((reminder) => reminder.id !== id);
       setReminders(updatedReminders);
   
-      await fetch(`http://192.168.0.42:5196/api/Reminders/${id}`, {
+      await fetch(`http://192.168.0.36:5196/api/Reminders/${id}`, {
         method: "DELETE",
       });
       

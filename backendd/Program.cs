@@ -62,6 +62,11 @@ builder.Services.AddScoped<ISOSService, SOSService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IHealthMetricsService, HealthMetricsService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IHealthDataFacade, HealthDataFacade>();
+builder.Services.Decorate<IUserService, LoggingUserService>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.Decorate<IUserService, CachingUserService>();
+builder.Services.Decorate<IHealthMetricsService, ValidatingHealthMetricsService>();
 
 // Add MVC services
 builder.Services.AddControllers();
@@ -81,8 +86,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
+builder.Services.AddLogging();
 var app = builder.Build();
-app.Urls.Add("http://0.0.0.0:5196");
 
 // Middleware Pipeline
 if (app.Environment.IsDevelopment())

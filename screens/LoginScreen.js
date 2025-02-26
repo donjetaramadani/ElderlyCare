@@ -12,7 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://192.168.0.247:5196/api/User/login", {
+      const response = await fetch("http://192.168.0.36:5196/api/User/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
       }
 
       const loginData = await response.json();
-      const profileResponse = await fetch("http://192.168.0.247:5196/api/User/profile", {
+      const profileResponse = await fetch("http://192.168.0.36:5196/api/User/profile", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${loginData.token}`,

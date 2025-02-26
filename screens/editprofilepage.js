@@ -13,7 +13,7 @@ const EditProfile = ({ navigation }) => {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        const response = await fetch("http://192.168.0.247:5196/api/user/profile", {
+        const response = await fetch("http://192.168.0.41:5196/api/user/profile", {
           method: "GET",
           headers: { Authorization: `Bearer ${user.token}` },
         });
@@ -72,7 +72,7 @@ const EditProfile = ({ navigation }) => {
     };
   
     try {
-      const response = await fetch("http://192.168.0.247:5196/api/user/updateProfile", {
+      const response = await fetch("http://192.168.0.36:5196/api/user/updateProfile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const EditProfile = ({ navigation }) => {
         fullName: data.userData.fullName,
         email: data.userData.email,
         phoneNumber: data.userData.phoneNumber,
-        profileImage: data.userData.profileImage || "http://192.168.0.247:5196/assets/images/default-avatar.png",
+        profileImage: data.userData.profileImage || "http://192.168.0.36:5196/assets/images/default-avatar.png",
       });
   
       Alert.alert("Success", "Profile updated successfully!");
@@ -115,7 +115,7 @@ const EditProfile = ({ navigation }) => {
   source={{
     uri: profileImage
       ? profileImage
-      :"http://192.168.0.247:5196/assets/images/default-avatar.png" // Default avatar
+      :"http://192.168.0.36:5196/assets/images/default-avatar.png" // Default avatar
   }}
   style={styles.profileImage}
 />

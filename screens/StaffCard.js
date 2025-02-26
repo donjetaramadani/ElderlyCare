@@ -12,7 +12,7 @@ const StaffCard = ({ staff, navigation }) => {
     >
       {/* Profile Picture */}
       <Image
-        source={{ uri: staff.profilePicture }} // Replace with the appropriate profile picture source
+        source={{ uri: staff.profilePicture }}
         style={styles.profileImage}
       />
       

@@ -1,8 +1,10 @@
 ﻿using backendd.Core.DataAccess;
 using backendd.Core.Interfaces;
 using backendd.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace backendd.Core.Services
 {
@@ -16,19 +18,32 @@ namespace backendd.Core.Services
         }
 
         // Get all metrics for a specific user
-        public List<HealthMetrics> GetMetricsForUser(int userId) =>
-            _context.HealthMetrics.Where(h => h.UserId == userId).ToList();
+        public async Task<List<HealthMetrics>> GetMetricsForUserAsync(int userId)
+        {
+            return await _context.HealthMetrics
+                .Where(h => h.UserId == userId)
+                .ToListAsync();
+        }
 
         // Get a specific metric by ID
-        public HealthMetrics GetMetricById(int id) =>
-            _context.HealthMetrics.FirstOrDefault(h => h.Id == id);
+        public async Task<HealthMetrics> GetMetricByIdAsync(int id)
+        {
+            return await _context.HealthMetrics
+                .FirstOrDefaultAsync(h => h.Id == id);
+        }
 
         // Add or update metrics
-        public HealthMetrics AddOrUpdateMetrics(HealthMetrics metrics)
+        public async Task<HealthMetrics> AddOrUpdateMetricsAsync(HealthMetrics metrics)
         {
-            var existingMetrics = _context.HealthMetrics.FirstOrDefault(h => h.Id == metrics.Id);
+            if (metrics == null)
+                throw new ArgumentNullException(nameof(metrics));
+
+            var existingMetrics = await _context.HealthMetrics
+                .FirstOrDefaultAsync(h => h.Id == metrics.Id);
+
             if (existingMetrics != null)
             {
+                // Update existing metrics
                 existingMetrics.HeartRate = metrics.HeartRate;
                 existingMetrics.Steps = metrics.Steps;
                 existingMetrics.Calories = metrics.Calories;
@@ -36,37 +51,44 @@ namespace backendd.Core.Services
             }
             else
             {
-                _context.HealthMetrics.Add(metrics);
+                // Add new metrics
+                await _context.HealthMetrics.AddAsync(metrics);
             }
 
-            _context.SaveChanges();
-            return metrics;
+            await _context.SaveChangesAsync();
+            return existingMetrics ?? metrics;
         }
 
+
         // Update metrics by ID
-        public HealthMetrics UpdateMetric(int id, HealthMetrics updatedMetrics)
+        public async Task<HealthMetrics> UpdateMetricAsync(int id, HealthMetrics updatedMetrics)
         {
-            var existingMetrics = _context.HealthMetrics.FirstOrDefault(h => h.Id == id);
-            if (existingMetrics == null)
+            var existingMetric = await _context.HealthMetrics
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (existingMetric == null)
                 return null;
 
-            existingMetrics.HeartRate = updatedMetrics.HeartRate;
-            existingMetrics.Steps = updatedMetrics.Steps;
-            existingMetrics.Calories = updatedMetrics.Calories;
-            existingMetrics.Timestamp = updatedMetrics.Timestamp;
+            existingMetric.HeartRate = updatedMetrics.HeartRate;
+            existingMetric.Steps = updatedMetrics.Steps;
+            existingMetric.Calories = updatedMetrics.Calories;
+            existingMetric.Timestamp = updatedMetrics.Timestamp;
 
-            _context.SaveChanges();
-            return existingMetrics;
+            await _context.SaveChangesAsync();
+            return existingMetric;
         }
 
         // Delete metrics by ID
-        public bool DeleteMetrics(int id)
+        public async Task<bool> DeleteMetricsAsync(int id)
         {
-            var metrics = _context.HealthMetrics.FirstOrDefault(h => h.Id == id);
-            if (metrics == null) return false;
+            var metrics = await _context.HealthMetrics
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (metrics == null)
+                return false;
 
             _context.HealthMetrics.Remove(metrics);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
     }

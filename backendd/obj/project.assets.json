@@ -761,7 +761,7 @@
           "System.Text.Json": "9.0.0"
         },
         "compile": {
-          "lib/net8.0/_._": {
+          "lib/net8.0/Microsoft.Extensions.DependencyModel.dll": {
             "related": ".xml"
           }
         },
@@ -1080,6 +1080,23 @@
         "runtime": {
           "lib/net8.0/RestSharp.dll": {
             "related": ".xml"
+          }
+        }
+      },
+      "Scrutor/5.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1",
+          "Microsoft.Extensions.DependencyModel": "8.0.1"
+        },
+        "compile": {
+          "lib/net8.0/Scrutor.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Scrutor.dll": {
+            "related": ".pdb;.xml"
           }
         }
       },
@@ -3897,6 +3914,26 @@
         "restsharp.png"
       ]
     },
+    "Scrutor/5.0.0": {
+      "sha512": "JrqAg2HuvUUZQP0G4tM0hOFU0yr8EcZJRyl5nNQJJxvll9+UssRaySRzybkZYC2AcNwVoLfg5lyQum2+5pSVDw==",
+      "type": "package",
+      "path": "scrutor/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net462/Scrutor.dll",
+        "lib/net462/Scrutor.pdb",
+        "lib/net462/Scrutor.xml",
+        "lib/net8.0/Scrutor.dll",
+        "lib/net8.0/Scrutor.pdb",
+        "lib/net8.0/Scrutor.xml",
+        "lib/netstandard2.0/Scrutor.dll",
+        "lib/netstandard2.0/Scrutor.pdb",
+        "lib/netstandard2.0/Scrutor.xml",
+        "scrutor.5.0.0.nupkg.sha512",
+        "scrutor.nuspec"
+      ]
+    },
     "Stripe/1.12.0": {
       "sha512": "IZ4xMz4vWqgH7RUyQMU/bljlr+gr/r/EMKUIg/PjTVjuyuXoXjbalgDnfDZ77GogCzJME3XIP1anBIMbaF4gvg==",
       "type": "package",
@@ -5014,6 +5051,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.0",
       "Microsoft.Extensions.DependencyInjection >= 9.0.0",
       "RestSharp >= 112.1.0",
+      "Scrutor >= 4.7.1",
       "Stripe >= 1.12.0",
       "Stripe.net >= 47.2.0",
       "Swashbuckle.AspNetCore >= 6.6.2"
@@ -5105,6 +5143,10 @@
             "target": "Package",
             "version": "[112.1.0, )"
           },
+          "Scrutor": {
+            "target": "Package",
+            "version": "[4.7.1, )"
+          },
           "Stripe": {
             "target": "Package",
             "version": "[1.12.0, )"
@@ -5142,6 +5184,16 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "backendd depends on Scrutor (>= 4.7.1) but Scrutor 4.7.1 was not found. An approximate best match of Scrutor 5.0.0 was resolved.",
+      "libraryId": "Scrutor",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

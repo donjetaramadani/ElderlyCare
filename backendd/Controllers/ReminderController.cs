@@ -18,14 +18,14 @@ namespace backendd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllReminders()
         {
-            var reminders = await _reminderService.GetAllReminders();
+            var reminders = await _reminderService.GetAllRemindersAsync();
             return Ok(reminders);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReminderById(int id)
         {
-            var reminder = await _reminderService.GetReminderById(id);
+            var reminder = await _reminderService.GetReminderByIdAsync(id);
             if (reminder == null) return NotFound("Reminder not found");
             return Ok(reminder);
         }
@@ -36,7 +36,7 @@ namespace backendd.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Invalid data");
 
-            var createdReminder = await _reminderService.AddReminder(reminder);
+            var createdReminder = await _reminderService.AddAsync(reminder);
             return CreatedAtAction(nameof(GetReminderById), new { id = createdReminder.Id }, createdReminder);
         }
 
@@ -46,7 +46,7 @@ namespace backendd.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Invalid data");
 
-            var updatedReminder = await _reminderService.UpdateReminder(id, reminder);
+            var updatedReminder = await _reminderService.UpdateAsync(id, reminder);
             if (updatedReminder == null) return NotFound("Reminder not found");
 
             return Ok(updatedReminder);
@@ -55,7 +55,7 @@ namespace backendd.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReminder(int id)
         {
-            var result = await _reminderService.DeleteReminder(id);
+            var result = await _reminderService.DeleteAsync(id);
             if (!result) return NotFound("Reminder not found");
 
             return NoContent();

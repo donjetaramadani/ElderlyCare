@@ -10,7 +10,7 @@ const NotificationsScreen = () => {
   useEffect(() => {
     const connectSignalR = async () => {
       const connection =  new SignalR.HubConnectionBuilder()
-      .withUrl("http://192.168.0.247:5196/hubs/notification", {
+      .withUrl("http://192.168.0.36:5196/hubs/notification", {
         skipNegotiation: true, // 
         transport: SignalR.HttpTransportType.WebSockets, 
         accessTokenFactory: () => user.token,

@@ -1,14 +1,15 @@
 ﻿using backendd.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace backendd.Core.Interfaces
 {
     public interface IHealthMetricsService
     {
-        List<HealthMetrics> GetMetricsForUser(int userId);
-        HealthMetrics GetMetricById(int id);
-        HealthMetrics AddOrUpdateMetrics(HealthMetrics metrics);
-        HealthMetrics UpdateMetric(int id, HealthMetrics metrics);
-        bool DeleteMetrics(int id);
+        Task<List<HealthMetrics>> GetMetricsForUserAsync(int userId);
+        Task<HealthMetrics?> GetMetricByIdAsync(int id);
+        Task<HealthMetrics> AddOrUpdateMetricsAsync(HealthMetrics metrics);
+        Task<HealthMetrics?> UpdateMetricAsync(int id, HealthMetrics metrics);
+        Task<bool> DeleteMetricsAsync(int id);
     }
 }

@@ -44,7 +44,7 @@ const StaffDetails = ({ route, navigation }) => {
   
   const fetchStaffDetails = async () => {
     try {
-      const response = await fetch(`http://192.168.0.42:5196/api/StaffMember/${staffId}`);
+      const response = await fetch(`http://192.168.0.36:5196/api/StaffMember/${staffId}`);
       if (response.ok) {
         const data = await response.json();
         setStaffDetails(data);
@@ -60,7 +60,7 @@ const StaffDetails = ({ route, navigation }) => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://192.168.0.42:5196/api/StaffReview/${staffId}`);
+      const response = await fetch(`http://192.168.0.36:5196/api/StaffReview/${staffId}`);
       if (response.ok) {
         const data = await response.json();
         console.log("Fetched reviews:", data); // Log API response
@@ -91,7 +91,7 @@ const StaffDetails = ({ route, navigation }) => {
     }
     const newReview = { author: "User", text: comment, rating, staffId };
     try {
-      const response = await fetch("http://192.168.0.42:5196/api/StaffReview", {
+      const response = await fetch("http://192.168.0.36:5196/api/StaffReview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newReview),
@@ -132,7 +132,7 @@ const StaffDetails = ({ route, navigation }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://192.168.0.42:5196/api/StaffReview/${id}`,
+        `http://192.168.0.36:5196/api/StaffReview/${id}`,
         { method: "DELETE" }
       );
   

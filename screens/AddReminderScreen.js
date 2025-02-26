@@ -40,7 +40,7 @@ const AddReminderScreen = ({ route }) => {
     };
 
     try {
-      const response = await fetch('http://192.168.0.42:5196/api/Reminders', {
+      const response = await fetch('http://192.168.0.36:5196/api/Reminders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

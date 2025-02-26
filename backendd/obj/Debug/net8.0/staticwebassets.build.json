@@ -1,12 +1,11 @@
 {
   "Version": 1,
-  "Hash": "+PswYLSudAYYhDrvU4+BPTSboxdJy3GWeNM4sQHXnkY=",
+  "Hash": "9IU023PPBC5TZ6U3MF9FXdSPCM6saEPhSh8G5qKVVDA=",
   "Source": "backendd",
   "BasePath": "_content/backendd",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "Assets": []
 }

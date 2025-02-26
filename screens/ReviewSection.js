@@ -23,7 +23,7 @@ const ReviewSection = ({ hospital }) => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://192.168.0.42:5196/api/Reviews/${hospitalId}`);
+      const response = await fetch(`http://192.168.0.36:5196/api/Reviews/${hospitalId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch reviews');
       }
@@ -68,7 +68,7 @@ const ReviewSection = ({ hospital }) => {
 
     const newReview = { user: currentUser, hospitalId, comment, rating };
     try {
-      const response = await fetch(`http://192.168.0.42:5196/api/Reviews`, {
+      const response = await fetch(`http://192.168.0.36:5196/api/Reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const ReviewSection = ({ hospital }) => {
 
   const handleDeleteReview = async (reviewId) => {
     try {
-      const response = await fetch(`http://192.168.0.42:5196/api/Reviews/${reviewId}?user=${currentUser}`, {
+      const response = await fetch(`http://192.168.0.36:5196/api/Reviews/${reviewId}?user=${currentUser}`, {
         method: 'DELETE',
       });
 

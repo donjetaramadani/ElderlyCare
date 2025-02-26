@@ -18,7 +18,7 @@ const ProfileScreen = ({ navigation }) => {
         navigation.replace("ProfileHome");
       }
       try {
-        const response = await fetch("http://192.168.0.247:5196/api/User/profile", {
+        const response = await fetch("http://192.168.0.36:5196/api/User/profile", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -60,7 +60,7 @@ const ProfileScreen = ({ navigation }) => {
   source={{
     uri: profileData.profileImage 
       ? profileData.profileImage 
-      : "http://192.168.0.247:5196/assets/images/default-avatar.png"
+      : "http://192.168.0.36:5196/assets/images/default-avatar.png"
   }}
   style={styles.profileImage}
 />

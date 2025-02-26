@@ -9,7 +9,7 @@ const DeleteAccountScreen = ({ navigation }) => {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch("http://192.168.0.247:5196/api/user/deleteAccount", {
+      const response = await fetch("http://192.168.0.36:5196/api/user/deleteAccount", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -12,7 +12,7 @@ const Payment = ({ route, navigation }) => {
 
   const handlePayment = async () => {
     try {
-      const response = await fetch("http://192.168.0.42:5196/api/Payment/create-payment-intent", {
+      const response = await fetch("http://192.168.0.36:5196/api/Payment/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: Math.round(totalAmount * 100) }),
@@ -47,7 +47,7 @@ const Payment = ({ route, navigation }) => {
  
   const handleSendOrderToCaregiver = async () => {
     try {
-      const response = await fetch("http://192.168.0.42:5196/api/Order/send-to-caregiver", {
+      const response = await fetch("http://192.168.0.36:5196/api/Order/send-to-caregiver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
