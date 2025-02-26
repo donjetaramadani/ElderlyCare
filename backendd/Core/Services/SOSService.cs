@@ -7,7 +7,7 @@ namespace backendd.Core.Services
 {
     public class SOSService : ISOSService
     {
-     
+
         private readonly ApplicationDbContext _context;
 
         public SOSService(ApplicationDbContext context)

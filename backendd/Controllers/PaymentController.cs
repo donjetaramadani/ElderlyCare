@@ -26,7 +26,7 @@ namespace backendd.Controllers
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = paymentRequest.Amount, 
+                    Amount = paymentRequest.Amount,
                     Currency = "usd",
                     PaymentMethodTypes = new List<string> { "card" },
                 };
@@ -46,7 +46,7 @@ namespace backendd.Controllers
 
         public class PaymentRequest
         {
-            public int Amount { get; set; } 
+            public int Amount { get; set; }
         }
     }
 }

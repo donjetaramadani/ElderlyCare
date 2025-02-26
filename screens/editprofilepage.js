@@ -13,7 +13,7 @@ const EditProfile = ({ navigation }) => {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        const response = await fetch("http://192.168.0.41:5196/api/user/profile", {
+        const response = await fetch("http://192.168.0.36:5196/api/user/profile", {
           method: "GET",
           headers: { Authorization: `Bearer ${user.token}` },
         });

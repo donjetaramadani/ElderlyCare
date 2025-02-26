@@ -9,14 +9,14 @@ namespace backendd.Core.Services
 {
     public class ActivityService : IActivityService
     {
-       
+
         private readonly ApplicationDbContext _context;
 
         public ActivityService(ApplicationDbContext context)
         {
             _context = context;
         }
-        
+
         public async Task<List<Activity>> GetAllActivities()
         {
             return await _context.Activities.ToListAsync();

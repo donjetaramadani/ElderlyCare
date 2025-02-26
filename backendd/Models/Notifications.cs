@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace backendd.Models
-    {
-        public class Notification
+{
+    public class Notification
     {
         public int Id { get; set; }
 
@@ -11,7 +11,7 @@ namespace backendd.Models
         public int UserId { get; set; }
 
         [Required]
-        public string Message  { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
 
         [Required]
         public string Type { get; set; } = string.Empty;
@@ -26,4 +26,3 @@ namespace backendd.Models
     }
 
 }
- 

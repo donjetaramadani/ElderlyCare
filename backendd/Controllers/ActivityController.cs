@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc; 
+﻿using Microsoft.AspNetCore.Mvc;
 using backendd.Core.Interfaces;
 using backendd.Models;
 

@@ -86,7 +86,7 @@ namespace backendd.Controllers
             _context.StaffReviews.Remove(review);
             _context.SaveChanges();
 
-            return NoContent(); 
+            return NoContent();
         }
     }
 }

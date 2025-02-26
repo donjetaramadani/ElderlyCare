@@ -120,7 +120,7 @@ namespace backendd.Controllers
         // GET: api/notifications/sorted?sortBy=CreatedAt&order=desc
         [HttpGet("sorted")]
         public async Task<ActionResult<IEnumerable<Notification>>> GetSortedNotifications(
-            [FromQuery] string sortBy = "CreatedAt", 
+            [FromQuery] string sortBy = "CreatedAt",
             [FromQuery] string order = "asc")
         {
             IQueryable<Notification> query = _context.Notifications;
@@ -128,13 +128,13 @@ namespace backendd.Controllers
             // Sorting logic
             if (sortBy.Equals("CreatedAt", StringComparison.OrdinalIgnoreCase))
             {
-                query = order.Equals("desc", StringComparison.OrdinalIgnoreCase) 
+                query = order.Equals("desc", StringComparison.OrdinalIgnoreCase)
                     ? query.OrderByDescending(n => n.CreatedAt)
                     : query.OrderBy(n => n.CreatedAt);
             }
             else if (sortBy.Equals("Status", StringComparison.OrdinalIgnoreCase))
             {
-                query = order.Equals("desc", StringComparison.OrdinalIgnoreCase) 
+                query = order.Equals("desc", StringComparison.OrdinalIgnoreCase)
                     ? query.OrderByDescending(n => n.Status)
                     : query.OrderBy(n => n.Status);
             }
@@ -152,7 +152,7 @@ namespace backendd.Controllers
         // GET: api/notifications/filter?status=Unread&userId=1
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Notification>>> GetFilteredNotifications(
-            [FromQuery] string status, 
+            [FromQuery] string status,
             [FromQuery] int? userId)
         {
             IQueryable<Notification> query = _context.Notifications;

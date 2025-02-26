@@ -8,7 +8,7 @@ namespace backendd.Core.Services
 {
     public class RecommendationService : IRecommendationService
     {
-       
+
         private readonly ApplicationDbContext _context;
 
         public RecommendationService(ApplicationDbContext context)
